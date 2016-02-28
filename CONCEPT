@@ -1,0 +1,16 @@
+- should work both GUI and commandline
+- plugins for each WM (using FmModule)
+    * key is WM ID
+    - func(conf) [re]load config
+    - func(conf) save config
+    - func(conf,mask) get desc/keys for global binding(s)
+    - func(conf,action,data) set keys for a global binding
+    - func(conf) get list of possible global actions
+    - func(conf,mask) get exec/[desk]/key for app binding(s)
+    - func(conf,name,data) set exec/desc/key for an app binding
+- if change exec then remove old and add new
+- commandline is like
+    lxkeys global desktop2 <-- show bound key(s) for action desktop2
+    lxkeys app <-- show all keys bound to applications
+    lxkeys app xfrun4 Alt+F2,Win+Enter "Execute a command" <-- bind a key
+- do special window parameters as well???
