@@ -18,7 +18,640 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
+#include "lxkeys.h"
+
+#include <glib/gi18n.h>
+
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+
+#define NONULL(a) (a) ? ((char *)a) : ""
+
+GQuark LXKEYS_ERROR;
+
+/* this function is taken from wmctrl utility */
+#define MAX_PROPERTY_VALUE_LEN 4096
+
+static gchar *get_property (Display *disp, Window win, /*{{{*/
+        Atom xa_prop_type, gchar *prop_name, unsigned long *size)
+{
+    Atom xa_prop_name;
+    Atom xa_ret_type;
+    int ret_format;
+    unsigned long ret_nitems;
+    unsigned long ret_bytes_after;
+    unsigned long tmp_size;
+    unsigned char *ret_prop;
+    gchar *ret;
+
+    xa_prop_name = XInternAtom(disp, prop_name, False);
+
+    /* MAX_PROPERTY_VALUE_LEN / 4 explanation (XGetWindowProperty manpage):
+     *
+     * long_length = Specifies the length in 32-bit multiples of the
+     *               data to be retrieved.
+     *
+     * NOTE:  see
+     * http://mail.gnome.org/archives/wm-spec-list/2003-March/msg00067.html
+     * In particular:
+     *
+     * When the X window system was ported to 64-bit architectures, a
+     * rather peculiar design decision was made. 32-bit quantities such
+     * as Window IDs, atoms, etc, were kept as longs in the client side
+     * APIs, even when long was changed to 64 bits.
+     *
+     */
+    if (XGetWindowProperty(disp, win, xa_prop_name, 0, MAX_PROPERTY_VALUE_LEN / 4, False,
+            xa_prop_type, &xa_ret_type, &ret_format,
+            &ret_nitems, &ret_bytes_after, &ret_prop) != Success) {
+        return NULL;
+    }
+
+    if (xa_ret_type != xa_prop_type) {
+        XFree(ret_prop);
+        return NULL;
+    }
+
+    /* null terminate the result to make string handling easier */
+    tmp_size = (ret_format / 8) * ret_nitems;
+    /* Correct 64 Architecture implementation of 32 bit data */
+    if(ret_format==32) tmp_size *= sizeof(long)/4;
+    ret = g_malloc(tmp_size + 1);
+    memcpy(ret, ret_prop, tmp_size);
+    ret[tmp_size] = '\0';
+
+    if (size) {
+        *size = tmp_size;
+    }
+
+    XFree(ret_prop);
+    return ret;
+} /*}}}*/
+
+static gchar *get_wm_info(void)
+{
+    /* this code is taken from wmctrl utility, adapted
+       Copyright (C) 2003, Tomas Styblo <tripie@cpan.org> */
+    Display *disp;
+    Window *sup_window = NULL;
+    gchar *wm_name = NULL;
+
+    if (!(disp = XOpenDisplay(NULL))) {
+        fputs("Cannot open display.\n", stderr);
+        return NULL;
+    }
+
+    if (!(sup_window = (Window *)get_property(disp, DefaultRootWindow(disp),
+                    XA_WINDOW, "_NET_SUPPORTING_WM_CHECK", NULL))) {
+        if (!(sup_window = (Window *)get_property(disp, DefaultRootWindow(disp),
+                        XA_CARDINAL, "_WIN_SUPPORTING_WM_CHECK", NULL))) {
+            fputs("Cannot get window manager info properties.\n"
+                  "(_NET_SUPPORTING_WM_CHECK or _WIN_SUPPORTING_WM_CHECK)\n", stderr);
+            return NULL;
+        }
+    }
+
+    /* WM_NAME */
+    if (!(wm_name = get_property(disp, *sup_window,
+            XInternAtom(disp, "UTF8_STRING", False), "_NET_WM_NAME", NULL))) {
+        if (!(wm_name = get_property(disp, *sup_window,
+                XA_STRING, "_NET_WM_NAME", NULL))) {
+            fputs("Cannot get name of the window manager (_NET_WM_NAME).\n", stderr);
+        } else {
+            gchar *_wm_name = wm_name;
+
+            wm_name = g_locale_to_utf8(_wm_name, -1, NULL, NULL, NULL);
+            if (wm_name)
+                g_free(_wm_name);
+            else
+                /* Cannot convert string from locale charset to UTF-8. */
+                wm_name = _wm_name;
+        }
+    }
+
+    return wm_name;
+}
+
+/* test if we are called from X which is local */
+static gboolean test_X_is_local(void)
+{
+    return TRUE; // TODO!
+}
+
+
+/* WM plugins */
+typedef struct LXKeysPlugin {
+    struct LXKeysPlugin *next;
+    gchar *name;
+    LXKeysPluginInit *t;
+} LXKeysPlugin;
+
+static LXKeysPlugin *plugins = NULL;
+
+FM_MODULE_DEFINE_TYPE(lxkeys, LXKeysPluginInit, 1)
+static gboolean fm_module_callback_lxkeys(const char *name, gpointer init, int ver)
+{
+    LXKeysPlugin *plugin;
+
+    /* ignore ver for now, only 1 exists */
+    /* FIXME: need to check for duplicates? */
+    plugin = g_new(LXKeysPlugin, 1);
+    plugin->next = plugins;
+    plugin->name = g_strdup(name);
+    plugin->t = init;
+    plugins = plugin;
+    return TRUE;
+}
+
+
+/* GUI plugins */
+typedef struct LXKeysGUIPlugin {
+    struct LXKeysGUIPlugin *next;
+    gchar *name;
+    LXKeysGUIPluginInit *t;
+} LXKeysGUIPlugin;
+
+static LXKeysGUIPlugin *gui_plugins = NULL;
+
+FM_MODULE_DEFINE_TYPE(lxkeys_gui, LXKeysGUIPluginInit, 1)
+static gboolean fm_module_callback_lxkeys_gui(const char *name, gpointer init, int ver)
+{
+    LXKeysGUIPlugin *plugin;
+
+    /* ignore ver for now, only 1 exists */
+    /* FIXME: need to check for duplicates? */
+    plugin = g_new(LXKeysGUIPlugin, 1);
+    plugin->next = gui_plugins;
+    plugin->name = g_strdup(name);
+    plugin->t = init;
+    gui_plugins = plugin;
+    return TRUE;
+}
+
+
+static int _print_help(const char *cmd)
+{
+    printf(_("Usage: %s global [<action>]      - show keys bound to action(s)\n"), cmd);
+    printf(_("       %s global <action> <key>  - bind a key to the action\n"), cmd);
+    printf(_("       %s app [<exec>]           - show keys bound to exec line\n"), cmd);
+    printf(_("       %s app <exec> <key>       - bind a key to some exec line\n"), cmd);
+    printf(_("       %s app <exec> --          - unbind all keys from exec line\n"), cmd);
+    printf(_("       %s show <key>             - show the action bound to a key\n"), cmd);
+    return 0;
+}
+
+/* free a LXKeysAttr list */
+static void free_actions(gpointer act)
+{
+    GList *l;
+    LXKeysAttr *data;
+
+    while ((l = act)) {
+        act = l->next;
+        data = l->data;
+        g_list_free_1(l);
+        g_free(data->name);
+        g_list_free_full(data->values, g_free);
+        g_list_free_full(data->subopts, free_actions);
+    }
+}
+
+/* convert text line to LXKeysAttr list
+   text may be formatted like this:
+   startupnotify=yes:attr1=val1:attr2=val2&action=val
+   any ':','&','\' in any value should be escaped with '\' */
+static GList *actions_from_str(const char *line, GError **error)
+{
+    GString *str = g_string_sized_new(16);
+    LXKeysAttr *data = NULL, *attr = NULL;
+    GList *list;
+
+    data = g_new0(LXKeysAttr, 1);
+    list = g_list_prepend(NULL, data);
+    for (; *line; line++) {
+        switch (*line) {
+        case '=':
+            if (!data->name) { /* this is new data value */
+                if (str->len == 0)
+                    goto _empty_name;
+                data->name = g_strdup(str->str);
+                g_string_truncate(str, 0);
+            } else if (attr && !attr->name) { /* this is an option */
+                if (str->len == 0)
+                    goto _empty_opt;
+                attr->name = g_strdup(str->str);
+                g_string_truncate(str, 0);
+            } else /* '=' in value, continue processing */
+                g_string_append_c(str, *line);
+            break;
+        case ':':
+            if (!data->name) {
+                if (str->len == 0) /* empty action name */
+                    goto _empty_name;
+                data->name = g_strdup(str->str);
+            } else if (attr) { /* finish previous attr */
+                if (!attr->name) {
+                    if (str->len == 0)
+                        goto _empty_opt;
+                    attr->name = g_strdup(str->str);
+                } else
+                    attr->values = g_list_prepend(NULL, g_strdup(str->str));
+            } else /* got value for the action */
+                data->values = g_list_prepend(NULL, g_strdup(str->str));
+            g_string_truncate(str, 0);
+            attr = g_new0(LXKeysAttr, 1);
+            data->subopts = g_list_prepend(data->subopts, attr);
+            break;
+        case '&':
+            if (!data->name) {
+                if (str->len == 0) /* empty action name */
+                    goto _empty_name;
+                data->name = g_strdup(str->str);
+            } else if (attr) { /* finish last attr */
+                if (!attr->name) {
+                    if (str->len == 0)
+                        goto _empty_opt;
+                    attr->name = g_strdup(str->str);
+                } else
+                    attr->values = g_list_prepend(NULL, g_strdup(str->str));
+            } else /* got value for the action */
+                data->values = g_list_prepend(NULL, g_strdup(str->str));
+            g_string_truncate(str, 0);
+            attr = NULL; /* previous action just finished */
+            data->subopts = g_list_reverse(data->subopts);
+            data = g_new0(LXKeysAttr, 1);
+            list = g_list_prepend(list, data);
+            break;
+        case '\\':
+            /* do nothing, this was an escape char */
+            break;
+        default:
+            g_string_append_c(str, *line);
+        }
+    }
+    if (!data->name) {
+        if (str->len == 0) /* empty action name */
+            goto _empty_name;
+        data->name = g_strdup(str->str);
+    } else if (attr) { /* finish last attr */
+        if (!attr->name) {
+            if (str->len == 0)
+                goto _empty_opt;
+            attr->name = g_strdup(str->str);
+        } else
+            attr->values = g_list_prepend(NULL, g_strdup(str->str));
+    } else /* got value for the action */
+        data->values = g_list_prepend(NULL, g_strdup(str->str));
+    list = g_list_reverse(list);
+    g_string_free(str, TRUE);
+    return list;
+
+_empty_opt:
+    g_set_error_literal(error, LXKEYS_ERROR, LXKEYS_BAD_ARGS, _("empty option name."));
+    goto _failed;
+_empty_name:
+    g_set_error_literal(error, LXKEYS_ERROR, LXKEYS_BAD_ARGS, _("empty action name."));
+_failed:
+    free_actions(list);
+    g_string_free(str, TRUE);
+    return NULL;
+}
+
+/* check if action list matches origin
+   if origin==NULL then error is possibly set already */
+static gboolean validate_actions(const GList *act, const GList *origin,
+                                 const LXKeysAttr *action, GError **error)
+{
+    const LXKeysAttr *data, *ordata;
+    const GList *l, *olist;
+
+    if (!origin)
+        return FALSE;
+    if (action)
+        olist = action->subopts; /* action is ordata on recursion actually */
+    else
+        olist = origin;
+    while (act) {
+        data = act->data;
+        /* find corresponding descriptor in the origin list */
+        for (l = olist; l; l = l->next)
+            if (g_strcmp0(data->name, (ordata = l->data)->name) == 0)
+                break;
+        if (l == NULL) {
+            if (action)
+                g_set_error(error, LXKEYS_ERROR, LXKEYS_BAD_ARGS,
+                            _("no matching option '%s' found for action '%s'."),
+                            data->name, action->name);
+            else
+                g_set_error(error, LXKEYS_ERROR, LXKEYS_BAD_ARGS,
+                            _("no mathing action '%s' found for the WM configuration."),
+                            data->name);
+            return FALSE;
+        }
+        /* if ordata->values isn't NULL and data->values isn't NULL
+           then it must match, ordata->values==NULL means anything matches */
+        if (data->values != NULL && ordata->values != NULL) {
+            for (l = ordata->values; l; l = l->next)
+                if (g_strcmp0(data->values->data, l->data) == 0)
+                    break;
+            if (l == NULL) {
+                if (action)
+                    g_set_error(error, LXKEYS_ERROR, LXKEYS_BAD_ARGS,
+                                _("value '%s' is not supported for option '%s'."),
+                                (char *)data->values->data, data->name);
+                else
+                    g_set_error(error, LXKEYS_ERROR, LXKEYS_BAD_ARGS,
+                                _("value '%s' is not supported for action '%s'."),
+                                (char *)data->values->data, data->name);
+                return FALSE;
+            }
+        }
+        /* for each data->subopts do recursion against ordata->subopts */
+        if (!data->subopts) ;
+        else if (ordata->has_actions) {
+            /* test against origin actions list, not suboptions */
+            if (!validate_actions(data->subopts, origin, NULL, error))
+                return FALSE;
+        } else if (!ordata->subopts) {
+            g_set_error(error, LXKEYS_ERROR, LXKEYS_BAD_ARGS,
+                        _("action '%s' does not support options."), data->name);
+            return FALSE;
+        } else if (!validate_actions(data->subopts, origin, ordata, error))
+            return FALSE;
+        act = act->next;
+    }
+    return TRUE;
+}
+
+/* convert list to a text line */
+//static char *actions_to_str(const GList *act)
+//{
+//}
+
+static void print_suboptions(GList *sub, int indent)
+{
+    indent += 3;
+    while (sub) {
+        LXKeysAttr *action = sub->data;
+        if (action->values && action->values->data)
+            printf("%*s%s=%s\n", indent, "", action->name,
+                                  (char *)action->values->data);
+        else
+            printf("%*s%s\n", indent, "", action->name);
+        print_suboptions(action->subopts, indent);
+        sub = sub->next;
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
-    return 0;
+    const char *cmd;
+    gchar *wm_name;
+    LXKeysPlugin *plugin;
+    LXKeysGUIPlugin *gui_plugin = NULL;
+    int ret = 1; /* failure */
+    gpointer config = NULL;
+    GError *error = NULL;
+    gboolean do_gui = FALSE;
+
+    /* init localizations */
+    setlocale(LC_ALL, "");
+#ifdef ENABLE_NLS
+    bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
+    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    textdomain(GETTEXT_PACKAGE);
+#endif
+
+    /* parse args first, show help if "help" "-h" or "--help" */
+    if (argc < 2)
+        cmd = "--gui=gtk";
+    else
+        cmd = argv[1];
+    if (cmd[0] == '-' && cmd[1] == '-') /* skip leading "--" if given */
+        cmd += 2;
+    if (strcmp(cmd, "help") == 0 || (cmd[0] == '-' && cmd[1] == 'h'))
+        return _print_help(argv[0]);
+    if (memcmp(cmd, "gui=", 4) == 0) {
+        do_gui = TRUE;
+        cmd += 4;
+    }
+
+    if (!test_X_is_local()) {
+        fprintf(stderr, _("LXKeys: sorry, cannot configure keys remotely.\n"));
+        return 1;
+    }
+
+    /* init LibFM and FmModule */
+    fm_init(NULL);
+    fm_modules_add_directory(PACKAGE_PLUGINS_DIR);
+    fm_module_register_lxkeys();
+    if (do_gui)
+        fm_module_register_lxkeys_gui();
+
+    LXKEYS_ERROR = g_quark_from_static_string("LXKEYS_ERROR");
+
+    /* detect current WM and find a module for it */
+    wm_name = get_wm_info();
+    if (!wm_name)
+        goto _exit;
+    CHECK_MODULES();
+    for (plugin = plugins; plugin; plugin = plugin->next)
+        if (g_ascii_strcasecmp(plugin->name, wm_name) == 0)
+            break;
+    if (do_gui) /* load GUI plugin if requested */
+        for (gui_plugin = gui_plugins; gui_plugin; gui_plugin = gui_plugin->next)
+            if (g_ascii_strcasecmp(gui_plugin->name, cmd) == 0)
+                break;
+    if (!plugin) {
+        g_set_error(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
+                    _("Window manager %s isn't supported now, sorry."), wm_name);
+        goto _exit;
+    }
+
+    /* load the found module */
+    config = plugin->t->load(NULL, &error);
+    if (!config) {
+        g_prefix_error(&error, _("Problems loading configuration: "));
+        goto _exit;
+    }
+
+    if (do_gui) {
+        if (gui_plugin && gui_plugin->t->run)
+            gui_plugin->t->run(wm_name, plugin->t, config, &error);
+        else
+            g_set_error(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
+                        _("GUI type %s currently isn't supported."), cmd);
+        goto _exit;
+    }
+
+    /* doing commandline: call module function depending on args */
+    if (strcmp(argv[1], "global") == 0) { /* lxkeys global ... */
+        if (argc > 3) { /* set */
+            LXKeysGlobal data;
+
+            if (plugin->t->get_wm_actions == NULL || plugin->t->set_wm_key == NULL)
+                goto _not_supported;
+            /* parse and validate actions */
+            data.actions = actions_from_str(argv[2], &error);
+            if (error ||
+                !validate_actions(data.actions, plugin->t->get_wm_actions(config, &error),
+                                  NULL, &error)) { /* invalid request */
+                g_prefix_error(&error, _("Invalid request: "));
+                goto _exit;
+            }
+            // FIXME: validate key
+            data.accel1 = argv[3];
+            data.accel2 = NULL;
+            if (argc > 4)
+                data.accel2 = argv[4];
+            if (!plugin->t->set_wm_key(config, &data, &error) ||
+                !plugin->t->save(config, &error)) {
+                g_prefix_error(&error, _("Problems saving configuration: "));
+                free_actions(data.actions);
+                goto _exit;
+            }
+            free_actions(data.actions);
+        } else { /* show by mask */
+            const char *mask = NULL;
+            GList *keys, *key;
+            LXKeysGlobal *data;
+            GList *act;
+            LXKeysAttr *action;
+
+            if (plugin->t->get_wm_keys == NULL)
+                goto _not_supported;
+            if (argc > 2)
+                mask = argv[2]; /* mask given */
+            keys = plugin->t->get_wm_keys(config, mask, NULL);
+            printf("%24s %s\n", _("ACTION(s)"), _("KEY(s)"));
+            for (key = keys; key; key = key->next) {
+                data = key->data;
+                for (act = data->actions; act; act = act->next)
+                {
+                    action = act->data;
+                    if (act != data->actions)
+                        printf("%s\n", action->name);
+                    else if (data->accel2)
+                        printf("%24s %s %s\n", action->name, data->accel1,
+                                               data->accel2);
+                    else
+                        printf("%24s %s\n", action->name, data->accel1);
+                    print_suboptions(action->subopts, 0);
+                }
+            }
+        }
+    } else if (strcmp(argv[1], "app") == 0) { /* lxkeys app ... */
+        if (argc > 3) { /* set */
+            GList *keys = NULL;
+            LXKeysApp data;
+
+            if (plugin->t->set_app_key == NULL)
+                goto _not_supported;
+            /* check if exec already has a key */
+            if (plugin->t->get_app_keys != NULL)
+                keys = plugin->t->get_app_keys(config, argv[2], NULL);
+            if (keys && keys->next) /* mask in exec line isn't supported */
+                goto _not_supported;
+            // FIXME: validate key
+            data.accel2 = NULL;
+            if (strcmp(argv[3], "--") == 0) { /* remove all bindings */
+                data.accel1 = NULL;
+            } else if (keys && ((LXKeysApp *)keys->data)->accel1) {
+                data.accel1 = ((LXKeysApp *)keys->data)->accel1;
+                data.accel2 = argv[3];
+            } else {
+                data.accel1 = argv[3];
+            }
+            cmd = strchr(argv[2], '&');
+            if (cmd) {
+                data.actions = actions_from_str(&cmd[1], &error);
+                if (error ||
+                    (plugin->t->get_app_actions != NULL &&
+                     !validate_actions(data.actions,
+                                       plugin->t->get_app_actions(config, &error),
+                                       NULL, &error))) { /* invalid request */
+                    g_prefix_error(&error, _("Invalid request: "));
+                    goto _exit;
+                }
+                data.exec = g_strndup(argv[2], cmd - argv[2]);
+            } else {
+                data.actions = NULL;
+                data.exec = g_strdup(argv[2]);
+            }
+            // FIXME: validate exec
+            if (!plugin->t->set_app_key(config, &data, &error) ||
+                !plugin->t->save(config, &error)) {
+                g_prefix_error(&error, _("Problems saving configuration: "));
+                free_actions(data.actions);
+                g_free(data.exec);
+                goto _exit;
+            }
+            free_actions(data.actions);
+            g_free(data.exec);
+        } else { /* show by mask */
+            const char *mask = NULL;
+            GList *keys, *key;
+            LXKeysApp *data;
+
+            if (plugin->t->get_app_keys == NULL)
+                goto _not_supported;
+            if (argc > 2)
+                mask = argv[2]; /* mask given */
+            keys = plugin->t->get_app_keys(config, mask, NULL);
+            printf("%24s %s\n", _("EXEC"), _("KEY(s)"));
+            for (key = keys; key; key = key->next) {
+                data = key->data;
+                if (data->accel2)
+                    printf("%24s %s %s\n", data->exec, data->accel1,
+                                           data->accel2);
+                else
+                    printf("%24s %s\n", data->exec, data->accel1);
+                print_suboptions(data->actions, 0);
+            }
+        }
+    } else if (strcmp(argv[1], "show") == 0) { /* lxkeys show ... */
+        // TODO!
+    } else
+        goto _exit;
+    ret = 0; /* success */
+    goto _exit;
+
+_not_supported:
+    g_set_error_literal(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
+                        _("Requested operation isn't supported."));
+
+    /* release resources */
+_exit:
+    if (config)
+        plugin->t->free(config);
+    if (error) {
+        // FIXME: if do_gui then show an alert window instead of stderr
+        if (gui_plugin && gui_plugin->t->alert)
+            gui_plugin->t->alert(error);
+        else
+            fprintf(stderr, "LXKeys: %s\n", error->message);
+        g_error_free(error);
+    }
+    fm_module_unregister_type("lxkeys");
+    fm_module_unregister_type("lxkeys_gui");
+    while (plugins) {
+        plugin = plugins;
+        plugins = plugin->next;
+        g_free(plugin->name);
+        g_free(plugin);
+    }
+    while (gui_plugins) {
+        gui_plugin = gui_plugins;
+        gui_plugins = gui_plugin->next;
+        g_free(gui_plugin->name);
+        g_free(gui_plugin);
+    }
+    g_free(wm_name);
+
+    return ret;
 }

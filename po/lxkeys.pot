@@ -1,0 +1,125 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-06 22:10+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/lxkeys.c:198
+#, c-format
+msgid "Usage: %s global [<action>]      - show keys bound to action(s)\n"
+msgstr ""
+
+#: ../src/lxkeys.c:199
+#, c-format
+msgid "       %s global <action> <key>  - bind a key to the action\n"
+msgstr ""
+
+#: ../src/lxkeys.c:200
+#, c-format
+msgid "       %s app [<exec>]           - show keys bound to exec line\n"
+msgstr ""
+
+#: ../src/lxkeys.c:201
+#, c-format
+msgid "       %s app <exec> <key>       - bind a key to some exec line\n"
+msgstr ""
+
+#: ../src/lxkeys.c:202
+#, c-format
+msgid "       %s app <exec> --          - unbind all keys from exec line\n"
+msgstr ""
+
+#: ../src/lxkeys.c:203
+#, c-format
+msgid "       %s show <key>             - show the action bound to a key\n"
+msgstr ""
+
+#: ../src/lxkeys.c:314
+msgid "empty option name."
+msgstr ""
+
+#: ../src/lxkeys.c:317
+msgid "empty action name."
+msgstr ""
+
+#: ../src/lxkeys.c:347
+#, c-format
+msgid "no matching option '%s' found for action '%s'."
+msgstr ""
+
+#: ../src/lxkeys.c:351
+#, c-format
+msgid "no mathing action '%s' found for the WM configuration."
+msgstr ""
+
+#: ../src/lxkeys.c:364
+#, c-format
+msgid "value '%s' is not supported for option '%s'."
+msgstr ""
+
+#: ../src/lxkeys.c:368
+#, c-format
+msgid "value '%s' is not supported for action '%s'."
+msgstr ""
+
+#: ../src/lxkeys.c:381
+#, c-format
+msgid "action '%s' does not support options."
+msgstr ""
+
+#: ../src/lxkeys.c:445
+#, c-format
+msgid "LXKeys: sorry, cannot configure keys remotely.\n"
+msgstr ""
+
+#: ../src/lxkeys.c:472
+#, c-format
+msgid "Window manager %s isn't supported now, sorry."
+msgstr ""
+
+#: ../src/lxkeys.c:479
+msgid "Problems loading configuration: "
+msgstr ""
+
+#: ../src/lxkeys.c:488
+#, c-format
+msgid "GUI type %s currently isn't supported."
+msgstr ""
+
+#. invalid request
+#: ../src/lxkeys.c:504 ../src/lxkeys.c:578
+msgid "Invalid request: "
+msgstr ""
+
+#: ../src/lxkeys.c:514 ../src/lxkeys.c:589
+msgid "Problems saving configuration: "
+msgstr ""
+
+#: ../src/lxkeys.c:531
+msgid "ACTION(s)"
+msgstr ""
+
+#: ../src/lxkeys.c:531 ../src/lxkeys.c:606
+msgid "KEY(s)"
+msgstr ""
+
+#: ../src/lxkeys.c:606
+msgid "EXEC"
+msgstr ""
+
+#: ../src/lxkeys.c:626
+msgid "Requested operation isn't supported."
+msgstr ""

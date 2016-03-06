@@ -30,7 +30,7 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package.])
 
 AM_GLIB_GNU_GETTEXT
 
-# --enable-debug option
+# Handle --enable-debug option
 AC_ARG_ENABLE(debug,
     [AC_HELP_STRING([--enable-debug],
         [enable debug support @<:@default=no@:>@])],
@@ -53,6 +53,12 @@ else
     # turn off glib debug checks
     CPPFLAGS="$CPPFLAGS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS"
 fi
+
+dnl Test for required libraries
+pkg_modules="libfm >= 1.2.0 x11"
+PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
+AC_SUBST(PACKAGE_CFLAGS)
+AC_SUBST(PACKAGE_LIBS)
 
 dnl Fix invalid sysconfdir when --prefix=/usr
 if test `eval "echo $sysconfdir"` = /usr/etc

@@ -12,5 +12,10 @@
 - commandline is like
     lxkeys global desktop2 <-- show bound key(s) for action desktop2
     lxkeys app <-- show all keys bound to applications
-    lxkeys app xfrun4 Alt+F2,Win+Enter "Execute a command" <-- bind a key
+    lxkeys app xfrun4 Alt+F2,Win+Return "Execute a command" <-- bind a key
+    lxkeys show Win+Space <-- show which action/application is bound to the key
+- commandline action syntax:
+    action1[:attr1=val1:attr2=val2][&action2]
+- commandline exec syntax:
+    exec line[&startupnotify=yes[:attr1=val1]][&action=val]
 - do special window parameters as well???

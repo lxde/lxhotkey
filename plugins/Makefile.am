@@ -12,7 +12,7 @@ AM_LDFLAGS = \
 
 ## modules list
 pkglibdir = $(libdir)/lxkeys
-pkglib_LTLIBRARIES = 
+pkglib_LTLIBRARIES = ob.la
 
 ## Openbox module
-#ob_SOURCES = ob/ob.c
+ob_la_SOURCES = openbox.c
