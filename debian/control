@@ -1,0 +1,52 @@
+Source: lxhotkey
+Section: x11
+Priority: optional
+Maintainer: Debian LXDE Maintainers <pkg-lxde-maintainers@lists.alioth.debian.org>
+Uploaders: Andriy Grytsenko <andrej@rep.kiev.ua>
+Build-Depends:
+ debhelper (>= 9), autoreconf, intltool,
+ libfm-dev (>= 1.2.0), libunistring-dev
+Standards-Version: 3.9.7
+Homepage: http://www.lxde.org/
+Vcs-Browser: http://git.lxde.org/gitweb/?p=debian/lxhotkey.git
+Vcs-Git: git://git.lxde.org/git/debian/lxhotkey.git
+
+Package: lxhotkey-core
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: lxhotkey-gui, lxhotkey-plugin-openbox
+Description: Lightweight global keyboard shortcuts configurator
+ LXHotkey is an universal application for the Lightweight X11 Desktop
+ Environment (LXDE) which allows view and change global keyboard shortcuts
+ for Window Manager actions, including ones to start applications.
+ .
+ This package contains no plugins so the most probably will do nothing
+ useful unless you also install a plugin supporting the Window Manager you
+ are using and probably some GUI plugin.
+
+Package: lxhotkey-plugin-openbox
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends}, ${shlibs:Depends}, lxhotkey-core
+Enhances: openbox
+Description: LXHotkey keyboard shortcuts configurator (Openbox support plugin)
+ LXHotkey is an universal application for the Lightweight X11 Desktop
+ Environment (LXDE) which allows view and change global keyboard shortcuts
+ for Window Manager actions, including ones to start applications.
+ .
+ This package contains a plugin to allow LXHotkey work in Openbox window manager
+ environment.
+
+Package: lxhotkey-dev
+Architecture: any
+Multi-Arch: same
+Depends:
+ ${misc:Depends}, lxhotkey-core (= ${binary:Version}), libfm-dev (>= 1.2.0)
+Description: LXHotkey keyboard shortcuts configurator (development files)
+ LXHotkey is an universal application for the Lightweight X11 Desktop
+ Environment (LXDE) which allows view and change global keyboard shortcuts
+ for Window Manager actions, including ones to start applications.
+ .
+ This package contains header file and dependencies required to create a
+ plugin for LXHotkey.
