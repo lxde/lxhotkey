@@ -1,10 +1,10 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-pkglibdir=@libdir@/lxkeys
+pkglibdir=@libdir@/lxhotkey
 includedir=@includedir@
 pluginsdir=${pkglibdir}
 
-Name: lxkeys
+Name: lxhotkey
 Description: A lightweight global keyboard shortcuts configurator.
 Requires: libfm >= 1.2.0
 Version: @VERSION@

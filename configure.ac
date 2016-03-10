@@ -1,5 +1,5 @@
 AC_PREREQ(2.53)
-AC_INIT(lxkeys, 0.1.0, http://lxde.org/)
+AC_INIT(lxhotkey, 0.1.0, http://lxde.org/)
 AM_INIT_AUTOMAKE([-Wall foreign subdir-objects no-dist-gzip dist-xz])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -24,7 +24,7 @@ LT_PREREQ([2.2])
 LT_INIT
 
 # International support
-GETTEXT_PACKAGE=lxkeys
+GETTEXT_PACKAGE=lxhotkey
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package.])
 
@@ -72,7 +72,7 @@ fi
 dnl Finish all
 AC_CONFIG_FILES([
     Makefile
-    lxkeys.pc
+    lxhotkey.pc
     src/Makefile
     plugins/Makefile
     po/Makefile.in

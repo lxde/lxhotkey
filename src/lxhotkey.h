@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2016 Andriy Grytsenko <andrej@rep.kiev.ua>
  *
- * This file is a part of LXKeys project.
+ * This file is a part of LXHotkey project.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,17 +26,17 @@
 G_BEGIN_DECLS
 
 /**
- * LXKeysAttr:
+ * LXHotkeyAttr:
  * @name: action or option name
  * @values: (element-type char *): option value
- * @subopts: (element-type LXKeysAttr): (allow-none): list of suboptions
+ * @subopts: (element-type LXHotkeyAttr): (allow-none): list of suboptions
  * @has_actions: %TRUE if @subopts contains actions, %FALSE if @subopts contains options
  *
  * Data descriptor for actions and options. Actions are ativated by keybinding.
  * Each action may contain arbitrary number of options that alter its execution.
  *
- * This data is also used in a result on LXKeysPluginInit:get_wm_actions() or
- * LXKeysPluginInit:get_app_options() call. In that case for each option the
+ * This data is also used in a result on LXHotkeyPluginInit:get_wm_actions() or
+ * LXHotkeyPluginInit:get_app_options() call. In that case for each option the
  * @values list should be either %NULL if option accepts any value, or list of
  * acceptable values for the option ("#" value has a special meaning: integer
  * value matches it, the same as "%" for percent value). For such purpose it is
@@ -48,11 +48,11 @@ typedef struct {
     GList *values;
     GList *subopts;
     gboolean has_actions;
-} LXKeysAttr;
+} LXHotkeyAttr;
 
 /**
- * LXKeysGlobal:
- * @actions: (element-type LXKeysAttr): list of actions
+ * LXHotkeyGlobal:
+ * @actions: (element-type LXHotkeyAttr): list of actions
  * @accel1: a keybinding to activate @actions, in GDK accelerator format
  * @accel2: optional alternate keybinding to activate @actions
  * @data1: a pointer for using by WM plugin
@@ -69,19 +69,19 @@ typedef struct {
     gchar *accel2;
     gpointer data1;
     gpointer data2;
-} LXKeysGlobal;
+} LXHotkeyGlobal;
 
 /**
- * LXKeysApp:
+ * LXHotkeyApp:
  * @exec: a command line to execute
- * @actions: (element-type LXKeysAttr): (allow-none): list of options
+ * @actions: (element-type LXHotkeyAttr): (allow-none): list of options
  * @accel1: a keybinding to activate @exec, in GDK accelerator format
  * @accel2: optional alternate keybinding to activate @exec
  * @data1: a pointer for using by WM plugin
  * @data2: a pointer for using by WM plugin
  *
  * Descriptor of a keybinding for a single command line action. The command
- * execution may be altered by some @options. See also #LXKeysGlobal.
+ * execution may be altered by some @options. See also #LXHotkeyGlobal.
  */
 typedef struct {
     gchar *exec;
@@ -90,15 +90,15 @@ typedef struct {
     gchar *accel2;
     gpointer data1;
     gpointer data2;
-} LXKeysApp;
+} LXHotkeyApp;
 
 
 /* WM support plugins */
 
-#define FM_MODULE_lxkeys_VERSION 1 /* version of this API */
+#define FM_MODULE_lxhotkey_VERSION 1 /* version of this API */
 
 /**
- * LXKeysPluginInit:
+ * LXHotkeyPluginInit:
  * @load: callback to (re)load bindings from WM configuration
  * @save: callback to save bindings to WM configuration
  * @free: callback to release allocated resources
@@ -125,22 +125,22 @@ typedef struct {
     gboolean (*save)(gpointer config, GError **error);
     void (*free)(gpointer config);
     GList *(*get_wm_keys)(gpointer config, const char *mask, GError **error);
-    gboolean (*set_wm_key)(gpointer config, LXKeysGlobal *data, GError **error);
+    gboolean (*set_wm_key)(gpointer config, LXHotkeyGlobal *data, GError **error);
     GList *(*get_wm_actions)(gpointer config, GError **error);
     GList *(*get_app_keys)(gpointer config, const char *mask, GError **error);
-    gboolean (*set_app_key)(gpointer config, LXKeysApp *data, GError **error);
+    gboolean (*set_app_key)(gpointer config, LXHotkeyApp *data, GError **error);
     GList *(*get_app_options)(gpointer config, GError **error);
     /*< private >*/
     gpointer _reserved1;
     gpointer _reserved2;
     gpointer _reserved3;
-} LXKeysPluginInit;
+} LXHotkeyPluginInit;
 
 /**
  * This descriptor instance should be defined in each plugin code as main
  * entry point for plugin creation. Primitive plugin example follows:
  *
- * #include <lxkeys/lxkeys.h>
+ * #include <lxhotkey/lxhotkey.h>
  *
  * gpointer test_load(gpointer config, GError **error)
  * {
@@ -154,23 +154,23 @@ typedef struct {
  *      return FALSE;
  * }
  *
- * FM_DEFINE_MODULE(lxkeys, NoWM)
+ * FM_DEFINE_MODULE(lxhotkey, NoWM)
  *
- * LXKeysPluginInit fm_module_init_lxkeys = {
+ * LXHotkeyPluginInit fm_module_init_lxhotkey = {
  *      .load = test_load,
  *      .save = test_save,
  *      .free = g_free
  * }
  */
-extern LXKeysPluginInit fm_module_init_lxkeys;
+extern LXHotkeyPluginInit fm_module_init_lxhotkey;
 
 
 /* GUI plugins */
 
-#define FM_MODULE_lxkeys_gui_VERSION 1 /* version of this API */
+#define FM_MODULE_lxhotkey_gui_VERSION 1 /* version of this API */
 
 /**
- * LXKeysGUIPluginInit:
+ * LXHotkeyGUIPluginInit:
  * @run: callback to run GUI
  * @alert: callback to show an error message
  *
@@ -179,19 +179,19 @@ extern LXKeysPluginInit fm_module_init_lxkeys;
  */
 typedef struct {
     /*< public >*/
-    void (*run)(const gchar *wm, const LXKeysPluginInit *cb, gpointer config, GError **error);
+    void (*run)(const gchar *wm, const LXHotkeyPluginInit *cb, gpointer config, GError **error);
     void (*alert)(GError *error);
     /*< private >*/
     gpointer _reserved1;
     gpointer _reserved2;
     gpointer _reserved3;
-} LXKeysGUIPluginInit;
+} LXHotkeyGUIPluginInit;
 
 /**
  * This descriptor instance should be defined in each plugin code as main
  * entry point for a GUI plugin creation.
  */
-extern LXKeysGUIPluginInit fm_module_init_lxkeys_gui;
+extern LXHotkeyGUIPluginInit fm_module_init_lxhotkey_gui;
 
 G_END_DECLS
 

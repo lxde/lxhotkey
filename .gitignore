@@ -25,6 +25,6 @@ po/POTFILES
 *.o
 *.lo
 *.la
-lxkeys
+lxhotkey
 *.pc
 *.tar.xz

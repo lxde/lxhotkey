@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2016 Andriy Grytsenko <andrej@rep.kiev.ua>
  *
- * This file is a part of LXKeys project.
+ * This file is a part of LXHotkey project.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 # include "config.h"
 #endif
 
-#include "lxkeys.h"
+#include "lxhotkey.h"
 
 #include <glib/gi18n.h>
 
@@ -43,22 +43,22 @@ static GQuark LXKEYS_ERROR;
 typedef enum {
     LXKEYS_BAD_ARGS, /* invalid commandline arguments */
     LXKEYS_NOT_SUPPORTED /* operation not supported */
-} LXKeysError;
+} LXHotkeyError;
 
-/* simple functions to manage LXKeysAttr data type */
-static inline LXKeysAttr *lxkeys_attr_new(void)
+/* simple functions to manage LXHotkeyAttr data type */
+static inline LXHotkeyAttr *lxhotkey_attr_new(void)
 {
-    return g_slice_new0(LXKeysAttr);
+    return g_slice_new0(LXHotkeyAttr);
 }
 
 #define free_actions(acts) g_list_free_full(acts, (GDestroyNotify)lkxeys_attr_free)
 
-static void lkxeys_attr_free(LXKeysAttr *data)
+static void lkxeys_attr_free(LXHotkeyAttr *data)
 {
     g_free(data->name);
     g_list_free_full(data->values, g_free);
     free_actions(data->subopts);
-    g_slice_free(LXKeysAttr, data);
+    g_slice_free(LXHotkeyAttr, data);
 }
 
 #define NONULL(a) (a) ? ((char *)a) : ""
@@ -174,22 +174,22 @@ static gboolean test_X_is_local(void)
 
 
 /* WM plugins */
-typedef struct LXKeysPlugin {
-    struct LXKeysPlugin *next;
+typedef struct LXHotkeyPlugin {
+    struct LXHotkeyPlugin *next;
     gchar *name;
-    LXKeysPluginInit *t;
-} LXKeysPlugin;
+    LXHotkeyPluginInit *t;
+} LXHotkeyPlugin;
 
-static LXKeysPlugin *plugins = NULL;
+static LXHotkeyPlugin *plugins = NULL;
 
-FM_MODULE_DEFINE_TYPE(lxkeys, LXKeysPluginInit, 1)
-static gboolean fm_module_callback_lxkeys(const char *name, gpointer init, int ver)
+FM_MODULE_DEFINE_TYPE(lxhotkey, LXHotkeyPluginInit, 1)
+static gboolean fm_module_callback_lxhotkey(const char *name, gpointer init, int ver)
 {
-    LXKeysPlugin *plugin;
+    LXHotkeyPlugin *plugin;
 
     /* ignore ver for now, only 1 exists */
     /* FIXME: need to check for duplicates? */
-    plugin = g_new(LXKeysPlugin, 1);
+    plugin = g_new(LXHotkeyPlugin, 1);
     plugin->next = plugins;
     plugin->name = g_strdup(name);
     plugin->t = init;
@@ -199,22 +199,22 @@ static gboolean fm_module_callback_lxkeys(const char *name, gpointer init, int v
 
 
 /* GUI plugins */
-typedef struct LXKeysGUIPlugin {
-    struct LXKeysGUIPlugin *next;
+typedef struct LXHotkeyGUIPlugin {
+    struct LXHotkeyGUIPlugin *next;
     gchar *name;
-    LXKeysGUIPluginInit *t;
-} LXKeysGUIPlugin;
+    LXHotkeyGUIPluginInit *t;
+} LXHotkeyGUIPlugin;
 
-static LXKeysGUIPlugin *gui_plugins = NULL;
+static LXHotkeyGUIPlugin *gui_plugins = NULL;
 
-FM_MODULE_DEFINE_TYPE(lxkeys_gui, LXKeysGUIPluginInit, 1)
-static gboolean fm_module_callback_lxkeys_gui(const char *name, gpointer init, int ver)
+FM_MODULE_DEFINE_TYPE(lxhotkey_gui, LXHotkeyGUIPluginInit, 1)
+static gboolean fm_module_callback_lxhotkey_gui(const char *name, gpointer init, int ver)
 {
-    LXKeysGUIPlugin *plugin;
+    LXHotkeyGUIPlugin *plugin;
 
     /* ignore ver for now, only 1 exists */
     /* FIXME: need to check for duplicates? */
-    plugin = g_new(LXKeysGUIPlugin, 1);
+    plugin = g_new(LXHotkeyGUIPlugin, 1);
     plugin->next = gui_plugins;
     plugin->name = g_strdup(name);
     plugin->t = init;
@@ -235,17 +235,17 @@ static int _print_help(const char *cmd)
     return 0;
 }
 
-/* convert text line to LXKeysAttr list
+/* convert text line to LXHotkeyAttr list
    text may be formatted like this:
    startupnotify=yes:attr1=val1:attr2=val2&action=val
    any ':','&','\' in any value should be escaped with '\' */
 static GList *actions_from_str(const char *line, GError **error)
 {
     GString *str = g_string_sized_new(16);
-    LXKeysAttr *data = NULL, *attr = NULL;
+    LXHotkeyAttr *data = NULL, *attr = NULL;
     GList *list;
 
-    data = g_new0(LXKeysAttr, 1);
+    data = g_new0(LXHotkeyAttr, 1);
     list = g_list_prepend(NULL, data);
     for (; *line; line++) {
         switch (*line) {
@@ -278,7 +278,7 @@ static GList *actions_from_str(const char *line, GError **error)
             } else /* got value for the action */
                 data->values = g_list_prepend(NULL, g_strdup(str->str));
             g_string_truncate(str, 0);
-            attr = g_new0(LXKeysAttr, 1);
+            attr = g_new0(LXHotkeyAttr, 1);
             data->subopts = g_list_prepend(data->subopts, attr);
             break;
         case '&':
@@ -298,7 +298,7 @@ static GList *actions_from_str(const char *line, GError **error)
             g_string_truncate(str, 0);
             attr = NULL; /* previous action just finished */
             data->subopts = g_list_reverse(data->subopts);
-            data = g_new0(LXKeysAttr, 1);
+            data = g_new0(LXHotkeyAttr, 1);
             list = g_list_prepend(list, data);
             break;
         case '\\':
@@ -339,10 +339,10 @@ _failed:
 /* check if action list matches origin
    if origin==NULL then error is possibly set already */
 static gboolean validate_actions(const GList *act, const GList *origin,
-                                 const LXKeysAttr *action, gchar *wm_name,
+                                 const LXHotkeyAttr *action, gchar *wm_name,
                                  GError **error)
 {
-    const LXKeysAttr *data, *ordata;
+    const LXHotkeyAttr *data, *ordata;
     const GList *l, *olist;
     char *endptr;
 
@@ -417,7 +417,7 @@ static void print_suboptions(GList *sub, int indent)
 {
     indent += 3;
     while (sub) {
-        LXKeysAttr *action = sub->data;
+        LXHotkeyAttr *action = sub->data;
         if (action->values && action->values->data)
             printf("%*s%s=%s\n", indent, "", _(action->name),
                                   _(action->values->data));
@@ -433,8 +433,8 @@ int main(int argc, char *argv[])
 {
     const char *cmd;
     gchar *wm_name;
-    LXKeysPlugin *plugin;
-    LXKeysGUIPlugin *gui_plugin = NULL;
+    LXHotkeyPlugin *plugin;
+    LXHotkeyGUIPlugin *gui_plugin = NULL;
     int ret = 1; /* failure */
     gpointer config = NULL;
     GError *error = NULL;
@@ -463,18 +463,18 @@ int main(int argc, char *argv[])
     }
 
     if (!test_X_is_local()) {
-        fprintf(stderr, _("LXKeys: sorry, cannot configure keys remotely.\n"));
+        fprintf(stderr, _("LXHotkey: sorry, cannot configure keys remotely.\n"));
         return 1;
     }
 
     /* init LibFM and FmModule */
     fm_init(NULL);
     fm_modules_add_directory(PACKAGE_PLUGINS_DIR);
-    fm_module_register_lxkeys();
+    fm_module_register_lxhotkey();
     if (do_gui)
-        fm_module_register_lxkeys_gui();
+        fm_module_register_lxhotkey_gui();
 
-    LXKEYS_ERROR = g_quark_from_static_string("lxkeys-error");
+    LXKEYS_ERROR = g_quark_from_static_string("lxhotkey-error");
 
     /* detect current WM and find a module for it */
     wm_name = get_wm_info();
@@ -511,9 +511,9 @@ int main(int argc, char *argv[])
     }
 
     /* doing commandline: call module function depending on args */
-    if (strcmp(argv[1], "global") == 0) { /* lxkeys global ... */
+    if (strcmp(argv[1], "global") == 0) { /* lxhotkey global ... */
         if (argc > 3) { /* set */
-            LXKeysGlobal data;
+            LXHotkeyGlobal data;
 
             if (plugin->t->set_wm_key == NULL)
                 goto _not_supported;
@@ -541,9 +541,9 @@ int main(int argc, char *argv[])
         } else { /* show by mask */
             const char *mask = NULL;
             GList *keys, *key;
-            LXKeysGlobal *data;
+            LXHotkeyGlobal *data;
             GList *act;
-            LXKeysAttr *action;
+            LXHotkeyAttr *action;
 
             if (plugin->t->get_wm_keys == NULL)
                 goto _not_supported;
@@ -568,10 +568,10 @@ int main(int argc, char *argv[])
             }
             g_list_free(keys);
         }
-    } else if (strcmp(argv[1], "app") == 0) { /* lxkeys app ... */
+    } else if (strcmp(argv[1], "app") == 0) { /* lxhotkey app ... */
         if (argc > 3) { /* set */
             GList *keys = NULL;
-            LXKeysApp data;
+            LXHotkeyApp data;
 
             if (plugin->t->set_app_key == NULL)
                 goto _not_supported;
@@ -584,8 +584,8 @@ int main(int argc, char *argv[])
             data.accel2 = NULL;
             if (strcmp(argv[3], "--") == 0) { /* remove all bindings */
                 data.accel1 = NULL;
-            } else if (keys && ((LXKeysApp *)keys->data)->accel1) {
-                data.accel1 = ((LXKeysApp *)keys->data)->accel1;
+            } else if (keys && ((LXHotkeyApp *)keys->data)->accel1) {
+                data.accel1 = ((LXHotkeyApp *)keys->data)->accel1;
                 data.accel2 = argv[3];
             } else {
                 data.accel1 = argv[3];
@@ -621,7 +621,7 @@ int main(int argc, char *argv[])
         } else { /* show by mask */
             const char *mask = NULL;
             GList *keys, *key;
-            LXKeysApp *data;
+            LXHotkeyApp *data;
 
             if (plugin->t->get_app_keys == NULL)
                 goto _not_supported;
@@ -640,7 +640,7 @@ int main(int argc, char *argv[])
             }
             g_list_free(keys);
         }
-    } else if (strcmp(argv[1], "show") == 0) { /* lxkeys show ... */
+    } else if (strcmp(argv[1], "show") == 0) { /* lxhotkey show ... */
         // TODO!
     } else
         goto _exit;
@@ -660,12 +660,12 @@ _exit:
         if (gui_plugin && gui_plugin->t->alert)
             gui_plugin->t->alert(error);
         else
-            fprintf(stderr, "LXKeys: %s\n", error->message);
+            fprintf(stderr, "LXHotkey: %s\n", error->message);
         g_error_free(error);
     }
-    fm_module_unregister_type("lxkeys");
+    fm_module_unregister_type("lxhotkey");
     if (do_gui)
-        fm_module_unregister_type("lxkeys_gui");
+        fm_module_unregister_type("lxhotkey_gui");
     while (plugins) {
         plugin = plugins;
         plugins = plugin->next;

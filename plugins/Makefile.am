@@ -8,10 +8,10 @@ AM_CPPFLAGS = \
 
 AM_LDFLAGS = \
 	-module -avoid-version -shared -export-dynamic -no-undefined \
-	-rpath $(libdir)/lxkeys $(PACKAGE_LIBS)
+	-rpath $(libdir)/lxhotkey $(PACKAGE_LIBS)
 
 ## modules list
-pkglibdir = $(libdir)/lxkeys
+pkglibdir = $(libdir)/lxhotkey
 pkglib_LTLIBRARIES = ob.la
 
 ## Openbox module

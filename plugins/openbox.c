@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2016 Andriy Grytsenko <andrej@rep.kiev.ua>
  *
- * This file is a part of LXKeys project.
+ * This file is a part of LXHotkey project.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 # include "config.h"
 #endif
 
-#include "lxkeys.h"
+#include "lxhotkey.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -32,39 +32,39 @@
 
 #include <fnmatch.h>
 
-#define LXKEYS_OB_ERROR lxkeys_ob_error_quark()
-static GQuark lxkeys_ob_error_quark(void)
+#define LXKEYS_OB_ERROR lxhotkey_ob_error_quark()
+static GQuark lxhotkey_ob_error_quark(void)
 {
     static GQuark q = 0;
 
     if G_UNLIKELY(q == 0)
-        q = g_quark_from_static_string("lxkeys-ob-error");
+        q = g_quark_from_static_string("lxhotkey-ob-error");
 
     return q;
 }
-enum LXKeysObError {
+enum LXHotkeyObError {
     LXKEYS_FILE_ERROR,
     LXKEYS_PARSE_ERROR
 };
 
 
-/* simple functions to manage LXKeysAttr data type */
-static inline LXKeysAttr *lxkeys_attr_new(void)
+/* simple functions to manage LXHotkeyAttr data type */
+static inline LXHotkeyAttr *lxhotkey_attr_new(void)
 {
-    return g_slice_new0(LXKeysAttr);
+    return g_slice_new0(LXHotkeyAttr);
 }
 
 #define free_options(acts) g_list_free_full(acts, (GDestroyNotify)lkxeys_attr_free)
 
-static void lkxeys_attr_free(LXKeysAttr *data)
+static void lkxeys_attr_free(LXHotkeyAttr *data)
 {
     g_free(data->name);
     g_list_free_full(data->values, g_free);
     free_options(data->subopts);
-    g_slice_free(LXKeysAttr, data);
+    g_slice_free(LXHotkeyAttr, data);
 }
 
-static void lkxeys_action_free(LXKeysGlobal *data)
+static void lkxeys_action_free(LXHotkeyGlobal *data)
 {
     free_options(data->actions);
     g_free(data->accel1);
@@ -72,7 +72,7 @@ static void lkxeys_action_free(LXKeysGlobal *data)
     g_free(data);
 }
 
-static void lkxeys_app_free(LXKeysApp *data)
+static void lkxeys_app_free(LXHotkeyApp *data)
 {
     g_free(data->exec);
     free_options(data->options);
@@ -81,11 +81,11 @@ static void lkxeys_app_free(LXKeysApp *data)
     g_free(data);
 }
 
-/* recursively compare two lists of LXKeysAttr */
+/* recursively compare two lists of LXHotkeyAttr */
 static gboolean options_equal(GList *opts1, GList *opts2)
 {
     while (opts1 && opts2) {
-        LXKeysAttr *attr1 = opts1->data, *attr2 = opts2->data;
+        LXHotkeyAttr *attr1 = opts1->data, *attr2 = opts2->data;
 
         if (g_strcmp0(attr1->name, attr2->name) != 0)
             return FALSE;
@@ -160,7 +160,7 @@ static gboolean restart_openbox(GError **error)
 
 static char * values_enabled[] = { N_("yes"), N_("no"), NULL };
 
-static LXKeysAttr options_startupnotify[] = {
+static LXHotkeyAttr options_startupnotify[] = {
     { N_("enabled"), BOOLEAN_VALUES, NULL, FALSE },
     { N_("wmclass"), NULL, NULL, FALSE },
     { N_("name"), NULL, NULL, FALSE },
@@ -168,7 +168,7 @@ static LXKeysAttr options_startupnotify[] = {
     { NULL }
 };
 
-static LXKeysAttr options_Execute[] = {
+static LXHotkeyAttr options_Execute[] = {
     { N_("command"), NULL, NULL, FALSE },
     { N_("prompt"), NULL, NULL, FALSE },
     { N_("startupnotify"), NULL, TO_BE_CONVERTED(options_startupnotify), FALSE },
@@ -179,14 +179,14 @@ static char * values_x[] = { "#", "%", N_("center"), NULL };
 static char * values_monitor[] = { N_("default"), N_("primary"), N_("mouse"),
                                    N_("active"), N_("all"), "#", NULL };
 
-static LXKeysAttr options_position[] = {
+static LXHotkeyAttr options_position[] = {
     { "x", TO_BE_CONVERTED(values_x), NULL, FALSE },
     { "y", TO_BE_PREVIOUS, NULL, FALSE },
     { N_("monitor"), TO_BE_CONVERTED(values_monitor), NULL, FALSE },
     { NULL }
 };
 
-static LXKeysAttr options_ShowMenu[] = {
+static LXHotkeyAttr options_ShowMenu[] = {
     { N_("menu"), NULL, NULL, FALSE },
     { N_("position"), NULL, TO_BE_CONVERTED(options_position), FALSE },
     { NULL }
@@ -194,7 +194,7 @@ static LXKeysAttr options_ShowMenu[] = {
 
 static char * values_dialog[] = { N_("list"), N_("icons"), N_("none"), NULL };
 
-static LXKeysAttr options_NextWindow[] = {
+static LXHotkeyAttr options_NextWindow[] = {
     { N_("dialog"), TO_BE_CONVERTED(values_dialog), NULL, FALSE },
     { N_("bar"), BOOLEAN_VALUES, NULL, FALSE },
     { N_("raise"), BOOLEAN_VALUES, NULL, FALSE },
@@ -211,7 +211,7 @@ static char * values_direction[] = { N_("north"), N_("northeast"), N_("east"),
                                      N_("southeast"), N_("south"), N_("southwest"),
                                      N_("west"), N_("northwest"), NULL };
 
-static LXKeysAttr options_DirectionalCycleWindows[] = {
+static LXHotkeyAttr options_DirectionalCycleWindows[] = {
     { N_("direction"), TO_BE_CONVERTED(values_direction), NULL, FALSE },
     { N_("dialog"), BOOLEAN_VALUES, NULL, FALSE },
     { N_("bar"), BOOLEAN_VALUES, NULL, FALSE },
@@ -227,7 +227,7 @@ static char * values_to[] = { "#",  N_("current"), N_("next"), N_("previous"),
                               N_("down"), N_("west"), N_("left"), N_("east"),
                               N_("right"), NULL };
 
-static LXKeysAttr options_GoToDesktop[] = {
+static LXHotkeyAttr options_GoToDesktop[] = {
     { N_("to"), TO_BE_CONVERTED(values_to), NULL, FALSE },
     { N_("wrap"), BOOLEAN_VALUES, NULL, FALSE },
     { NULL }
@@ -235,24 +235,24 @@ static LXKeysAttr options_GoToDesktop[] = {
 
 static char * values_where[] = { N_("current"), N_("last"), NULL };
 
-static LXKeysAttr options_AddDesktop[] = {
+static LXHotkeyAttr options_AddDesktop[] = {
     { N_("where"), TO_BE_CONVERTED(values_where), NULL, FALSE },
     { NULL }
 };
 
-static LXKeysAttr options_Restart[] = {
+static LXHotkeyAttr options_Restart[] = {
     { N_("command"), NULL, NULL, FALSE },
     { NULL }
 };
 
-static LXKeysAttr options_Exit[] = {
+static LXHotkeyAttr options_Exit[] = {
     { N_("prompt"), BOOLEAN_VALUES, NULL, FALSE },
     { NULL }
 };
 
 static char * values_directionM[] = { N_("both"), N_("horizontal"), N_("vertical"), NULL };
 
-static LXKeysAttr options_ToggleMaximize[] = {
+static LXHotkeyAttr options_ToggleMaximize[] = {
     { N_("direction"), TO_BE_CONVERTED(values_directionM), NULL, FALSE },
     { NULL }
 };
@@ -262,7 +262,7 @@ static char * values_toS[] = { "#", N_("current"), N_("next"), N_("previous"),
                                N_("down"), N_("west"), N_("left"), N_("east"),
                                N_("right"), NULL };
 
-static LXKeysAttr options_SendToDesktop[] = {
+static LXHotkeyAttr options_SendToDesktop[] = {
     { N_("to"), TO_BE_CONVERTED(values_toS), NULL, FALSE },
     { N_("wrap"), BOOLEAN_VALUES, NULL, FALSE },
     { N_("follow"), BOOLEAN_VALUES, NULL, FALSE },
@@ -273,7 +273,7 @@ static char * values_edge[] = { N_("top"), N_("left"), N_("right"), N_("bottom")
                                 N_("topleft"), N_("topright"), N_("bottomleft"),
                                 N_("bottomright"), NULL };
 
-static LXKeysAttr options_Resize[] = {
+static LXHotkeyAttr options_Resize[] = {
     { N_("edge"), TO_BE_CONVERTED(values_edge), NULL, FALSE },
     { NULL }
 };
@@ -282,7 +282,7 @@ static char * values_xM[] = { "#", N_("current"), N_("center"), NULL };
 static char * values_width[] = { "#", "%", N_("current"), NULL };
 static char * values_monitorM[] = { "#", N_("current"), N_("all"), N_("next"), N_("prev"), NULL };
 
-static LXKeysAttr options_MoveResizeTo[] = {
+static LXHotkeyAttr options_MoveResizeTo[] = {
     { "x", TO_BE_CONVERTED(values_xM), NULL, FALSE },
     { "y", TO_BE_PREVIOUS, NULL, FALSE },
     { N_("width"), TO_BE_CONVERTED(values_width), NULL, FALSE },
@@ -293,7 +293,7 @@ static LXKeysAttr options_MoveResizeTo[] = {
 
 static char * values_xR[] = { "#", NULL };
 
-static LXKeysAttr options_MoveRelative[] = {
+static LXHotkeyAttr options_MoveRelative[] = {
     { "x", TO_BE_CONVERTED(values_xR), NULL, FALSE },
     { "y", TO_BE_PREVIOUS, NULL, FALSE },
     { NULL }
@@ -301,7 +301,7 @@ static LXKeysAttr options_MoveRelative[] = {
 
 static char * values_xRR[] = { "#", NULL };
 
-static LXKeysAttr options_ResizeRelative[] = {
+static LXHotkeyAttr options_ResizeRelative[] = {
     { N_("left"), TO_BE_CONVERTED(values_xRR), NULL, FALSE },
     { N_("right"), TO_BE_PREVIOUS, NULL, FALSE },
     { N_("top"), TO_BE_PREVIOUS, NULL, FALSE },
@@ -311,19 +311,19 @@ static LXKeysAttr options_ResizeRelative[] = {
 
 static char * values_directionE[] = { N_("north"), N_("south"), N_("west"), N_("east"), NULL };
 
-static LXKeysAttr options_MoveToEdge[] = {
+static LXHotkeyAttr options_MoveToEdge[] = {
     { N_("direction"), TO_BE_CONVERTED(values_directionE), NULL, FALSE },
     { NULL }
 };
 
 static char * values_layer[] = { N_("top"), N_("normal"), N_("bottom"), NULL };
 
-static LXKeysAttr options_SendToLayer[] = {
+static LXHotkeyAttr options_SendToLayer[] = {
     { N_("layer"), TO_BE_CONVERTED(values_layer), NULL, FALSE },
     { NULL }
 };
 
-static LXKeysAttr list_actions[] = {
+static LXHotkeyAttr list_actions[] = {
     /* global actions */
     { N_("Execute"), NULL, TO_BE_CONVERTED(options_Execute), FALSE },
     { N_("ShowMenu"), NULL, TO_BE_CONVERTED(options_ShowMenu), FALSE },
@@ -393,7 +393,7 @@ static GList *convert_values(gpointer data)
 
 static GList *convert_options(gpointer data)
 {
-    LXKeysAttr *array, *last = NULL;
+    LXHotkeyAttr *array, *last = NULL;
     GList *list = NULL;
 
     for (array = data; array->name != NULL; array++) {
@@ -422,7 +422,7 @@ static GList *convert_options(gpointer data)
 
 typedef struct {
     FmXmlFileItem *parent; /* R/O */
-    GList *list; /* contains LXKeysAttr items for finished actions */
+    GList *list; /* contains LXHotkeyAttr items for finished actions */
 } ObActionsList;
 
 typedef struct {
@@ -470,9 +470,9 @@ static gboolean tag_handler_keybind(FmXmlFileItem *item, GList *children,
     GList *actions, *l;
     gchar *key;
     const char *exec_line = NULL;
-    LXKeysAttr *action;
-    LXKeysApp *app = NULL;
-    LXKeysGlobal *act;
+    LXHotkeyAttr *action;
+    LXHotkeyApp *app = NULL;
+    LXHotkeyGlobal *act;
     guint i;
 
     if (!cfg->stack || cfg->stack->next) { /* corruption! */
@@ -507,14 +507,14 @@ static gboolean tag_handler_keybind(FmXmlFileItem *item, GList *children,
                 exec_line = fm_xml_file_item_get_data(fm_xml_file_item_find_child(exec, FM_XML_FILE_TEXT), NULL);
                 for (l = cfg->execs; l; l = l->next)
                     /* if exec line is equal to one gathered already */
-                    if (strcmp(((LXKeysApp *)l->data)->exec, exec_line) == 0 &&
+                    if (strcmp(((LXHotkeyApp *)l->data)->exec, exec_line) == 0 &&
                         /* and it has no secondary keybinding */
-                        ((LXKeysApp *)l->data)->accel2 == NULL &&
+                        ((LXHotkeyApp *)l->data)->accel2 == NULL &&
                         /* and options are also equal */
-                        options_equal(((LXKeysApp *)l->data)->options, action->subopts))
+                        options_equal(((LXHotkeyApp *)l->data)->options, action->subopts))
                     {
                         /* then just add this keybinding to found one */
-                        app = (LXKeysApp *)l->data;
+                        app = (LXHotkeyApp *)l->data;
                         break;
                     }
             }
@@ -535,16 +535,16 @@ static gboolean tag_handler_keybind(FmXmlFileItem *item, GList *children,
     if (app) {
         app->accel2 = key;
         app->data2 = item;
-    /* otherwise create LXKeysApp or LXKeysGlobal and add it to the list */
+    /* otherwise create LXHotkeyApp or LXHotkeyGlobal and add it to the list */
     } else if (exec_line) {
-        app = g_new0(LXKeysApp, 1);
+        app = g_new0(LXHotkeyApp, 1);
         app->accel1 = key;
         app->exec = g_strdup(exec_line);
         app->data1 = item;
         app->options = action->subopts;
-        /* remove exec line from options, it should be in XML but not in LXKeysApp */
+        /* remove exec line from options, it should be in XML but not in LXHotkeyApp */
         for (l = app->options; l; ) {
-            LXKeysAttr *opt = l->data;
+            LXHotkeyAttr *opt = l->data;
             l = l->next;
             if (strcmp(opt->name, "command") == 0 || strcmp(opt->name, "execute") == 0) {
                 app->options = g_list_remove(app->options, opt);
@@ -556,12 +556,12 @@ static gboolean tag_handler_keybind(FmXmlFileItem *item, GList *children,
     } else {
         for (l = cfg->actions; l; l = l->next)
             /* if the same actions list was gathered already */
-            if (options_equal(((LXKeysGlobal *)l->data)->actions, actions)
+            if (options_equal(((LXHotkeyGlobal *)l->data)->actions, actions)
                 /* and it has no secondary keybinding */
-                && ((LXKeysGlobal *)l->data)->accel2 == NULL)
+                && ((LXHotkeyGlobal *)l->data)->accel2 == NULL)
                 break;
         if (l == NULL) {
-            act = g_new0(LXKeysGlobal, 1);
+            act = g_new0(LXHotkeyGlobal, 1);
             act->accel1 = key;
             act->data1 = item;
             act->actions = actions;
@@ -576,7 +576,7 @@ static gboolean tag_handler_keybind(FmXmlFileItem *item, GList *children,
     return TRUE;
 }
 
-/* collect all children of FmXmlFileItem into LXKeysAttr list
+/* collect all children of FmXmlFileItem into LXHotkeyAttr list
    removing from stack if found there
    since actions cannot be mixed with options, just
    ignore anything not collected into any ObActionsList */
@@ -586,7 +586,7 @@ static GList *resolve_item(GList **stack, GList *children, GList **value,
     GList *child, *l, *items = NULL;
     ObActionsList *act; /* stack item */
     FmXmlFileItem *item; /* child item */
-    LXKeysAttr *data;
+    LXHotkeyAttr *data;
 
     for (child = children; child; child = child->next) {
         item = child->data;
@@ -601,7 +601,7 @@ static GList *resolve_item(GList **stack, GList *children, GList **value,
             free_options(items);
             return NULL;
         }
-        data = lxkeys_attr_new();
+        data = lxhotkey_attr_new();
         data->name = g_strdup(fm_xml_file_item_get_tag_name(item));
         /* find if item is in stack, then remove from there and use ready list */
         for (l = *stack; l; l = l->next) {
@@ -685,14 +685,14 @@ static gboolean tag_handler_action(FmXmlFileItem *item, GList *children,
     /* if parent doesn't exist on stack neither any child is then it got
        deeper so just add it on stack */
     ObXmlFile *cfg = user_data;
-    LXKeysAttr *data;
+    LXHotkeyAttr *data;
     ObActionsList *oblist;
     FmXmlFileItem *parent;
     GError *err = NULL;
     guint i;
 
-    /* create a LXKeysAttr */
-    data = lxkeys_attr_new();
+    /* create a LXHotkeyAttr */
+    data = lxhotkey_attr_new();
     //data->has_actions = FALSE; /* action can have only options, not sub-actions! */
     /* resolve all children of this action, clearing from stack */
     data->subopts = resolve_item(&cfg->stack, children, &data->values, &err);
@@ -868,7 +868,7 @@ static GList *obcfg_get_wm_keys(gpointer config, const char *mask, GError **erro
 {
     ObXmlFile *cfg = (ObXmlFile *)config;
     GList *list = NULL, *l;
-    LXKeysGlobal *data;
+    LXHotkeyGlobal *data;
 
     if (cfg == NULL)
         g_set_error_literal(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
@@ -891,13 +891,13 @@ static gboolean tag_null_handler(FmXmlFileItem *item, GList *children,
     return TRUE;
 }
 
-/* if opts==NULL then don't copy any LXKeysAttr below it */
-static FmXmlFileItem *make_new_xml_item(ObXmlFile *cfg, LXKeysAttr *opt,
+/* if opts==NULL then don't copy any LXHotkeyAttr below it */
+static FmXmlFileItem *make_new_xml_item(ObXmlFile *cfg, LXHotkeyAttr *opt,
                                         GList **opts, gboolean is_action)
 {
     FmXmlFileItem *item, *sub;
     GList *l;
-    LXKeysAttr *act = NULL;
+    LXHotkeyAttr *act = NULL;
 
     if (is_action) {
         item = fm_xml_file_item_new(ObXmlFile_action);
@@ -922,7 +922,7 @@ static FmXmlFileItem *make_new_xml_item(ObXmlFile *cfg, LXKeysAttr *opt,
     }
     if (opts != NULL) {
         /* make a copy if requested */
-        act = g_new0(LXKeysAttr, 1);
+        act = g_new0(LXHotkeyAttr, 1);
         act->name = g_strdup(opt->name);
         if (opt->values)
             act->values = g_list_prepend(NULL, g_strdup(opt->values->data));
@@ -937,7 +937,7 @@ static FmXmlFileItem *make_new_xml_item(ObXmlFile *cfg, LXKeysAttr *opt,
     return item;
 }
 
-/* if opts==NULL then don't make any LXKeysAttr below it */
+/* if opts==NULL then don't make any LXHotkeyAttr below it */
 static FmXmlFileItem *make_new_xml_binding(ObXmlFile *cfg, GList *actions,
                                            const gchar *accel, GList **opts,
                                            const gchar *exec)
@@ -977,11 +977,11 @@ static inline void replace_key(FmXmlFileItem *item, const char *key, char **kptr
     *kptr = g_strdup(key);
 }
 
-static gboolean obcfg_set_wm_key(gpointer config, LXKeysGlobal *data, GError **error)
+static gboolean obcfg_set_wm_key(gpointer config, LXHotkeyGlobal *data, GError **error)
 {
     ObXmlFile *cfg = (ObXmlFile *)config;
     GList *l;
-    LXKeysGlobal *act;
+    LXHotkeyGlobal *act;
 
     if (cfg == NULL) {
         g_set_error_literal(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
@@ -995,20 +995,20 @@ static gboolean obcfg_set_wm_key(gpointer config, LXKeysGlobal *data, GError **e
     /* find if those keys are already bound elsewhere */
     for (l = cfg->actions; l; l = l->next) {
         if (data->accel1) {
-            if (strcmp(data->accel1, ((LXKeysGlobal *)l->data)->accel1) == 0 ||
-                g_strcmp0(data->accel1, ((LXKeysGlobal *)l->data)->accel2) == 0)
+            if (strcmp(data->accel1, ((LXHotkeyGlobal *)l->data)->accel1) == 0 ||
+                g_strcmp0(data->accel1, ((LXHotkeyGlobal *)l->data)->accel2) == 0)
                 goto _accel1_bound;
         }
         if (data->accel2) {
-            if (g_strcmp0(data->accel2, ((LXKeysGlobal *)l->data)->accel1) == 0 ||
-                g_strcmp0(data->accel2, ((LXKeysGlobal *)l->data)->accel2) == 0)
+            if (g_strcmp0(data->accel2, ((LXHotkeyGlobal *)l->data)->accel1) == 0 ||
+                g_strcmp0(data->accel2, ((LXHotkeyGlobal *)l->data)->accel2) == 0)
                 goto _accel2_bound;
         }
     }
     for (l = cfg->execs; l; l = l->next) {
         if (data->accel1) {
-            if (strcmp(data->accel1, ((LXKeysApp *)l->data)->accel1) == 0 ||
-                g_strcmp0(data->accel1, ((LXKeysApp *)l->data)->accel2) == 0) {
+            if (strcmp(data->accel1, ((LXHotkeyApp *)l->data)->accel1) == 0 ||
+                g_strcmp0(data->accel1, ((LXHotkeyApp *)l->data)->accel2) == 0) {
 _accel1_bound:
                 g_set_error(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
                             _("Hotkey '%s' is already bound to an action."),
@@ -1017,8 +1017,8 @@ _accel1_bound:
             }
         }
         if (data->accel2) {
-            if (g_strcmp0(data->accel2, ((LXKeysApp *)l->data)->accel1) == 0 ||
-                g_strcmp0(data->accel2, ((LXKeysApp *)l->data)->accel2) == 0) {
+            if (g_strcmp0(data->accel2, ((LXHotkeyApp *)l->data)->accel1) == 0 ||
+                g_strcmp0(data->accel2, ((LXHotkeyApp *)l->data)->accel2) == 0) {
 _accel2_bound:
                 g_set_error(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
                             _("Hotkey '%s' is already bound to an action."),
@@ -1108,7 +1108,7 @@ _accel2_bound:
         }
     /* if not found then add a new keybinding */
     } else if (data->accel1) {
-        act = g_new0(LXKeysGlobal, 1);
+        act = g_new0(LXHotkeyGlobal, 1);
         act->data1 = make_new_xml_binding(cfg, data->actions, data->accel1, &act->actions, NULL);
         act->accel1 = g_strdup(data->accel1);
         /* do the same for accel2 if requested */
@@ -1125,7 +1125,7 @@ static GList *obcfg_get_app_keys(gpointer config, const char *mask, GError **err
 {
     ObXmlFile *cfg = (ObXmlFile *)config;
     GList *list = NULL, *l;
-    LXKeysApp *data;
+    LXHotkeyApp *data;
 
     if (cfg == NULL)
         g_set_error_literal(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
@@ -1139,11 +1139,11 @@ static GList *obcfg_get_app_keys(gpointer config, const char *mask, GError **err
     return list;
 }
 
-static gboolean obcfg_set_app_key(gpointer config, LXKeysApp *data, GError **error)
+static gboolean obcfg_set_app_key(gpointer config, LXHotkeyApp *data, GError **error)
 {
     ObXmlFile *cfg = (ObXmlFile *)config;
     GList *l;
-    LXKeysApp *app;
+    LXHotkeyApp *app;
 
     if (cfg == NULL) {
         g_set_error_literal(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
@@ -1157,20 +1157,20 @@ static gboolean obcfg_set_app_key(gpointer config, LXKeysApp *data, GError **err
     /* find if those keys are already bound elsewhere */
     for (l = cfg->actions; l; l = l->next) {
         if (data->accel1) {
-            if (strcmp(data->accel1, ((LXKeysGlobal *)l->data)->accel1) == 0 ||
-                g_strcmp0(data->accel1, ((LXKeysGlobal *)l->data)->accel2) == 0)
+            if (strcmp(data->accel1, ((LXHotkeyGlobal *)l->data)->accel1) == 0 ||
+                g_strcmp0(data->accel1, ((LXHotkeyGlobal *)l->data)->accel2) == 0)
                 goto _accel1_bound;
         }
         if (data->accel2) {
-            if (g_strcmp0(data->accel2, ((LXKeysGlobal *)l->data)->accel1) == 0 ||
-                g_strcmp0(data->accel2, ((LXKeysGlobal *)l->data)->accel2) == 0)
+            if (g_strcmp0(data->accel2, ((LXHotkeyGlobal *)l->data)->accel1) == 0 ||
+                g_strcmp0(data->accel2, ((LXHotkeyGlobal *)l->data)->accel2) == 0)
                 goto _accel2_bound;
         }
     }
     for (l = cfg->execs; l; l = l->next) {
         if (data->accel1) {
-            if (strcmp(data->accel1, ((LXKeysApp *)l->data)->accel1) == 0 ||
-                g_strcmp0(data->accel1, ((LXKeysApp *)l->data)->accel2) == 0) {
+            if (strcmp(data->accel1, ((LXHotkeyApp *)l->data)->accel1) == 0 ||
+                g_strcmp0(data->accel1, ((LXHotkeyApp *)l->data)->accel2) == 0) {
 _accel1_bound:
                 g_set_error(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
                             _("Hotkey '%s' is already bound to an action."),
@@ -1179,8 +1179,8 @@ _accel1_bound:
             }
         }
         if (data->accel2) {
-            if (g_strcmp0(data->accel2, ((LXKeysApp *)l->data)->accel1) == 0 ||
-                g_strcmp0(data->accel2, ((LXKeysApp *)l->data)->accel2) == 0) {
+            if (g_strcmp0(data->accel2, ((LXHotkeyApp *)l->data)->accel1) == 0 ||
+                g_strcmp0(data->accel2, ((LXHotkeyApp *)l->data)->accel2) == 0) {
 _accel2_bound:
                 g_set_error(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
                             _("Hotkey '%s' is already bound to an action."),
@@ -1271,7 +1271,7 @@ _accel2_bound:
         }
     /* if not found then add a new keybinding */
     } else if (data->accel1) {
-        app = g_new0(LXKeysApp, 1);
+        app = g_new0(LXHotkeyApp, 1);
         app->exec = g_strdup(data->exec);
         app->data1 = make_new_xml_binding(cfg, data->options, data->accel1, &app->options, data->exec);
         app->accel1 = g_strdup(data->accel1);
@@ -1301,9 +1301,9 @@ static GList *obcfg_get_app_options(gpointer config, GError **error)
 }
 
 
-FM_DEFINE_MODULE(lxkeys, Openbox)
+FM_DEFINE_MODULE(lxhotkey, Openbox)
 
-LXKeysPluginInit fm_module_init_lxkeys = {
+LXHotkeyPluginInit fm_module_init_lxhotkey = {
     .load = obcfg_load,
     .save = obcfg_save,
     .free = obcfg_free,

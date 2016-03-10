@@ -1,2 +1,2 @@
-src/lxkeys.c
+src/lxhotkey.c
 plugins/openbox.c
