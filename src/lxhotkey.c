@@ -169,7 +169,7 @@ static gchar *get_wm_info(void)
 /* test if we are called from X which is local */
 static gboolean test_X_is_local(void)
 {
-    return TRUE; // TODO!
+    return TRUE; // FIXME: TODO!
 }
 
 
@@ -641,7 +641,7 @@ int main(int argc, char *argv[])
             g_list_free(keys);
         }
     } else if (strcmp(argv[1], "show") == 0) { /* lxhotkey show ... */
-        // TODO!
+        // FIXME: TODO!
     } else
         goto _exit;
     ret = 0; /* success */

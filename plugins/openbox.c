@@ -105,15 +105,78 @@ static gboolean options_equal(GList *opts1, GList *opts2)
 /* convert from OB format (A-Return) into GDK format (<Alt>Return) */
 static gchar *obkey_to_key(const gchar *obkey)
 {
-    // FIXME: TODO
-    return g_strdup(obkey);
+    GString *str = g_string_sized_new(16);
+
+    while (*obkey) {
+        if (obkey[1] == '-')
+            switch(obkey[0]) {
+            case 'S':
+                g_string_append(str, "<Shift>");
+                break;
+            case 'C':
+                g_string_append(str, "<Control>");
+                break;
+            case 'A':
+                g_string_append(str, "<Alt>");
+                break;
+            case 'W':
+                g_string_append(str, "<Super>");
+                break;
+            case 'M':
+                g_string_append(str, "<Meta>");
+                break;
+            case 'H':
+                g_string_append(str, "<Hyper>");
+                break;
+            default:
+                goto _add_rest;
+            }
+        else
+_add_rest:
+            break;
+        obkey += 2;
+    }
+    g_string_append(str, obkey);
+    return g_string_free(str, FALSE);
 }
 
 /* convert from GDK format (<Alt>Return) into OB format (A-Return) */
 static gchar *key_to_obkey(const gchar *key)
 {
-    // FIXME: TODO
-    return g_strdup(key);
+    GString *str = g_string_sized_new(16);
+    gboolean in_lt = FALSE;
+
+    while (*key) {
+        if (in_lt) {
+            if (*key++ == '>')
+                in_lt = FALSE;
+        } else if (*key == '<') {
+            key++;
+            in_lt = TRUE;
+            if (strncmp(key, "Shift", 5) == 0) {
+                g_string_append(str, "S-");
+                key += 5;
+            } else if (strncmp(key, "Contr", 5) == 0 ||
+                       strncmp(key, "Ctr", 3) == 0) {
+                g_string_append(str, "C-");
+                key += 3;
+            } else if (strncmp(key, "Alt", 3) == 0) {
+                g_string_append(str, "A-");
+                key += 3;
+            } else if (strncmp(key, "Super", 5) == 0) {
+                g_string_append(str, "W-");
+                key += 5;
+            } else if (strncmp(key, "Meta", 4) == 0) {
+                g_string_append(str, "M-");
+                key += 4;
+            } else if (strncmp(key, "Hyper", 5) == 0) {
+                g_string_append(str, "H-");
+                key += 5;
+            }
+        } else
+            g_string_append_c(str, *key++);
+    }
+    return g_string_free(str, FALSE);
 }
 
 
@@ -753,7 +816,11 @@ static void obcfg_free(gpointer config)
     g_object_unref(cfg->xml);
     g_list_free_full(cfg->actions, (GDestroyNotify)lkxeys_action_free);
     g_list_free_full(cfg->execs, (GDestroyNotify)lkxeys_app_free);
-    // FIXME: free cfg->stack !
+    while (cfg->stack != NULL) {
+        free_options(((ObActionsList *)cfg->stack->data)->list);
+        g_free(cfg->stack->data);
+        cfg->stack = g_list_delete_link(cfg->stack, cfg->stack);
+    }
     g_list_free(cfg->added_tags);
     g_free(cfg);
 }
