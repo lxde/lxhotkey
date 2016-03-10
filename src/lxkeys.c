@@ -29,9 +29,39 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
-#define NONULL(a) (a) ? ((char *)a) : ""
+#include <stdlib.h>
 
-GQuark LXKEYS_ERROR;
+#ifdef HAVE_LIBUNISTRING
+# include <unistdio.h>
+# define ulc_printf(...) ulc_fprintf(stdout,__VA_ARGS__)
+#else
+# define ulc_printf printf
+#endif
+
+/* for errors */
+static GQuark LXKEYS_ERROR;
+typedef enum {
+    LXKEYS_BAD_ARGS, /* invalid commandline arguments */
+    LXKEYS_NOT_SUPPORTED /* operation not supported */
+} LXKeysError;
+
+/* simple functions to manage LXKeysAttr data type */
+static inline LXKeysAttr *lxkeys_attr_new(void)
+{
+    return g_slice_new0(LXKeysAttr);
+}
+
+#define free_actions(acts) g_list_free_full(acts, (GDestroyNotify)lkxeys_attr_free)
+
+static void lkxeys_attr_free(LXKeysAttr *data)
+{
+    g_free(data->name);
+    g_list_free_full(data->values, g_free);
+    free_actions(data->subopts);
+    g_slice_free(LXKeysAttr, data);
+}
+
+#define NONULL(a) (a) ? ((char *)a) : ""
 
 /* this function is taken from wmctrl utility */
 #define MAX_PROPERTY_VALUE_LEN 4096
@@ -201,23 +231,8 @@ static int _print_help(const char *cmd)
     printf(_("       %s app <exec> <key>       - bind a key to some exec line\n"), cmd);
     printf(_("       %s app <exec> --          - unbind all keys from exec line\n"), cmd);
     printf(_("       %s show <key>             - show the action bound to a key\n"), cmd);
+    printf(_("       %s --gui=<type>           - start with GUI\n"), cmd);
     return 0;
-}
-
-/* free a LXKeysAttr list */
-static void free_actions(gpointer act)
-{
-    GList *l;
-    LXKeysAttr *data;
-
-    while ((l = act)) {
-        act = l->next;
-        data = l->data;
-        g_list_free_1(l);
-        g_free(data->name);
-        g_list_free_full(data->values, g_free);
-        g_list_free_full(data->subopts, free_actions);
-    }
 }
 
 /* convert text line to LXKeysAttr list
@@ -324,10 +339,12 @@ _failed:
 /* check if action list matches origin
    if origin==NULL then error is possibly set already */
 static gboolean validate_actions(const GList *act, const GList *origin,
-                                 const LXKeysAttr *action, GError **error)
+                                 const LXKeysAttr *action, gchar *wm_name,
+                                 GError **error)
 {
     const LXKeysAttr *data, *ordata;
     const GList *l, *olist;
+    char *endptr;
 
     if (!origin)
         return FALSE;
@@ -348,15 +365,19 @@ static gboolean validate_actions(const GList *act, const GList *origin,
                             data->name, action->name);
             else
                 g_set_error(error, LXKEYS_ERROR, LXKEYS_BAD_ARGS,
-                            _("no mathing action '%s' found for the WM configuration."),
-                            data->name);
+                            _("action '%s' isn't supported by WM %s."),
+                            data->name, wm_name);
             return FALSE;
         }
         /* if ordata->values isn't NULL and data->values isn't NULL
            then it must match, ordata->values==NULL means anything matches */
         if (data->values != NULL && ordata->values != NULL) {
             for (l = ordata->values; l; l = l->next)
-                if (g_strcmp0(data->values->data, l->data) == 0)
+                if (g_strcmp0(data->values->data, l->data) == 0 ||
+                    /* check for numeric value too */
+                    (strtol(data->values->data, &endptr, 10) < LONG_MAX &&
+                     ((g_strcmp0(l->data, "#") == 0 && endptr[0] == '\0') ||
+                      (g_strcmp0(l->data, "%") == 0 && endptr[0] == '%'))))
                     break;
             if (l == NULL) {
                 if (action)
@@ -374,13 +395,13 @@ static gboolean validate_actions(const GList *act, const GList *origin,
         if (!data->subopts) ;
         else if (ordata->has_actions) {
             /* test against origin actions list, not suboptions */
-            if (!validate_actions(data->subopts, origin, NULL, error))
+            if (!validate_actions(data->subopts, origin, NULL, wm_name, error))
                 return FALSE;
         } else if (!ordata->subopts) {
             g_set_error(error, LXKEYS_ERROR, LXKEYS_BAD_ARGS,
                         _("action '%s' does not support options."), data->name);
             return FALSE;
-        } else if (!validate_actions(data->subopts, origin, ordata, error))
+        } else if (!validate_actions(data->subopts, origin, ordata, wm_name, error))
             return FALSE;
         act = act->next;
     }
@@ -398,10 +419,10 @@ static void print_suboptions(GList *sub, int indent)
     while (sub) {
         LXKeysAttr *action = sub->data;
         if (action->values && action->values->data)
-            printf("%*s%s=%s\n", indent, "", action->name,
-                                  (char *)action->values->data);
+            printf("%*s%s=%s\n", indent, "", _(action->name),
+                                  _(action->values->data));
         else
-            printf("%*s%s\n", indent, "", action->name);
+            printf("%*s%s\n", indent, "", _(action->name));
         print_suboptions(action->subopts, indent);
         sub = sub->next;
     }
@@ -453,7 +474,7 @@ int main(int argc, char *argv[])
     if (do_gui)
         fm_module_register_lxkeys_gui();
 
-    LXKEYS_ERROR = g_quark_from_static_string("LXKEYS_ERROR");
+    LXKEYS_ERROR = g_quark_from_static_string("lxkeys-error");
 
     /* detect current WM and find a module for it */
     wm_name = get_wm_info();
@@ -494,13 +515,14 @@ int main(int argc, char *argv[])
         if (argc > 3) { /* set */
             LXKeysGlobal data;
 
-            if (plugin->t->get_wm_actions == NULL || plugin->t->set_wm_key == NULL)
+            if (plugin->t->set_wm_key == NULL)
                 goto _not_supported;
             /* parse and validate actions */
             data.actions = actions_from_str(argv[2], &error);
             if (error ||
-                !validate_actions(data.actions, plugin->t->get_wm_actions(config, &error),
-                                  NULL, &error)) { /* invalid request */
+                (plugin->t->get_wm_actions != NULL &&
+                 !validate_actions(data.actions, plugin->t->get_wm_actions(config, &error),
+                                   NULL, wm_name, &error))) { /* invalid request */
                 g_prefix_error(&error, _("Invalid request: "));
                 goto _exit;
             }
@@ -528,22 +550,23 @@ int main(int argc, char *argv[])
             if (argc > 2)
                 mask = argv[2]; /* mask given */
             keys = plugin->t->get_wm_keys(config, mask, NULL);
-            printf("%24s %s\n", _("ACTION(s)"), _("KEY(s)"));
+            ulc_printf(" %-24s %s\n", _("ACTION(s)"), _("KEY(s)"));
             for (key = keys; key; key = key->next) {
                 data = key->data;
                 for (act = data->actions; act; act = act->next)
                 {
                     action = act->data;
                     if (act != data->actions)
-                        printf("%s\n", action->name);
+                        printf("+ %s\n", _(action->name));
                     else if (data->accel2)
-                        printf("%24s %s %s\n", action->name, data->accel1,
-                                               data->accel2);
+                        ulc_printf("%-24s %s %s\n", _(action->name), data->accel1,
+                                                    data->accel2);
                     else
-                        printf("%24s %s\n", action->name, data->accel1);
+                        ulc_printf("%-24s %s\n", _(action->name), data->accel1);
                     print_suboptions(action->subopts, 0);
                 }
             }
+            g_list_free(keys);
         }
     } else if (strcmp(argv[1], "app") == 0) { /* lxkeys app ... */
         if (argc > 3) { /* set */
@@ -567,31 +590,33 @@ int main(int argc, char *argv[])
             } else {
                 data.accel1 = argv[3];
             }
+            g_list_free(keys);
             cmd = strchr(argv[2], '&');
             if (cmd) {
-                data.actions = actions_from_str(&cmd[1], &error);
+                data.options = actions_from_str(&cmd[1], &error);
                 if (error ||
-                    (plugin->t->get_app_actions != NULL &&
-                     !validate_actions(data.actions,
-                                       plugin->t->get_app_actions(config, &error),
-                                       NULL, &error))) { /* invalid request */
+                    (plugin->t->get_app_options != NULL &&
+                     !validate_actions(data.options,
+                                       plugin->t->get_app_options(config, &error),
+                                       NULL, wm_name, &error))) { /* invalid request */
                     g_prefix_error(&error, _("Invalid request: "));
+                    free_actions(data.options);
                     goto _exit;
                 }
                 data.exec = g_strndup(argv[2], cmd - argv[2]);
             } else {
-                data.actions = NULL;
+                data.options = NULL;
                 data.exec = g_strdup(argv[2]);
             }
             // FIXME: validate exec
             if (!plugin->t->set_app_key(config, &data, &error) ||
                 !plugin->t->save(config, &error)) {
                 g_prefix_error(&error, _("Problems saving configuration: "));
-                free_actions(data.actions);
+                free_actions(data.options);
                 g_free(data.exec);
                 goto _exit;
             }
-            free_actions(data.actions);
+            free_actions(data.options);
             g_free(data.exec);
         } else { /* show by mask */
             const char *mask = NULL;
@@ -603,16 +628,17 @@ int main(int argc, char *argv[])
             if (argc > 2)
                 mask = argv[2]; /* mask given */
             keys = plugin->t->get_app_keys(config, mask, NULL);
-            printf("%24s %s\n", _("EXEC"), _("KEY(s)"));
+            ulc_printf(" %-48s %s\n", _("EXEC"), _("KEY(s)"));
             for (key = keys; key; key = key->next) {
                 data = key->data;
                 if (data->accel2)
-                    printf("%24s %s %s\n", data->exec, data->accel1,
-                                           data->accel2);
+                    ulc_printf("%-48s %s %s\n", data->exec, data->accel1,
+                                                data->accel2);
                 else
-                    printf("%24s %s\n", data->exec, data->accel1);
-                print_suboptions(data->actions, 0);
+                    ulc_printf("%-48s %s\n", data->exec, data->accel1);
+                print_suboptions(data->options, 0);
             }
+            g_list_free(keys);
         }
     } else if (strcmp(argv[1], "show") == 0) { /* lxkeys show ... */
         // TODO!
@@ -630,7 +656,7 @@ _exit:
     if (config)
         plugin->t->free(config);
     if (error) {
-        // FIXME: if do_gui then show an alert window instead of stderr
+        /* if do_gui then show an alert window instead of stderr */
         if (gui_plugin && gui_plugin->t->alert)
             gui_plugin->t->alert(error);
         else
@@ -638,7 +664,8 @@ _exit:
         g_error_free(error);
     }
     fm_module_unregister_type("lxkeys");
-    fm_module_unregister_type("lxkeys_gui");
+    if (do_gui)
+        fm_module_unregister_type("lxkeys_gui");
     while (plugins) {
         plugin = plugins;
         plugins = plugin->next;

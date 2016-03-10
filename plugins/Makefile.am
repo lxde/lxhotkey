@@ -8,7 +8,7 @@ AM_CPPFLAGS = \
 
 AM_LDFLAGS = \
 	-module -avoid-version -shared -export-dynamic -no-undefined \
-	$(PACKAGE_LIBS)
+	-rpath $(libdir)/lxkeys $(PACKAGE_LIBS)
 
 ## modules list
 pkglibdir = $(libdir)/lxkeys
@@ -16,3 +16,11 @@ pkglib_LTLIBRARIES = ob.la
 
 ## Openbox module
 ob_la_SOURCES = openbox.c
+ob_la_LIBADD = -lfm-extra
+
+install-exec-hook:
+	rm -f $(DESTDIR)$(pkglibdir)/*.la
+
+PLUGINS_INSTALLED = $(pkglib_LTLIBRARIES:.la=.so)
+uninstall-hook:
+	cd $(DESTDIR)$(pkglibdir) && rm -f $(PLUGINS_INSTALLED) || true

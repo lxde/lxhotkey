@@ -11,3 +11,6 @@ lxkeys_CPPFLAGS = \
 lxkeys_SOURCES = lxkeys.c
 
 lxkeys_LDADD = $(PACKAGE_LIBS)
+
+lxkeys_includedir = $(includedir)/lxkeys
+lxkeys_include_HEADERS = lxkeys.h

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-06 22:10+0200\n"
+"POT-Creation-Date: 2016-03-10 20:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,109 +17,625 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/lxkeys.c:198
+#: ../src/lxkeys.c:228
 #, c-format
 msgid "Usage: %s global [<action>]      - show keys bound to action(s)\n"
 msgstr ""
 
-#: ../src/lxkeys.c:199
+#: ../src/lxkeys.c:229
 #, c-format
 msgid "       %s global <action> <key>  - bind a key to the action\n"
 msgstr ""
 
-#: ../src/lxkeys.c:200
+#: ../src/lxkeys.c:230
 #, c-format
 msgid "       %s app [<exec>]           - show keys bound to exec line\n"
 msgstr ""
 
-#: ../src/lxkeys.c:201
+#: ../src/lxkeys.c:231
 #, c-format
 msgid "       %s app <exec> <key>       - bind a key to some exec line\n"
 msgstr ""
 
-#: ../src/lxkeys.c:202
+#: ../src/lxkeys.c:232
 #, c-format
 msgid "       %s app <exec> --          - unbind all keys from exec line\n"
 msgstr ""
 
-#: ../src/lxkeys.c:203
+#: ../src/lxkeys.c:233
 #, c-format
 msgid "       %s show <key>             - show the action bound to a key\n"
 msgstr ""
 
-#: ../src/lxkeys.c:314
+#: ../src/lxkeys.c:234
+#, c-format
+msgid "       %s --gui=<type>           - start with GUI\n"
+msgstr ""
+
+#: ../src/lxkeys.c:329
 msgid "empty option name."
 msgstr ""
 
-#: ../src/lxkeys.c:317
+#: ../src/lxkeys.c:332
 msgid "empty action name."
-msgstr ""
-
-#: ../src/lxkeys.c:347
-#, c-format
-msgid "no matching option '%s' found for action '%s'."
-msgstr ""
-
-#: ../src/lxkeys.c:351
-#, c-format
-msgid "no mathing action '%s' found for the WM configuration."
 msgstr ""
 
 #: ../src/lxkeys.c:364
 #, c-format
-msgid "value '%s' is not supported for option '%s'."
+msgid "no matching option '%s' found for action '%s'."
 msgstr ""
 
 #: ../src/lxkeys.c:368
 #, c-format
+msgid "action '%s' isn't supported by WM %s."
+msgstr ""
+
+#: ../src/lxkeys.c:385
+#, c-format
+msgid "value '%s' is not supported for option '%s'."
+msgstr ""
+
+#: ../src/lxkeys.c:389
+#, c-format
 msgid "value '%s' is not supported for action '%s'."
 msgstr ""
 
-#: ../src/lxkeys.c:381
+#: ../src/lxkeys.c:402
 #, c-format
 msgid "action '%s' does not support options."
 msgstr ""
 
-#: ../src/lxkeys.c:445
+#: ../src/lxkeys.c:466
 #, c-format
 msgid "LXKeys: sorry, cannot configure keys remotely.\n"
 msgstr ""
 
-#: ../src/lxkeys.c:472
+#: ../src/lxkeys.c:493
 #, c-format
 msgid "Window manager %s isn't supported now, sorry."
 msgstr ""
 
-#: ../src/lxkeys.c:479
+#: ../src/lxkeys.c:500
 msgid "Problems loading configuration: "
 msgstr ""
 
-#: ../src/lxkeys.c:488
+#: ../src/lxkeys.c:509
 #, c-format
 msgid "GUI type %s currently isn't supported."
 msgstr ""
 
 #. invalid request
-#: ../src/lxkeys.c:504 ../src/lxkeys.c:578
+#: ../src/lxkeys.c:526 ../src/lxkeys.c:602
 msgid "Invalid request: "
 msgstr ""
 
-#: ../src/lxkeys.c:514 ../src/lxkeys.c:589
+#: ../src/lxkeys.c:536 ../src/lxkeys.c:614
 msgid "Problems saving configuration: "
 msgstr ""
 
-#: ../src/lxkeys.c:531
+#: ../src/lxkeys.c:553
 msgid "ACTION(s)"
 msgstr ""
 
-#: ../src/lxkeys.c:531 ../src/lxkeys.c:606
+#: ../src/lxkeys.c:553 ../src/lxkeys.c:631
 msgid "KEY(s)"
 msgstr ""
 
-#: ../src/lxkeys.c:606
+#: ../src/lxkeys.c:631
 msgid "EXEC"
 msgstr ""
 
-#: ../src/lxkeys.c:626
+#: ../src/lxkeys.c:652
 msgid "Requested operation isn't supported."
+msgstr ""
+
+#: ../plugins/openbox.c:139
+msgid "Failed to reconfigure Openbox."
+msgstr ""
+
+#. reuse GList
+#. reuse GList
+#: ../plugins/openbox.c:161
+msgid "yes"
+msgstr ""
+
+#: ../plugins/openbox.c:161
+msgid "no"
+msgstr ""
+
+#: ../plugins/openbox.c:164
+msgid "enabled"
+msgstr ""
+
+#: ../plugins/openbox.c:165
+msgid "wmclass"
+msgstr ""
+
+#: ../plugins/openbox.c:166
+msgid "name"
+msgstr ""
+
+#: ../plugins/openbox.c:167
+msgid "icon"
+msgstr ""
+
+#: ../plugins/openbox.c:172 ../plugins/openbox.c:244
+msgid "command"
+msgstr ""
+
+#: ../plugins/openbox.c:173 ../plugins/openbox.c:249
+msgid "prompt"
+msgstr ""
+
+#: ../plugins/openbox.c:174
+msgid "startupnotify"
+msgstr ""
+
+#: ../plugins/openbox.c:178 ../plugins/openbox.c:281
+msgid "center"
+msgstr ""
+
+#: ../plugins/openbox.c:179
+msgid "default"
+msgstr ""
+
+#: ../plugins/openbox.c:179
+msgid "primary"
+msgstr ""
+
+#: ../plugins/openbox.c:179
+msgid "mouse"
+msgstr ""
+
+#: ../plugins/openbox.c:180
+msgid "active"
+msgstr ""
+
+#: ../plugins/openbox.c:180 ../plugins/openbox.c:283
+msgid "all"
+msgstr ""
+
+#: ../plugins/openbox.c:185 ../plugins/openbox.c:290
+msgid "monitor"
+msgstr ""
+
+#: ../plugins/openbox.c:190
+msgid "menu"
+msgstr ""
+
+#: ../plugins/openbox.c:191
+msgid "position"
+msgstr ""
+
+#: ../plugins/openbox.c:195
+msgid "list"
+msgstr ""
+
+#: ../plugins/openbox.c:195
+msgid "icons"
+msgstr ""
+
+#: ../plugins/openbox.c:195
+msgid "none"
+msgstr ""
+
+#: ../plugins/openbox.c:198 ../plugins/openbox.c:216
+msgid "dialog"
+msgstr ""
+
+#: ../plugins/openbox.c:199 ../plugins/openbox.c:217
+msgid "bar"
+msgstr ""
+
+#: ../plugins/openbox.c:200 ../plugins/openbox.c:218
+msgid "raise"
+msgstr ""
+
+#: ../plugins/openbox.c:201
+msgid "allDesktops"
+msgstr ""
+
+#: ../plugins/openbox.c:202 ../plugins/openbox.c:219
+msgid "panels"
+msgstr ""
+
+#: ../plugins/openbox.c:203
+msgid "desktop"
+msgstr ""
+
+#: ../plugins/openbox.c:204
+msgid "linear"
+msgstr ""
+
+#: ../plugins/openbox.c:205
+msgid "interactive"
+msgstr ""
+
+#: ../plugins/openbox.c:206 ../plugins/openbox.c:221
+msgid "finalactions"
+msgstr ""
+
+#: ../plugins/openbox.c:210 ../plugins/openbox.c:226 ../plugins/openbox.c:261
+#: ../plugins/openbox.c:312
+msgid "north"
+msgstr ""
+
+#: ../plugins/openbox.c:210
+msgid "northeast"
+msgstr ""
+
+#: ../plugins/openbox.c:210 ../plugins/openbox.c:227 ../plugins/openbox.c:262
+#: ../plugins/openbox.c:312
+msgid "east"
+msgstr ""
+
+#: ../plugins/openbox.c:211
+msgid "southeast"
+msgstr ""
+
+#: ../plugins/openbox.c:211 ../plugins/openbox.c:226 ../plugins/openbox.c:261
+#: ../plugins/openbox.c:312
+msgid "south"
+msgstr ""
+
+#: ../plugins/openbox.c:211
+msgid "southwest"
+msgstr ""
+
+#: ../plugins/openbox.c:212 ../plugins/openbox.c:227 ../plugins/openbox.c:262
+#: ../plugins/openbox.c:312
+msgid "west"
+msgstr ""
+
+#: ../plugins/openbox.c:212
+msgid "northwest"
+msgstr ""
+
+#: ../plugins/openbox.c:215 ../plugins/openbox.c:256 ../plugins/openbox.c:315
+msgid "direction"
+msgstr ""
+
+#: ../plugins/openbox.c:220
+msgid "desktops"
+msgstr ""
+
+#: ../plugins/openbox.c:225 ../plugins/openbox.c:236 ../plugins/openbox.c:260
+#: ../plugins/openbox.c:281 ../plugins/openbox.c:282 ../plugins/openbox.c:283
+msgid "current"
+msgstr ""
+
+#: ../plugins/openbox.c:225 ../plugins/openbox.c:260 ../plugins/openbox.c:283
+msgid "next"
+msgstr ""
+
+#: ../plugins/openbox.c:225 ../plugins/openbox.c:260
+msgid "previous"
+msgstr ""
+
+#: ../plugins/openbox.c:226 ../plugins/openbox.c:236 ../plugins/openbox.c:261
+msgid "last"
+msgstr ""
+
+#: ../plugins/openbox.c:226 ../plugins/openbox.c:261
+msgid "up"
+msgstr ""
+
+#: ../plugins/openbox.c:227 ../plugins/openbox.c:262
+msgid "down"
+msgstr ""
+
+#: ../plugins/openbox.c:227 ../plugins/openbox.c:262 ../plugins/openbox.c:272
+#: ../plugins/openbox.c:305
+msgid "left"
+msgstr ""
+
+#: ../plugins/openbox.c:228 ../plugins/openbox.c:263 ../plugins/openbox.c:272
+#: ../plugins/openbox.c:306
+msgid "right"
+msgstr ""
+
+#: ../plugins/openbox.c:231 ../plugins/openbox.c:266
+msgid "to"
+msgstr ""
+
+#: ../plugins/openbox.c:232 ../plugins/openbox.c:267
+msgid "wrap"
+msgstr ""
+
+#: ../plugins/openbox.c:239
+msgid "where"
+msgstr ""
+
+#: ../plugins/openbox.c:253
+msgid "both"
+msgstr ""
+
+#: ../plugins/openbox.c:253
+msgid "horizontal"
+msgstr ""
+
+#: ../plugins/openbox.c:253
+msgid "vertical"
+msgstr ""
+
+#: ../plugins/openbox.c:268
+msgid "follow"
+msgstr ""
+
+#: ../plugins/openbox.c:272 ../plugins/openbox.c:307 ../plugins/openbox.c:319
+msgid "top"
+msgstr ""
+
+#: ../plugins/openbox.c:272 ../plugins/openbox.c:308 ../plugins/openbox.c:319
+msgid "bottom"
+msgstr ""
+
+#: ../plugins/openbox.c:273
+msgid "topleft"
+msgstr ""
+
+#: ../plugins/openbox.c:273
+msgid "topright"
+msgstr ""
+
+#: ../plugins/openbox.c:273
+msgid "bottomleft"
+msgstr ""
+
+#: ../plugins/openbox.c:274
+msgid "bottomright"
+msgstr ""
+
+#: ../plugins/openbox.c:277
+msgid "edge"
+msgstr ""
+
+#: ../plugins/openbox.c:283
+msgid "prev"
+msgstr ""
+
+#: ../plugins/openbox.c:288
+msgid "width"
+msgstr ""
+
+#: ../plugins/openbox.c:289
+msgid "height"
+msgstr ""
+
+#: ../plugins/openbox.c:319
+msgid "normal"
+msgstr ""
+
+#: ../plugins/openbox.c:322
+msgid "layer"
+msgstr ""
+
+#. global actions
+#: ../plugins/openbox.c:328
+msgid "Execute"
+msgstr ""
+
+#: ../plugins/openbox.c:329
+msgid "ShowMenu"
+msgstr ""
+
+#: ../plugins/openbox.c:330
+msgid "NextWindow"
+msgstr ""
+
+#: ../plugins/openbox.c:331
+msgid "PreviousWindow"
+msgstr ""
+
+#: ../plugins/openbox.c:332
+msgid "DirectionalCycleWindows"
+msgstr ""
+
+#: ../plugins/openbox.c:333
+msgid "DirectionalTargetWindow"
+msgstr ""
+
+#: ../plugins/openbox.c:334
+msgid "GoToDesktop"
+msgstr ""
+
+#: ../plugins/openbox.c:335
+msgid "AddDesktop"
+msgstr ""
+
+#: ../plugins/openbox.c:336
+msgid "RemoveDesktop"
+msgstr ""
+
+#: ../plugins/openbox.c:337
+msgid "ToggleDockAutohide"
+msgstr ""
+
+#: ../plugins/openbox.c:338
+msgid "Reconfigure"
+msgstr ""
+
+#: ../plugins/openbox.c:339
+msgid "Restart"
+msgstr ""
+
+#: ../plugins/openbox.c:340
+msgid "Exit"
+msgstr ""
+
+#. windows actions
+#: ../plugins/openbox.c:342
+msgid "Focus"
+msgstr ""
+
+#: ../plugins/openbox.c:343
+msgid "Raise"
+msgstr ""
+
+#: ../plugins/openbox.c:344
+msgid "Lower"
+msgstr ""
+
+#: ../plugins/openbox.c:345
+msgid "RaiseLower"
+msgstr ""
+
+#: ../plugins/openbox.c:346
+msgid "Unfocus"
+msgstr ""
+
+#: ../plugins/openbox.c:347
+msgid "FocusToBottom"
+msgstr ""
+
+#: ../plugins/openbox.c:348
+msgid "Iconify"
+msgstr ""
+
+#: ../plugins/openbox.c:349
+msgid "Close"
+msgstr ""
+
+#: ../plugins/openbox.c:350
+msgid "ToggleShade"
+msgstr ""
+
+#: ../plugins/openbox.c:351
+msgid "Shade"
+msgstr ""
+
+#: ../plugins/openbox.c:352
+msgid "Unshade"
+msgstr ""
+
+#: ../plugins/openbox.c:353
+msgid "ToggleOmnipresent"
+msgstr ""
+
+#: ../plugins/openbox.c:354
+msgid "ToggleMaximize"
+msgstr ""
+
+#: ../plugins/openbox.c:355
+msgid "Maximize"
+msgstr ""
+
+#: ../plugins/openbox.c:356
+msgid "Unmaximize"
+msgstr ""
+
+#: ../plugins/openbox.c:357
+msgid "ToggleFullscreen"
+msgstr ""
+
+#: ../plugins/openbox.c:358
+msgid "ToggleDecorations"
+msgstr ""
+
+#: ../plugins/openbox.c:359
+msgid "Decorate"
+msgstr ""
+
+#: ../plugins/openbox.c:360
+msgid "Undecorate"
+msgstr ""
+
+#: ../plugins/openbox.c:361
+msgid "SendToDesktop"
+msgstr ""
+
+#: ../plugins/openbox.c:362
+msgid "Move"
+msgstr ""
+
+#: ../plugins/openbox.c:363
+msgid "Resize"
+msgstr ""
+
+#: ../plugins/openbox.c:364
+msgid "MoveResizeTo"
+msgstr ""
+
+#: ../plugins/openbox.c:365
+msgid "MoveRelative"
+msgstr ""
+
+#: ../plugins/openbox.c:366
+msgid "ResizeRelative"
+msgstr ""
+
+#: ../plugins/openbox.c:367
+msgid "MoveToEdge"
+msgstr ""
+
+#: ../plugins/openbox.c:368
+msgid "GrowToEdge"
+msgstr ""
+
+#: ../plugins/openbox.c:369
+msgid "ShrinkToEdge"
+msgstr ""
+
+#: ../plugins/openbox.c:370
+msgid "GrowToFill"
+msgstr ""
+
+#: ../plugins/openbox.c:371
+msgid "ToggleAlwaysOnTop"
+msgstr ""
+
+#: ../plugins/openbox.c:372
+msgid "ToggleAlwaysOnBottom"
+msgstr ""
+
+#: ../plugins/openbox.c:373
+msgid "SendToLayer"
+msgstr ""
+
+#: ../plugins/openbox.c:455
+msgid "Duplicate <keyboard> section in the rc.xml file."
+msgstr ""
+
+#: ../plugins/openbox.c:480 ../plugins/openbox.c:486 ../plugins/openbox.c:721
+msgid "Internal error."
+msgstr ""
+
+#: ../plugins/openbox.c:529
+msgid "rc.xml error: no key is set for a keybind."
+msgstr ""
+
+#: ../plugins/openbox.c:600
+msgid "Invalid rc.xml: action with a sub-action."
+msgstr ""
+
+#: ../plugins/openbox.c:710
+msgid "rc.xml error: no name is set for action."
+msgstr ""
+
+#: ../plugins/openbox.c:740
+#, c-format
+msgid "rc.xml error: empty tag <%s> is prohibited."
+msgstr ""
+
+#: ../plugins/openbox.c:829
+msgid "Could not find the rc.xml file anywhere."
+msgstr ""
+
+#: ../plugins/openbox.c:875 ../plugins/openbox.c:988 ../plugins/openbox.c:1132
+#: ../plugins/openbox.c:1150
+msgid "No WM configuration is available."
+msgstr ""
+
+#: ../plugins/openbox.c:992
+msgid "Keybinding should activate at least one action."
+msgstr ""
+
+#: ../plugins/openbox.c:1014 ../plugins/openbox.c:1024
+#: ../plugins/openbox.c:1176 ../plugins/openbox.c:1186
+#, c-format
+msgid "Hotkey '%s' is already bound to an action."
+msgstr ""
+
+#: ../plugins/openbox.c:1154
+msgid "The exec line cannot be empty."
 msgstr ""

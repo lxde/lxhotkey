@@ -26,3 +26,5 @@ po/POTFILES
 *.lo
 *.la
 lxkeys
+*.pc
+*.tar.xz

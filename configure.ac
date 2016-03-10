@@ -60,6 +60,9 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
+dnl Test for libunistring for correct UTF-8 printf
+AC_CHECK_LIB(unistring, ulc_fprintf)
+
 dnl Fix invalid sysconfdir when --prefix=/usr
 if test `eval "echo $sysconfdir"` = /usr/etc
 then
@@ -69,6 +72,7 @@ fi
 dnl Finish all
 AC_CONFIG_FILES([
     Makefile
+    lxkeys.pc
     src/Makefile
     plugins/Makefile
     po/Makefile.in

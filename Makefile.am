@@ -2,6 +2,9 @@
 
 ACLOCAL_AMFLAGS= -I m4
 
-SUBDIRS = plugins src po
+SUBDIRS = src plugins po
 
-EXTRA_DIST = autogen.sh
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = lxkeys.pc
+
+EXTRA_DIST = autogen.sh lxkeys.pc.in

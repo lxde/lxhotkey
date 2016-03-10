@@ -25,36 +25,73 @@
 
 G_BEGIN_DECLS
 
-/* data for actions and options */
+/**
+ * LXKeysAttr:
+ * @name: action or option name
+ * @values: (element-type char *): option value
+ * @subopts: (element-type LXKeysAttr): (allow-none): list of suboptions
+ * @has_actions: %TRUE if @subopts contains actions, %FALSE if @subopts contains options
+ *
+ * Data descriptor for actions and options. Actions are ativated by keybinding.
+ * Each action may contain arbitrary number of options that alter its execution.
+ *
+ * This data is also used in a result on LXKeysPluginInit:get_wm_actions() or
+ * LXKeysPluginInit:get_app_options() call. In that case for each option the
+ * @values list should be either %NULL if option accepts any value, or list of
+ * acceptable values for the option ("#" value has a special meaning: integer
+ * value matches it, the same as "%" for percent value). For such purpose it is
+ * advisable to make @name and @values translateable constants because GUI might
+ * represent them in target locale which might be convenient for users.
+ */
 typedef struct {
-    gchar *name; /* action or option name */
-    GList *values; /* elements are char*, multiple only for get_wm_actions() */
-    GList *subopts; /* elements are LXKeysAttr */
-    gboolean has_actions; /* TRUE if option contains actions instead of subopts */
+    gchar *name;
+    GList *values;
+    GList *subopts;
+    gboolean has_actions;
 } LXKeysAttr;
 
-/* data containing action(s), description, and key(s) */
+/**
+ * LXKeysGlobal:
+ * @actions: (element-type LXKeysAttr): list of actions
+ * @accel1: a keybinding to activate @actions, in GDK accelerator format
+ * @accel2: optional alternate keybinding to activate @actions
+ * @data1: a pointer for using by WM plugin
+ * @data2: a pointer for using by WM plugin
+ *
+ * Descriptor of a keybinding which isn't a single command line action.
+ * The keybinding string is in format that looks like "<Control>a" or
+ * "<Shift><Alt>F1" or "<Release>z" (note that not each WM supports last one
+ * variant).
+ */
 typedef struct {
-    GList *actions; /* elements are LXKeysAttr, no value usually */
+    GList *actions;
     gchar *accel1;
     gchar *accel2;
+    gpointer data1;
+    gpointer data2;
 } LXKeysGlobal;
 
-/* data containing exec line, description, and key(s)
-   only for single-exec commands, multiple-action exec are handled as global */
+/**
+ * LXKeysApp:
+ * @exec: a command line to execute
+ * @actions: (element-type LXKeysAttr): (allow-none): list of options
+ * @accel1: a keybinding to activate @exec, in GDK accelerator format
+ * @accel2: optional alternate keybinding to activate @exec
+ * @data1: a pointer for using by WM plugin
+ * @data2: a pointer for using by WM plugin
+ *
+ * Descriptor of a keybinding for a single command line action. The command
+ * execution may be altered by some @options. See also #LXKeysGlobal.
+ */
 typedef struct {
     gchar *exec;
-    GList *actions; /* elements are LXKeysAttr, empty value acceptable */
+    GList *options;
     gchar *accel1;
     gchar *accel2;
+    gpointer data1;
+    gpointer data2;
 } LXKeysApp;
 
-/* for errors */
-extern GQuark LXKEYS_ERROR;
-typedef enum {
-    LXKEYS_BAD_ARGS, /* invalid commandline arguments */
-    LXKEYS_NOT_SUPPORTED /* operation not supported */
-} LXKeysError;
 
 /* WM support plugins */
 
@@ -70,7 +107,17 @@ typedef enum {
  * @get_wm_actions: (allow-none): callback to get global actions list provided by WM
  * @get_app_keys: (allow-none): callback to get keys bound to commands
  * @set_app_key: (allow-none): callback to set a key for a command
- * @get_app_actions: (allow-none): callback to get possible actions for commands
+ * @get_app_options: (allow-none): callback to get possible actions for commands
+ *
+ * Callbacks @get_wm_keys and @get_app_keys return list which should be freed
+ * by caller (transfer container).
+ * Callbacks @get_wm_actions and @get_app_actions return list that should be
+ * not modified nor freed by caller (transfer none).
+ * Callback @get_wm_keys returns list of keybindings by @mask which is a shell
+ * style pattern for keys.
+ * Callback @set_wm_key changes a keybinding for list of actions provided. If
+ * @data::accel1 is %NULL then all keybindings for @data::actions will be
+ * cleared, otherwise keybindings will be changed accordingly.
  */
 typedef struct {
     /*< public >*/
@@ -82,7 +129,7 @@ typedef struct {
     GList *(*get_wm_actions)(gpointer config, GError **error);
     GList *(*get_app_keys)(gpointer config, const char *mask, GError **error);
     gboolean (*set_app_key)(gpointer config, LXKeysApp *data, GError **error);
-    GList *(*get_app_actions)(gpointer config, GError **error);
+    GList *(*get_app_options)(gpointer config, GError **error);
     /*< private >*/
     gpointer _reserved1;
     gpointer _reserved2;
@@ -117,12 +164,13 @@ typedef struct {
  */
 extern LXKeysPluginInit fm_module_init_lxkeys;
 
+
 /* GUI plugins */
 
 #define FM_MODULE_lxkeys_gui_VERSION 1 /* version of this API */
 
 /**
- * LXKeysPluginInit:
+ * LXKeysGUIPluginInit:
  * @run: callback to run GUI
  * @alert: callback to show an error message
  *
@@ -139,6 +187,10 @@ typedef struct {
     gpointer _reserved3;
 } LXKeysGUIPluginInit;
 
+/**
+ * This descriptor instance should be defined in each plugin code as main
+ * entry point for a GUI plugin creation.
+ */
 extern LXKeysGUIPluginInit fm_module_init_lxkeys_gui;
 
 G_END_DECLS
