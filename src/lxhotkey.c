@@ -245,7 +245,7 @@ static GList *actions_from_str(const char *line, GError **error)
     LXHotkeyAttr *data = NULL, *attr = NULL;
     GList *list;
 
-    data = g_new0(LXHotkeyAttr, 1);
+    data = lxhotkey_attr_new();
     list = g_list_prepend(NULL, data);
     for (; *line; line++) {
         switch (*line) {
@@ -278,7 +278,7 @@ static GList *actions_from_str(const char *line, GError **error)
             } else /* got value for the action */
                 data->values = g_list_prepend(NULL, g_strdup(str->str));
             g_string_truncate(str, 0);
-            attr = g_new0(LXHotkeyAttr, 1);
+            attr = lxhotkey_attr_new();
             data->subopts = g_list_prepend(data->subopts, attr);
             break;
         case '&':
@@ -298,7 +298,7 @@ static GList *actions_from_str(const char *line, GError **error)
             g_string_truncate(str, 0);
             attr = NULL; /* previous action just finished */
             data->subopts = g_list_reverse(data->subopts);
-            data = g_new0(LXHotkeyAttr, 1);
+            data = lxhotkey_attr_new();
             list = g_list_prepend(list, data);
             break;
         case '\\':

@@ -922,7 +922,7 @@ static FmXmlFileItem *make_new_xml_item(ObXmlFile *cfg, LXHotkeyAttr *opt,
     }
     if (opts != NULL) {
         /* make a copy if requested */
-        act = g_new0(LXHotkeyAttr, 1);
+        act = lxhotkey_attr_new();
         act->name = g_strdup(opt->name);
         if (opt->values)
             act->values = g_list_prepend(NULL, g_strdup(opt->values->data));
