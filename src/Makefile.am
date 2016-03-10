@@ -3,10 +3,10 @@
 bin_PROGRAMS = lxkeys
 
 lxkeys_CPPFLAGS = \
-        -I$(top_srcdir) \
-        -DPACKAGE_PLUGINS_DIR=\""$(libdir)/lxkeys"\" \
-        -DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-        $(PACKAGE_CFLAGS)
+	-I$(top_srcdir) \
+	-DPACKAGE_PLUGINS_DIR=\""$(libdir)/lxkeys"\" \
+	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	$(PACKAGE_CFLAGS)
 
 lxkeys_SOURCES = lxkeys.c
 
