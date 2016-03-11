@@ -13,7 +13,6 @@ Vcs-Git: git://git.lxde.org/git/debian/lxhotkey.git
 
 Package: lxhotkey-core
 Architecture: any
-Multi-Arch: same
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Recommends: lxhotkey-gui, lxhotkey-plugin-openbox
 Description: Lightweight global keyboard shortcuts configurator
@@ -27,7 +26,6 @@ Description: Lightweight global keyboard shortcuts configurator
 
 Package: lxhotkey-plugin-openbox
 Architecture: any
-Multi-Arch: same
 Depends: ${misc:Depends}, ${shlibs:Depends}, lxhotkey-core
 Enhances: openbox
 Description: LXHotkey keyboard shortcuts configurator (Openbox support plugin)
@@ -40,7 +38,6 @@ Description: LXHotkey keyboard shortcuts configurator (Openbox support plugin)
 
 Package: lxhotkey-dev
 Architecture: any
-Multi-Arch: same
 Depends:
  ${misc:Depends}, lxhotkey-core (= ${binary:Version}), libfm-dev (>= 1.2.0)
 Description: LXHotkey keyboard shortcuts configurator (development files)
