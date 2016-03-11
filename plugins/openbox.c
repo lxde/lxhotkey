@@ -224,17 +224,17 @@ static gboolean restart_openbox(GError **error)
 static char * values_enabled[] = { N_("yes"), N_("no"), NULL };
 
 static LXHotkeyAttr options_startupnotify[] = {
-    { N_("enabled"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("wmclass"), NULL, NULL, FALSE },
-    { N_("name"), NULL, NULL, FALSE },
-    { N_("icon"), NULL, NULL, FALSE },
+    { N_("enabled"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("wmclass"), NULL, NULL, NULL, FALSE },
+    { N_("name"), NULL, NULL, NULL, FALSE },
+    { N_("icon"), NULL, NULL, NULL, FALSE },
     { NULL }
 };
 
 static LXHotkeyAttr options_Execute[] = {
-    { N_("command"), NULL, NULL, FALSE },
-    { N_("prompt"), NULL, NULL, FALSE },
-    { N_("startupnotify"), NULL, TO_BE_CONVERTED(options_startupnotify), FALSE },
+    { N_("command"), NULL, NULL, NULL, FALSE },
+    { N_("prompt"), NULL, NULL, NULL, FALSE },
+    { N_("startupnotify"), NULL, TO_BE_CONVERTED(options_startupnotify), NULL, FALSE },
     { NULL }
 };
 
@@ -243,30 +243,30 @@ static char * values_monitor[] = { N_("default"), N_("primary"), N_("mouse"),
                                    N_("active"), N_("all"), "#", NULL };
 
 static LXHotkeyAttr options_position[] = {
-    { "x", TO_BE_CONVERTED(values_x), NULL, FALSE },
-    { "y", TO_BE_PREVIOUS, NULL, FALSE },
-    { N_("monitor"), TO_BE_CONVERTED(values_monitor), NULL, FALSE },
+    { "x", TO_BE_CONVERTED(values_x), NULL, NULL, FALSE },
+    { "y", TO_BE_PREVIOUS, NULL, NULL, FALSE },
+    { N_("monitor"), TO_BE_CONVERTED(values_monitor), NULL, NULL, FALSE },
     { NULL }
 };
 
 static LXHotkeyAttr options_ShowMenu[] = {
-    { N_("menu"), NULL, NULL, FALSE },
-    { N_("position"), NULL, TO_BE_CONVERTED(options_position), FALSE },
+    { N_("menu"), NULL, NULL, NULL, FALSE },
+    { N_("position"), NULL, TO_BE_CONVERTED(options_position), NULL, FALSE },
     { NULL }
 };
 
 static char * values_dialog[] = { N_("list"), N_("icons"), N_("none"), NULL };
 
 static LXHotkeyAttr options_NextWindow[] = {
-    { N_("dialog"), TO_BE_CONVERTED(values_dialog), NULL, FALSE },
-    { N_("bar"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("raise"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("allDesktops"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("panels"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("desktop"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("linear"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("interactive"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("finalactions"), NULL, NULL, TRUE },
+    { N_("dialog"), TO_BE_CONVERTED(values_dialog), NULL, NULL, FALSE },
+    { N_("bar"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("raise"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("allDesktops"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("panels"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("desktop"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("linear"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("interactive"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("finalactions"), NULL, NULL, NULL, TRUE },
     { NULL }
 };
 
@@ -275,13 +275,13 @@ static char * values_direction[] = { N_("north"), N_("northeast"), N_("east"),
                                      N_("west"), N_("northwest"), NULL };
 
 static LXHotkeyAttr options_DirectionalCycleWindows[] = {
-    { N_("direction"), TO_BE_CONVERTED(values_direction), NULL, FALSE },
-    { N_("dialog"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("bar"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("raise"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("panels"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("desktops"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("finalactions"), NULL, NULL, TRUE },
+    { N_("direction"), TO_BE_CONVERTED(values_direction), NULL, NULL, FALSE },
+    { N_("dialog"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("bar"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("raise"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("panels"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("desktops"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("finalactions"), NULL, NULL, NULL, TRUE },
     { NULL }
 };
 
@@ -291,32 +291,32 @@ static char * values_to[] = { "#",  N_("current"), N_("next"), N_("previous"),
                               N_("right"), NULL };
 
 static LXHotkeyAttr options_GoToDesktop[] = {
-    { N_("to"), TO_BE_CONVERTED(values_to), NULL, FALSE },
-    { N_("wrap"), BOOLEAN_VALUES, NULL, FALSE },
+    { N_("to"), TO_BE_CONVERTED(values_to), NULL, NULL, FALSE },
+    { N_("wrap"), BOOLEAN_VALUES, NULL, NULL, FALSE },
     { NULL }
 };
 
 static char * values_where[] = { N_("current"), N_("last"), NULL };
 
 static LXHotkeyAttr options_AddDesktop[] = {
-    { N_("where"), TO_BE_CONVERTED(values_where), NULL, FALSE },
+    { N_("where"), TO_BE_CONVERTED(values_where), NULL, NULL, FALSE },
     { NULL }
 };
 
 static LXHotkeyAttr options_Restart[] = {
-    { N_("command"), NULL, NULL, FALSE },
+    { N_("command"), NULL, NULL, NULL, FALSE },
     { NULL }
 };
 
 static LXHotkeyAttr options_Exit[] = {
-    { N_("prompt"), BOOLEAN_VALUES, NULL, FALSE },
+    { N_("prompt"), BOOLEAN_VALUES, NULL, NULL, FALSE },
     { NULL }
 };
 
 static char * values_directionM[] = { N_("both"), N_("horizontal"), N_("vertical"), NULL };
 
 static LXHotkeyAttr options_ToggleMaximize[] = {
-    { N_("direction"), TO_BE_CONVERTED(values_directionM), NULL, FALSE },
+    { N_("direction"), TO_BE_CONVERTED(values_directionM), NULL, NULL, FALSE },
     { NULL }
 };
 
@@ -326,9 +326,9 @@ static char * values_toS[] = { "#", N_("current"), N_("next"), N_("previous"),
                                N_("right"), NULL };
 
 static LXHotkeyAttr options_SendToDesktop[] = {
-    { N_("to"), TO_BE_CONVERTED(values_toS), NULL, FALSE },
-    { N_("wrap"), BOOLEAN_VALUES, NULL, FALSE },
-    { N_("follow"), BOOLEAN_VALUES, NULL, FALSE },
+    { N_("to"), TO_BE_CONVERTED(values_toS), NULL, NULL, FALSE },
+    { N_("wrap"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { N_("follow"), BOOLEAN_VALUES, NULL, NULL, FALSE },
     { NULL }
 };
 
@@ -337,7 +337,7 @@ static char * values_edge[] = { N_("top"), N_("left"), N_("right"), N_("bottom")
                                 N_("bottomright"), NULL };
 
 static LXHotkeyAttr options_Resize[] = {
-    { N_("edge"), TO_BE_CONVERTED(values_edge), NULL, FALSE },
+    { N_("edge"), TO_BE_CONVERTED(values_edge), NULL, NULL, FALSE },
     { NULL }
 };
 
@@ -346,94 +346,94 @@ static char * values_width[] = { "#", "%", N_("current"), NULL };
 static char * values_monitorM[] = { "#", N_("current"), N_("all"), N_("next"), N_("prev"), NULL };
 
 static LXHotkeyAttr options_MoveResizeTo[] = {
-    { "x", TO_BE_CONVERTED(values_xM), NULL, FALSE },
-    { "y", TO_BE_PREVIOUS, NULL, FALSE },
-    { N_("width"), TO_BE_CONVERTED(values_width), NULL, FALSE },
-    { N_("height"), TO_BE_PREVIOUS, NULL, FALSE },
-    { N_("monitor"), TO_BE_CONVERTED(values_monitorM), NULL, FALSE },
+    { "x", TO_BE_CONVERTED(values_xM), NULL, NULL, FALSE },
+    { "y", TO_BE_PREVIOUS, NULL, NULL, FALSE },
+    { N_("width"), TO_BE_CONVERTED(values_width), NULL, NULL, FALSE },
+    { N_("height"), TO_BE_PREVIOUS, NULL, NULL, FALSE },
+    { N_("monitor"), TO_BE_CONVERTED(values_monitorM), NULL, NULL, FALSE },
     { NULL }
 };
 
 static char * values_xR[] = { "#", NULL };
 
 static LXHotkeyAttr options_MoveRelative[] = {
-    { "x", TO_BE_CONVERTED(values_xR), NULL, FALSE },
-    { "y", TO_BE_PREVIOUS, NULL, FALSE },
+    { "x", TO_BE_CONVERTED(values_xR), NULL, NULL, FALSE },
+    { "y", TO_BE_PREVIOUS, NULL, NULL, FALSE },
     { NULL }
 };
 
 static char * values_xRR[] = { "#", NULL };
 
 static LXHotkeyAttr options_ResizeRelative[] = {
-    { N_("left"), TO_BE_CONVERTED(values_xRR), NULL, FALSE },
-    { N_("right"), TO_BE_PREVIOUS, NULL, FALSE },
-    { N_("top"), TO_BE_PREVIOUS, NULL, FALSE },
-    { N_("bottom"), TO_BE_PREVIOUS, NULL, FALSE },
+    { N_("left"), TO_BE_CONVERTED(values_xRR), NULL, NULL, FALSE },
+    { N_("right"), TO_BE_PREVIOUS, NULL, NULL, FALSE },
+    { N_("top"), TO_BE_PREVIOUS, NULL, NULL, FALSE },
+    { N_("bottom"), TO_BE_PREVIOUS, NULL, NULL, FALSE },
     { NULL }
 };
 
 static char * values_directionE[] = { N_("north"), N_("south"), N_("west"), N_("east"), NULL };
 
 static LXHotkeyAttr options_MoveToEdge[] = {
-    { N_("direction"), TO_BE_CONVERTED(values_directionE), NULL, FALSE },
+    { N_("direction"), TO_BE_CONVERTED(values_directionE), NULL, NULL, FALSE },
     { NULL }
 };
 
 static char * values_layer[] = { N_("top"), N_("normal"), N_("bottom"), NULL };
 
 static LXHotkeyAttr options_SendToLayer[] = {
-    { N_("layer"), TO_BE_CONVERTED(values_layer), NULL, FALSE },
+    { N_("layer"), TO_BE_CONVERTED(values_layer), NULL, NULL, FALSE },
     { NULL }
 };
 
 static LXHotkeyAttr list_actions[] = {
     /* global actions */
-    { N_("Execute"), NULL, TO_BE_CONVERTED(options_Execute), FALSE },
-    { N_("ShowMenu"), NULL, TO_BE_CONVERTED(options_ShowMenu), FALSE },
-    { N_("NextWindow"), NULL, TO_BE_CONVERTED(options_NextWindow), FALSE },
-    { N_("PreviousWindow"), NULL, TO_BE_PREVIOUS, FALSE },
-    { N_("DirectionalCycleWindows"), NULL, TO_BE_CONVERTED(options_DirectionalCycleWindows), FALSE },
-    { N_("DirectionalTargetWindow"), NULL, TO_BE_PREVIOUS, FALSE },
-    { N_("GoToDesktop"), NULL, TO_BE_CONVERTED(options_GoToDesktop), FALSE },
-    { N_("AddDesktop"), NULL, TO_BE_CONVERTED(options_AddDesktop), FALSE },
-    { N_("RemoveDesktop"), NULL, TO_BE_PREVIOUS, FALSE },
-    { N_("ToggleDockAutohide"), NULL, NULL, FALSE },
-    { N_("Reconfigure"), NULL, NULL, FALSE },
-    { N_("Restart"), NULL, TO_BE_CONVERTED(options_Restart), FALSE },
-    { N_("Exit"), NULL, TO_BE_CONVERTED(options_Exit), FALSE },
+    { N_("Execute"), NULL, TO_BE_CONVERTED(options_Execute), NULL, FALSE },
+    { N_("ShowMenu"), NULL, TO_BE_CONVERTED(options_ShowMenu), NULL, FALSE },
+    { N_("NextWindow"), NULL, TO_BE_CONVERTED(options_NextWindow), NULL, FALSE },
+    { N_("PreviousWindow"), NULL, TO_BE_PREVIOUS, NULL, FALSE },
+    { N_("DirectionalCycleWindows"), NULL, TO_BE_CONVERTED(options_DirectionalCycleWindows), NULL, FALSE },
+    { N_("DirectionalTargetWindow"), NULL, TO_BE_PREVIOUS, NULL, FALSE },
+    { N_("GoToDesktop"), NULL, TO_BE_CONVERTED(options_GoToDesktop), NULL, FALSE },
+    { N_("AddDesktop"), NULL, TO_BE_CONVERTED(options_AddDesktop), NULL, FALSE },
+    { N_("RemoveDesktop"), NULL, TO_BE_PREVIOUS, NULL, FALSE },
+    { N_("ToggleDockAutohide"), NULL, NULL, NULL, FALSE },
+    { N_("Reconfigure"), NULL, NULL, NULL, FALSE },
+    { N_("Restart"), NULL, TO_BE_CONVERTED(options_Restart), NULL, FALSE },
+    { N_("Exit"), NULL, TO_BE_CONVERTED(options_Exit), NULL, FALSE },
     /* windows actions */
-    { N_("Focus"), NULL, NULL, FALSE },
-    { N_("Raise"), NULL, NULL, FALSE },
-    { N_("Lower"), NULL, NULL, FALSE },
-    { N_("RaiseLower"), NULL, NULL, FALSE },
-    { N_("Unfocus"), NULL, NULL, FALSE },
-    { N_("FocusToBottom"), NULL, NULL, FALSE },
-    { N_("Iconify"), NULL, NULL, FALSE },
-    { N_("Close"), NULL, NULL, FALSE },
-    { N_("ToggleShade"), NULL, NULL, FALSE },
-    { N_("Shade"), NULL, NULL, FALSE },
-    { N_("Unshade"), NULL, NULL, FALSE },
-    { N_("ToggleOmnipresent"), NULL, NULL, FALSE },
-    { N_("ToggleMaximize"), NULL, TO_BE_CONVERTED(options_ToggleMaximize), FALSE },
-    { N_("Maximize"), NULL, TO_BE_PREVIOUS, FALSE },
-    { N_("Unmaximize"), NULL, TO_BE_PREVIOUS, FALSE },
-    { N_("ToggleFullscreen"), NULL, NULL, FALSE },
-    { N_("ToggleDecorations"), NULL, NULL, FALSE },
-    { N_("Decorate"), NULL, NULL, FALSE },
-    { N_("Undecorate"), NULL, NULL, FALSE },
-    { N_("SendToDesktop"), NULL, TO_BE_CONVERTED(options_SendToDesktop), FALSE },
-    { N_("Move"), NULL, NULL, FALSE },
-    { N_("Resize"), NULL, TO_BE_CONVERTED(options_Resize), FALSE },
-    { N_("MoveResizeTo"), NULL, TO_BE_CONVERTED(options_MoveResizeTo), FALSE },
-    { N_("MoveRelative"), NULL, TO_BE_CONVERTED(options_MoveRelative), FALSE },
-    { N_("ResizeRelative"), NULL, TO_BE_CONVERTED(options_ResizeRelative), FALSE },
-    { N_("MoveToEdge"), NULL, TO_BE_CONVERTED(options_MoveToEdge), FALSE },
-    { N_("GrowToEdge"), NULL, TO_BE_PREVIOUS, FALSE },
-    { N_("ShrinkToEdge"), NULL, TO_BE_PREVIOUS, FALSE },
-    { N_("GrowToFill"), NULL, NULL, FALSE },
-    { N_("ToggleAlwaysOnTop"), NULL, NULL, FALSE },
-    { N_("ToggleAlwaysOnBottom"), NULL, NULL, FALSE },
-    { N_("SendToLayer"), NULL, TO_BE_CONVERTED(options_SendToLayer), FALSE },
+    { N_("Focus"), NULL, NULL, NULL, FALSE },
+    { N_("Raise"), NULL, NULL, NULL, FALSE },
+    { N_("Lower"), NULL, NULL, NULL, FALSE },
+    { N_("RaiseLower"), NULL, NULL, NULL, FALSE },
+    { N_("Unfocus"), NULL, NULL, NULL, FALSE },
+    { N_("FocusToBottom"), NULL, NULL, NULL, FALSE },
+    { N_("Iconify"), NULL, NULL, NULL, FALSE },
+    { N_("Close"), NULL, NULL, NULL, FALSE },
+    { N_("ToggleShade"), NULL, NULL, NULL, FALSE },
+    { N_("Shade"), NULL, NULL, NULL, FALSE },
+    { N_("Unshade"), NULL, NULL, NULL, FALSE },
+    { N_("ToggleOmnipresent"), NULL, NULL, NULL, FALSE },
+    { N_("ToggleMaximize"), NULL, TO_BE_CONVERTED(options_ToggleMaximize), NULL, FALSE },
+    { N_("Maximize"), NULL, TO_BE_PREVIOUS, NULL, FALSE },
+    { N_("Unmaximize"), NULL, TO_BE_PREVIOUS, NULL, FALSE },
+    { N_("ToggleFullscreen"), NULL, NULL, NULL, FALSE },
+    { N_("ToggleDecorations"), NULL, NULL, NULL, FALSE },
+    { N_("Decorate"), NULL, NULL, NULL, FALSE },
+    { N_("Undecorate"), NULL, NULL, NULL, FALSE },
+    { N_("SendToDesktop"), NULL, TO_BE_CONVERTED(options_SendToDesktop), NULL, FALSE },
+    { N_("Move"), NULL, NULL, NULL, FALSE },
+    { N_("Resize"), NULL, TO_BE_CONVERTED(options_Resize), NULL, FALSE },
+    { N_("MoveResizeTo"), NULL, TO_BE_CONVERTED(options_MoveResizeTo), NULL, FALSE },
+    { N_("MoveRelative"), NULL, TO_BE_CONVERTED(options_MoveRelative), NULL, FALSE },
+    { N_("ResizeRelative"), NULL, TO_BE_CONVERTED(options_ResizeRelative), NULL, FALSE },
+    { N_("MoveToEdge"), NULL, TO_BE_CONVERTED(options_MoveToEdge), NULL, FALSE },
+    { N_("GrowToEdge"), NULL, TO_BE_PREVIOUS, NULL, FALSE },
+    { N_("ShrinkToEdge"), NULL, TO_BE_PREVIOUS, NULL, FALSE },
+    { N_("GrowToFill"), NULL, NULL, NULL, FALSE },
+    { N_("ToggleAlwaysOnTop"), NULL, NULL, NULL, FALSE },
+    { N_("ToggleAlwaysOnBottom"), NULL, NULL, NULL, FALSE },
+    { N_("SendToLayer"), NULL, TO_BE_CONVERTED(options_SendToLayer), NULL, FALSE },
     // FIXME: support for If/ForEach/Stop ?
     { NULL }
 };

@@ -58,6 +58,7 @@ static void lkxeys_attr_free(LXHotkeyAttr *data)
     g_free(data->name);
     g_list_free_full(data->values, g_free);
     free_actions(data->subopts);
+    g_free(data->desc);
     g_slice_free(LXHotkeyAttr, data);
 }
 
@@ -419,10 +420,10 @@ static void print_suboptions(GList *sub, int indent)
     while (sub) {
         LXHotkeyAttr *action = sub->data;
         if (action->values && action->values->data)
-            printf("%*s%s=%s\n", indent, "", _(action->name),
-                                  _(action->values->data));
+            printf("%*s%s=%s\n", indent, "", action->name,
+                                  action->values->data);
         else
-            printf("%*s%s\n", indent, "", _(action->name));
+            printf("%*s%s\n", indent, "", action->name);
         print_suboptions(action->subopts, indent);
         sub = sub->next;
     }
@@ -557,12 +558,12 @@ int main(int argc, char *argv[])
                 {
                     action = act->data;
                     if (act != data->actions)
-                        printf("+ %s\n", _(action->name));
+                        printf("+ %s\n", action->name);
                     else if (data->accel2)
-                        ulc_printf("%-24s %s %s\n", _(action->name), data->accel1,
+                        ulc_printf("%-24s %s %s\n", action->name, data->accel1,
                                                     data->accel2);
                     else
-                        ulc_printf("%-24s %s\n", _(action->name), data->accel1);
+                        ulc_printf("%-24s %s\n", action->name, data->accel1);
                     print_suboptions(action->subopts, 0);
                 }
             }

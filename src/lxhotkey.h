@@ -30,6 +30,7 @@ G_BEGIN_DECLS
  * @name: action or option name
  * @values: (element-type char *): option value
  * @subopts: (element-type LXHotkeyAttr): (allow-none): list of suboptions
+ * @desc: (allow-none): action or option description
  * @has_actions: %TRUE if @subopts contains actions, %FALSE if @subopts contains options
  *
  * Data descriptor for actions and options. Actions are ativated by keybinding.
@@ -42,11 +43,16 @@ G_BEGIN_DECLS
  * value matches it, the same as "%" for percent value). For such purpose it is
  * advisable to make @name and @values translateable constants because GUI might
  * represent them in target locale which might be convenient for users.
+ *
+ * The @desc appears in data returned by LXHotkeyPluginInit:get_wm_actions() or
+ * LXHotkeyPluginInit:get_app_options() call, it has human-readable descriptions
+ * for option or action which can be used in GUI tooltip.
  */
 typedef struct {
     gchar *name;
     GList *values;
     GList *subopts;
+    gchar *desc;
     gboolean has_actions;
 } LXHotkeyAttr;
 
