@@ -184,7 +184,6 @@ static gboolean restart_openbox(GError **error)
 {
     Display *dpy = XOpenDisplay(NULL);
     XEvent ce;
-    Status st;
     gboolean ret = TRUE;
 
     ce.xclient.type = ClientMessage;
@@ -197,14 +196,13 @@ static gboolean restart_openbox(GError **error)
     ce.xclient.data.l[2] = 0;
     ce.xclient.data.l[3] = 0;
     ce.xclient.data.l[4] = 0;
-    if (ce.xclient.message_type == None) {
+    if (ce.xclient.message_type == None ||
+        XSendEvent(dpy, ce.xclient.window, False,
+                   SubstructureNotifyMask | SubstructureRedirectMask, &ce) == 0) {
         g_set_error_literal(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
                             _("Failed to reconfigure Openbox."));
         ret = FALSE;
-    } else
-        st = XSendEvent(dpy, ce.xclient.window, False,
-                        SubstructureNotifyMask | SubstructureRedirectMask, &ce);
-        // FIXME: inspect status!
+    }
     XCloseDisplay(dpy);
     return ret;
 }
