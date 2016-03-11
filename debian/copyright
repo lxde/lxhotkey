@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: LXKeys
+Upstream-Name: LXHotkey
 Upstream-Contact: lxde-list@lists.sourceforge.net
-Source: 
+Source: https://sourceforge.net/projects/lxde/files/
 
 Files: *
 Copyright: 2016 Andriy Grytsenko (LStranger) <andrej@rep.kiev.ua>
