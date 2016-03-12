@@ -5,7 +5,8 @@ Maintainer: Debian LXDE Maintainers <pkg-lxde-maintainers@lists.alioth.debian.or
 Uploaders: Andriy Grytsenko <andrej@rep.kiev.ua>
 Build-Depends:
  debhelper (>= 9), dh-autoreconf, intltool,
- libfm-dev (>= 1.2.0), libunistring-dev, libx11-dev
+ libfm-dev (>= 1.2.0), libunistring-dev, libx11-dev,
+ libglib2.0-dev
 Standards-Version: 3.9.7
 Homepage: http://www.lxde.org/
 Vcs-Browser: http://git.lxde.org/gitweb/?p=debian/lxhotkey.git
