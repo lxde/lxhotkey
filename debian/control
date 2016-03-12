@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian LXDE Maintainers <pkg-lxde-maintainers@lists.alioth.debian.org>
 Uploaders: Andriy Grytsenko <andrej@rep.kiev.ua>
 Build-Depends:
- debhelper (>= 9), autoreconf, intltool,
+ debhelper (>= 9), dh-autoreconf, intltool,
  libfm-dev (>= 1.2.0), libunistring-dev
 Standards-Version: 3.9.7
 Homepage: http://www.lxde.org/
