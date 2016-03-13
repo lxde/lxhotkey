@@ -421,7 +421,7 @@ static void print_suboptions(GList *sub, int indent)
         LXHotkeyAttr *action = sub->data;
         if (action->values && action->values->data)
             printf("%*s%s=%s\n", indent, "", action->name,
-                                  action->values->data);
+                                 (char *)action->values->data);
         else
             printf("%*s%s\n", indent, "", action->name);
         print_suboptions(action->subopts, indent);
