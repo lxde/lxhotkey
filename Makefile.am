@@ -7,4 +7,6 @@ SUBDIRS = src plugins po
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = lxhotkey.pc
 
-EXTRA_DIST = autogen.sh lxhotkey.pc.in
+man_MANS = man/lxhotkey.1
+
+EXTRA_DIST = autogen.sh lxhotkey.pc.in man/lxhotkey.1.in

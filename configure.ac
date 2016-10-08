@@ -76,5 +76,6 @@ AC_CONFIG_FILES([
     src/Makefile
     plugins/Makefile
     po/Makefile.in
+    man/lxhotkey.1
 ])
 AC_OUTPUT

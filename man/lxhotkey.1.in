@@ -1,0 +1,44 @@
+.\" Process this file with
+.\" groff -man -Tascii lxhotkey.1
+.\"
+.TH LXHotkey 1 "March 2016" "@PACKAGE@ @VERSION@" "User Manuals"
+.SH NAME
+LXHotkey \- A lightweight global keyboard shortcuts configurator
+.SH SYNOPSIS
+.B lxhotkey
+[ command ]
+.SH DESCRIPTION
+\fBLXHotkey\fP is an universal application for the Lightweight X11 Desktop
+Environment (\fBLXDE\fP) which allows view and change global keyboard shortcuts
+for Window Manager actions, including ones to start applications.
+.SH OPTIONS
+.SS Command line interface:
+.TP 20
+.BI global " \fR[\fIaction\fR]"
+show keys bound to \fIaction\fP(s)
+.TP
+.BI global " action key"
+bind a \fIkey\fP to the \fIaction\fP
+.TP
+.BI app " \fR[\fIexec\fR]"
+show keys bound to \fIexec\fR line
+.TP
+.BI app " exec key"
+bind a \fIkey\fR to some \fIexec\fR line
+.TP
+.BI app " exec" " \-\^\-"
+unbind all keys from \fIexec\fR line
+.TP
+.BI show " key"
+show the action bound to a \fIkey\fR
+.SS Graphic interface:
+.TP 20
+.BI "\-\^\-gui=" " type"
+start with GUI of \fItype\fR
+.SH SUPPORTED WINDOW MANAGERS
+.PD 0
+.TP
+.I Openbox
+
+.SH AUTHOR
+Initial version of LXHotkey is written by Andriy Grytsenko <andrej@rep.kiev.ua>.
