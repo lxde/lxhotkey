@@ -60,6 +60,31 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
+dnl GTK+ stuff
+AC_ARG_WITH(gtk,
+    [AC_HELP_STRING([--with-gtk=VER],
+        [build 'gtk' GUI, choose GTK+ version for build])
+AC_HELP_STRING([--without-gtk],
+        [disable 'gtk' GUI build @<:@default@:>@])],
+    [ac_with_gtk="${withval}"],
+    [ac_with_gtk=no]
+)
+
+if test x"$ac_with_gtk" != xno; then
+  case "$ac_with_gtk" in
+    3|3.*)
+      pkg_modules="gtk+-3.0"
+      ;;
+    *)
+      pkg_modules="gtk+-2.0 >= 2.18.0"
+      ;;
+  esac
+  PKG_CHECK_MODULES(GTK, [$pkg_modules], [with_gtk=yes], [with_gtk=no])
+fi
+AM_CONDITIONAL(WITH_GTK, [test x$with_gtk = xyes])
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
+
 dnl Test for libunistring for correct UTF-8 printf
 AC_CHECK_LIB(unistring, ulc_fprintf)
 

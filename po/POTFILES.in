@@ -1,2 +1,3 @@
 src/lxhotkey.c
 plugins/openbox.c
+plugins/gtk.c

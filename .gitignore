@@ -28,3 +28,4 @@ po/POTFILES
 lxhotkey
 *.pc
 *.tar.xz
+man/lxhotkey.1
