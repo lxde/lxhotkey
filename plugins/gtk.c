@@ -120,8 +120,38 @@ static void on_notebook_switch_page(GtkNotebook *nb, gpointer *page, guint num,
 
 static void set_actions_list(PluginData *data)
 {
-    GtkListStore *model = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    GtkListStore *model = gtk_list_store_new(4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    GList *apps = data->cb->get_wm_keys(data->config, "*", NULL);
+    GList *l;
+    LXHotkeyGlobal *act;
+    LXHotkeyAttr *attr, *opt;
+    char *val, *_val;
+    GtkTreeIter iter;
 
+    for (l = apps; l; l = l->next)
+    {
+        act = l->data;
+        if (act->actions == NULL)
+            continue;
+        attr = act->actions->data;
+        _val = val = NULL;
+        opt = NULL;
+        if (attr->subopts)
+        {
+            opt = attr->subopts->data;
+            if (opt->values)
+                _val = val = g_strdup_printf("%s:%s", opt->name, (char *)opt->values->data);
+            else
+                val = opt->name;
+        }
+        gtk_list_store_insert_with_values(model, &iter, -1, 0, attr->name,
+                                                            1, val,
+                                                            2, act->accel1,
+                                                            3, act->accel2, -1);
+        g_free(_val);
+        //FIXME: this is a stub, it should show something better than just first action
+    }
+    g_list_free(apps);
     gtk_tree_view_set_model(GTK_TREE_VIEW(data->acts), GTK_TREE_MODEL(model));
     g_object_unref(model);
 }
@@ -212,11 +242,14 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
                                                     _("Action"), gtk_cell_renderer_text_new(),
                                                     "text", 0, NULL);
         gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 1,
-                                                    _("Hotkey 1"), gtk_cell_renderer_text_new(),
+                                                    _("Option"), gtk_cell_renderer_text_new(),
                                                     "text", 1, NULL);
         gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 2,
-                                                    _("Hotkey 2"), gtk_cell_renderer_text_new(),
+                                                    _("Hotkey 1"), gtk_cell_renderer_text_new(),
                                                     "text", 2, NULL);
+        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 3,
+                                                    _("Hotkey 2"), gtk_cell_renderer_text_new(),
+                                                    "text", 3, NULL);
         set_actions_list(&data);
         gtk_notebook_append_page(data.notebook, data.acts, gtk_label_new(_("Actions")));
     }
