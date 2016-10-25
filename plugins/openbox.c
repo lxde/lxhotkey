@@ -502,6 +502,15 @@ static FmXmlFileTag ObXmlFile_action; /* may be multiple for a binding */
 static FmXmlFileTag ObXmlFile_command; /* for <action name="Execute"> */
 static FmXmlFileTag ObXmlFile_execute; /* obsolete alias for command */
 
+static inline void clear_stack(ObXmlFile *cfg)
+{
+    while (cfg->stack != NULL) {
+        free_options(((ObActionsList *)cfg->stack->data)->list);
+        g_free(cfg->stack->data);
+        cfg->stack = g_list_delete_link(cfg->stack, cfg->stack);
+    }
+}
+
 static gboolean tag_handler_keyboard(FmXmlFileItem *item, GList *children,
                                      char * const *attribute_names,
                                      char * const *attribute_values,
@@ -536,7 +545,7 @@ static gboolean tag_handler_keybind(FmXmlFileItem *item, GList *children,
     LXHotkeyGlobal *act;
     guint i;
 
-    if (!cfg->stack || cfg->stack->next) { /* corruption! */
+    if (!cfg->stack) { /* corruption! */
         g_set_error_literal(error, LXKEYS_OB_ERROR, LXKEYS_PARSE_ERROR,
                             _("Internal error."));
         return FALSE;
@@ -550,8 +559,9 @@ static gboolean tag_handler_keybind(FmXmlFileItem *item, GList *children,
     /* just remove top stack item, all actions are already there */
     actions = oblist->list;
     g_free(oblist);
-    g_list_free(cfg->stack);
-    cfg->stack = NULL;
+    cfg->stack = g_list_delete_link(cfg->stack, cfg->stack);
+    /* and clear junk if there were actions there - e.g. from mouse section */
+    clear_stack(cfg);
     action = actions->data;
     /* decide where to put: execs or actions */
     if (children && !children->next && /* exactly one child which is an action */
@@ -752,6 +762,12 @@ static gboolean tag_handler_action(FmXmlFileItem *item, GList *children,
     GError *err = NULL;
     guint i;
 
+    /* if section keyboard already finished then ignore this */
+    if (cfg->keyboard) {
+        /* see notes in tag_handler_keyboard() as well */
+        return TRUE;
+    }
+
     /* create a LXHotkeyAttr */
     data = lxhotkey_attr_new();
     //data->has_actions = FALSE; /* action can have only options, not sub-actions! */
@@ -814,11 +830,7 @@ static void obcfg_free(gpointer config)
     g_object_unref(cfg->xml);
     g_list_free_full(cfg->actions, (GDestroyNotify)lkxeys_action_free);
     g_list_free_full(cfg->execs, (GDestroyNotify)lkxeys_app_free);
-    while (cfg->stack != NULL) {
-        free_options(((ObActionsList *)cfg->stack->data)->list);
-        g_free(cfg->stack->data);
-        cfg->stack = g_list_delete_link(cfg->stack, cfg->stack);
-    }
+    clear_stack(cfg);
     g_list_free(cfg->added_tags);
     g_free(cfg);
 }

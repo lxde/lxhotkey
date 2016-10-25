@@ -32,9 +32,10 @@ static int inited = 0;
 typedef struct {
     const gchar *wm;
     const LXHotkeyPluginInit *cb;
-    gpointer config;
+    gpointer *config;
     GtkNotebook *notebook;
     GtkWidget *acts, *apps;
+    gboolean changed;
 } PluginData;
 
 static const char menu_xml[] =
@@ -62,12 +63,28 @@ static const char menu_xml[] =
     "<toolitem action='Edit'/>"
 "</toolbar>";
 
+static void set_actions_list(PluginData *data);
+static void set_apps_list(PluginData *data);
+
 static void on_reload(GtkAction *act, PluginData *data)
 {
+    GError *error = NULL;
+
+    *data->config = data->cb->load(*data->config, &error);
+    if (error)
+    {
+        g_warning("error loading config: %s",error->message);
+        g_error_free(error);
+    }
+    set_actions_list(data);
+    set_apps_list(data);
 }
 
 static void on_save(GtkAction *act, PluginData *data)
 {
+    if (!data->changed)
+        /* nothing to save */
+        return;
 }
 
 static void on_quit(GtkAction *act, PluginData *data)
@@ -121,14 +138,14 @@ static void on_notebook_switch_page(GtkNotebook *nb, gpointer *page, guint num,
 static void set_actions_list(PluginData *data)
 {
     GtkListStore *model = gtk_list_store_new(4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
-    GList *apps = data->cb->get_wm_keys(data->config, "*", NULL);
+    GList *acts = data->cb->get_wm_keys(*data->config, "*", NULL);
     GList *l;
     LXHotkeyGlobal *act;
     LXHotkeyAttr *attr, *opt;
     char *val, *_val;
     GtkTreeIter iter;
 
-    for (l = apps; l; l = l->next)
+    for (l = acts; l; l = l->next)
     {
         act = l->data;
         if (act->actions == NULL)
@@ -151,7 +168,7 @@ static void set_actions_list(PluginData *data)
         g_free(_val);
         //FIXME: this is a stub, it should show something better than just first action
     }
-    g_list_free(apps);
+    g_list_free(acts);
     gtk_tree_view_set_model(GTK_TREE_VIEW(data->acts), GTK_TREE_MODEL(model));
     g_object_unref(model);
 }
@@ -159,7 +176,7 @@ static void set_actions_list(PluginData *data)
 static void set_apps_list(PluginData *data)
 {
     GtkListStore *model = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
-    GList *apps = data->cb->get_app_keys(data->config, "*", NULL);
+    GList *apps = data->cb->get_app_keys(*data->config, "*", NULL);
     GList *l;
     LXHotkeyApp *app;
     GtkTreeIter iter;
@@ -177,7 +194,7 @@ static void set_apps_list(PluginData *data)
 }
 
 static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
-                           gpointer config, GError **error)
+                           gpointer *config, GError **error)
 {
     GtkUIManager *ui;
     GtkActionGroup *act_grp;

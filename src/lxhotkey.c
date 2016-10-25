@@ -513,7 +513,7 @@ int main(int argc, char *argv[])
         {
             if (gui_plugin->t->init)
                 gui_plugin->t->init(argc, argv);
-            gui_plugin->t->run(wm_name, plugin->t, config, &error);
+            gui_plugin->t->run(wm_name, plugin->t, &config, &error);
         }
         else
             g_set_error(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,

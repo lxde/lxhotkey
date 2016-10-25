@@ -181,11 +181,12 @@ extern LXHotkeyPluginInit fm_module_init_lxhotkey;
  * @alert: callback to show an error message
  *
  * The @run callback receives name of WM, pointer to callbacks, and pointer to
- * the config data which is already succesfully loaded and ready to use.
+ * pointer to the config data which is already succesfully loaded and ready to
+ * use. Config may be reloaded by plugin if needed.
  */
 typedef struct {
     /*< public >*/
-    void (*run)(const gchar *wm, const LXHotkeyPluginInit *cb, gpointer config, GError **error);
+    void (*run)(const gchar *wm, const LXHotkeyPluginInit *cb, gpointer *config, GError **error);
     void (*alert)(GError *error);
     void (*init)(int argc, char **argv);
     /*< private >*/
