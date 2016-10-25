@@ -51,9 +51,9 @@ static inline LXHotkeyAttr *lxhotkey_attr_new(void)
     return g_slice_new0(LXHotkeyAttr);
 }
 
-#define free_actions(acts) g_list_free_full(acts, (GDestroyNotify)lkxeys_attr_free)
+#define free_actions(acts) g_list_free_full(acts, (GDestroyNotify)lxkeys_attr_free)
 
-static void lkxeys_attr_free(LXHotkeyAttr *data)
+static void lxkeys_attr_free(LXHotkeyAttr *data)
 {
     g_free(data->name);
     g_list_free_full(data->values, g_free);
@@ -170,6 +170,12 @@ static gchar *get_wm_info(void)
 /* test if we are called from X which is local */
 static gboolean test_X_is_local(void)
 {
+//    const char *display = g_getenv("DISPLAY");
+
+//    if (!display)
+//        return FALSE;
+//    display = strchr(display, ':');
+//    return (display && display[1] == '0');
     return TRUE; // FIXME: TODO!
 }
 
@@ -504,7 +510,11 @@ int main(int argc, char *argv[])
 
     if (do_gui) {
         if (gui_plugin && gui_plugin->t->run)
+        {
+            if (gui_plugin->t->init)
+                gui_plugin->t->init(argc, argv);
             gui_plugin->t->run(wm_name, plugin->t, config, &error);
+        }
         else
             g_set_error(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
                         _("GUI type %s currently isn't supported."), cmd);

@@ -1,3 +1,4 @@
 src/lxhotkey.c
 plugins/openbox.c
 plugins/gtk.c
+plugins/lxhotkey-gtk.desktop.in

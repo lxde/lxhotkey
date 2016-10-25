@@ -106,7 +106,7 @@ typedef struct {
 /**
  * LXHotkeyPluginInit:
  * @load: callback to (re)load bindings from WM configuration
- * @save: callback to save bindings to WM configuration
+ * @save: callback to save bindings to WM configuration and apply them
  * @free: callback to release allocated resources
  * @get_wm_keys: (allow-none): callback to get global keys by provided mask
  * @set_wm_key: (allow-none): callback to set a global key by provided data
@@ -117,7 +117,7 @@ typedef struct {
  *
  * Callbacks @get_wm_keys and @get_app_keys return list which should be freed
  * by caller (transfer container).
- * Callbacks @get_wm_actions and @get_app_actions return list that should be
+ * Callbacks @get_wm_actions and @get_app_options return list that should be
  * not modified nor freed by caller (transfer none).
  * Callback @get_wm_keys returns list of keybindings by @mask which is a shell
  * style pattern for keys.
@@ -187,6 +187,7 @@ typedef struct {
     /*< public >*/
     void (*run)(const gchar *wm, const LXHotkeyPluginInit *cb, gpointer config, GError **error);
     void (*alert)(GError *error);
+    void (*init)(int argc, char **argv);
     /*< private >*/
     gpointer _reserved1;
     gpointer _reserved2;

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-25 01:16+0300\n"
+"POT-Creation-Date: 2016-10-25 03:56+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,115 +17,115 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/lxhotkey.c:229
+#: ../src/lxhotkey.c:235
 #, c-format
 msgid "Usage: %s global [<action>]      - show keys bound to action(s)\n"
 msgstr ""
 
-#: ../src/lxhotkey.c:230
+#: ../src/lxhotkey.c:236
 #, c-format
 msgid "       %s global <action> <key>  - bind a key to the action\n"
 msgstr ""
 
-#: ../src/lxhotkey.c:231
+#: ../src/lxhotkey.c:237
 #, c-format
 msgid "       %s app [<exec>]           - show keys bound to exec line\n"
 msgstr ""
 
-#: ../src/lxhotkey.c:232
+#: ../src/lxhotkey.c:238
 #, c-format
 msgid "       %s app <exec> <key>       - bind a key to some exec line\n"
 msgstr ""
 
-#: ../src/lxhotkey.c:233
+#: ../src/lxhotkey.c:239
 #, c-format
 msgid "       %s app <exec> --          - unbind all keys from exec line\n"
 msgstr ""
 
-#: ../src/lxhotkey.c:234
+#: ../src/lxhotkey.c:240
 #, c-format
 msgid "       %s show <key>             - show the action bound to a key\n"
 msgstr ""
 
-#: ../src/lxhotkey.c:235
+#: ../src/lxhotkey.c:241
 #, c-format
 msgid "       %s --gui=<type>           - start with GUI\n"
 msgstr ""
 
-#: ../src/lxhotkey.c:330
+#: ../src/lxhotkey.c:336
 msgid "empty option name."
 msgstr ""
 
-#: ../src/lxhotkey.c:333
+#: ../src/lxhotkey.c:339
 msgid "empty action name."
 msgstr ""
 
-#: ../src/lxhotkey.c:365
+#: ../src/lxhotkey.c:371
 #, c-format
 msgid "no matching option '%s' found for action '%s'."
 msgstr ""
 
-#: ../src/lxhotkey.c:369
+#: ../src/lxhotkey.c:375
 #, c-format
 msgid "action '%s' isn't supported by WM %s."
 msgstr ""
 
-#: ../src/lxhotkey.c:386
+#: ../src/lxhotkey.c:392
 #, c-format
 msgid "value '%s' is not supported for option '%s'."
 msgstr ""
 
-#: ../src/lxhotkey.c:390
+#: ../src/lxhotkey.c:396
 #, c-format
 msgid "value '%s' is not supported for action '%s'."
 msgstr ""
 
-#: ../src/lxhotkey.c:403
+#: ../src/lxhotkey.c:409
 #, c-format
 msgid "action '%s' does not support options."
 msgstr ""
 
-#: ../src/lxhotkey.c:467
+#: ../src/lxhotkey.c:473
 #, c-format
 msgid "LXHotkey: sorry, cannot configure keys remotely.\n"
 msgstr ""
 
-#: ../src/lxhotkey.c:494
+#: ../src/lxhotkey.c:500
 #, c-format
 msgid "Window manager %s isn't supported now, sorry."
 msgstr ""
 
-#: ../src/lxhotkey.c:501
+#: ../src/lxhotkey.c:507
 msgid "Problems loading configuration: "
 msgstr ""
 
-#: ../src/lxhotkey.c:510
+#: ../src/lxhotkey.c:516
 #, c-format
 msgid "GUI type %s currently isn't supported."
 msgstr ""
 
 #. invalid request
-#: ../src/lxhotkey.c:527 ../src/lxhotkey.c:603
+#: ../src/lxhotkey.c:533 ../src/lxhotkey.c:609
 msgid "Invalid request: "
 msgstr ""
 
-#: ../src/lxhotkey.c:537 ../src/lxhotkey.c:615
+#: ../src/lxhotkey.c:543 ../src/lxhotkey.c:621
 msgid "Problems saving configuration: "
 msgstr ""
 
-#: ../src/lxhotkey.c:554
+#: ../src/lxhotkey.c:560
 msgid "ACTION(s)"
 msgstr ""
 
-#: ../src/lxhotkey.c:554 ../src/lxhotkey.c:632
+#: ../src/lxhotkey.c:560 ../src/lxhotkey.c:638
 msgid "KEY(s)"
 msgstr ""
 
-#: ../src/lxhotkey.c:632
+#: ../src/lxhotkey.c:638
 msgid "EXEC"
 msgstr ""
 
-#: ../src/lxhotkey.c:653
+#: ../src/lxhotkey.c:659
 msgid "Requested operation isn't supported."
 msgstr ""
 
@@ -660,4 +660,16 @@ msgstr ""
 #. ...
 #: ../plugins/gtk.c:170
 msgid "Programs"
+msgstr ""
+
+#: ../plugins/lxhotkey-gtk.desktop.in.h:1
+msgid "Setup Hot Keys"
+msgstr ""
+
+#: ../plugins/lxhotkey-gtk.desktop.in.h:2
+msgid "View and change Window Manager global shortcuts"
+msgstr ""
+
+#: ../plugins/lxhotkey-gtk.desktop.in.h:3
+msgid "hotkey;shortcut;system;settings;"
 msgstr ""

@@ -27,16 +27,21 @@
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 
+static int inited = 0;
+
 typedef struct {
     const gchar *wm;
     const LXHotkeyPluginInit *cb;
     gpointer config;
+    GtkNotebook *notebook;
+    GtkWidget *acts, *apps;
 } PluginData;
 
 static const char menu_xml[] =
 "<menubar>"
   "<menu action='FileMenu'>"
     "<menuitem action='Save'/>"
+    "<menuitem action='Reload'/>"
     "<menuitem action='Quit'/>"
   "</menu>"
   "<menu action='EditMenu'>"
@@ -49,12 +54,17 @@ static const char menu_xml[] =
   "</menu>"
 "</menubar>"
 "<toolbar>"
+    "<toolitem action='Reload'/>"
     "<toolitem action='Save'/>"
     "<separator/>"
     "<toolitem action='New'/>"
     "<toolitem action='Del'/>"
     "<toolitem action='Edit'/>"
 "</toolbar>";
+
+static void on_reload(GtkAction *act, PluginData *data)
+{
+}
 
 static void on_save(GtkAction *act, PluginData *data)
 {
@@ -84,12 +94,21 @@ static void on_about(GtkAction *act, PluginData *data)
 static GtkActionEntry actions[] =
 {
     { "FileMenu", NULL, N_("_File"), NULL, NULL, NULL },
-        { "Save", GTK_STOCK_SAVE, NULL, NULL, NULL, G_CALLBACK(on_save) },
-        { "Quit", GTK_STOCK_QUIT, NULL, NULL, NULL, G_CALLBACK(on_quit) },
+        { "Reload", GTK_STOCK_UNDO, N_("_Reload"), NULL,
+                    N_("Drop all unsaved changes and reload all keys from Window Manager configuration"),
+                    G_CALLBACK(on_reload) },
+        { "Save", GTK_STOCK_SAVE, NULL, NULL,
+                    N_("Save all changes and apply them to Window Manager configuration"),
+                    G_CALLBACK(on_save) },
+        { "Quit", GTK_STOCK_QUIT, NULL, NULL,
+                    N_("Exit the application without saving"), G_CALLBACK(on_quit) },
     { "EditMenu", NULL, N_("_Edit"), NULL, NULL, NULL },
-        { "New", GTK_STOCK_NEW, NULL, NULL, NULL, G_CALLBACK(on_new) },
-        { "Del", GTK_STOCK_DELETE, NULL, "", NULL, G_CALLBACK(on_del) },
-        { "Edit", GTK_STOCK_EDIT, NULL, NULL, NULL, G_CALLBACK(on_edit) },
+        { "New", GTK_STOCK_NEW, NULL, NULL, N_("Create new action"),
+                    G_CALLBACK(on_new) },
+        { "Del", GTK_STOCK_DELETE, NULL, "", N_("Remove selected action"),
+                    G_CALLBACK(on_del) },
+        { "Edit", GTK_STOCK_EDIT, NULL, NULL, N_("Change selected action"),
+                    G_CALLBACK(on_edit) },
     { "HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL },
         { "About", GTK_STOCK_ABOUT, NULL, NULL, NULL, G_CALLBACK(on_about) }
 };
@@ -97,6 +116,34 @@ static GtkActionEntry actions[] =
 static void on_notebook_switch_page(GtkNotebook *nb, gpointer *page, guint num,
                                     PluginData *data)
 {
+}
+
+static void set_actions_list(PluginData *data)
+{
+    GtkListStore *model = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+
+    gtk_tree_view_set_model(GTK_TREE_VIEW(data->acts), GTK_TREE_MODEL(model));
+    g_object_unref(model);
+}
+
+static void set_apps_list(PluginData *data)
+{
+    GtkListStore *model = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    GList *apps = data->cb->get_app_keys(data->config, "*", NULL);
+    GList *l;
+    LXHotkeyApp *app;
+    GtkTreeIter iter;
+
+    for (l = apps; l; l = l->next)
+    {
+        app = l->data;
+        gtk_list_store_insert_with_values(model, &iter, -1, 0, app->exec,
+                                                            1, app->accel1,
+                                                            2, app->accel2, -1);
+    }
+    g_list_free(apps);
+    gtk_tree_view_set_model(GTK_TREE_VIEW(data->apps), GTK_TREE_MODEL(model));
+    g_object_unref(model);
 }
 
 static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
@@ -108,12 +155,11 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
     GtkWidget *win, *menubar;
     GtkToolbar *toolbar;
     GtkBox *vbox;
-    GtkWidget *acts, *apps;
-    GtkNotebook *notebook;
     PluginData data;
-    int i = 0;
 
-    gtk_init(&i, NULL);
+    if (!inited)
+        gtk_init(&inited, NULL);
+    inited = 1;
 
     data.wm = wm;
     data.cb = cb;
@@ -149,25 +195,47 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
     gtk_box_pack_start(vbox, GTK_WIDGET(toolbar), FALSE, TRUE, 0);
 
     /* notebook - it contains two tabs: Actions and Programs */
-    notebook = (GtkNotebook*)gtk_notebook_new();
-    gtk_notebook_set_scrollable(notebook, TRUE);
-    gtk_container_set_border_width(GTK_CONTAINER(notebook), 0);
+    data.notebook = (GtkNotebook*)gtk_notebook_new();
+    gtk_notebook_set_scrollable(data.notebook, TRUE);
+    gtk_container_set_border_width(GTK_CONTAINER(data.notebook), 0);
 
-    g_signal_connect_after(notebook, "switch-page",
+    g_signal_connect_after(data.notebook, "switch-page",
                            G_CALLBACK(on_notebook_switch_page), &data);
 
-    gtk_box_pack_start(vbox, GTK_WIDGET(notebook), TRUE, TRUE, 0);
+    gtk_box_pack_start(vbox, GTK_WIDGET(data.notebook), TRUE, TRUE, 0);
 
     /* setup notebook */
-    acts = gtk_tree_view_new();
-    //...
-    
-    gtk_notebook_append_page(notebook, acts, gtk_label_new(_("Actions")));
+    if (cb->get_wm_keys)
+    {
+        data.acts = gtk_tree_view_new();
+        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 0,
+                                                    _("Action"), gtk_cell_renderer_text_new(),
+                                                    "text", 0, NULL);
+        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 1,
+                                                    _("Hotkey 1"), gtk_cell_renderer_text_new(),
+                                                    "text", 1, NULL);
+        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 2,
+                                                    _("Hotkey 2"), gtk_cell_renderer_text_new(),
+                                                    "text", 2, NULL);
+        set_actions_list(&data);
+        gtk_notebook_append_page(data.notebook, data.acts, gtk_label_new(_("Actions")));
+    }
 
-    apps = gtk_tree_view_new();
-    //...
-    
-    gtk_notebook_append_page(notebook, apps, gtk_label_new(_("Programs")));
+    if (cb->get_app_keys)
+    {
+        data.apps = gtk_tree_view_new();
+        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.apps), 0,
+                                                    _("Command"), gtk_cell_renderer_text_new(),
+                                                    "text", 0, NULL);
+        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.apps), 1,
+                                                    _("Hotkey 1"), gtk_cell_renderer_text_new(),
+                                                    "text", 1, NULL);
+        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.apps), 2,
+                                                    _("Hotkey 2"), gtk_cell_renderer_text_new(),
+                                                    "text", 2, NULL);
+        set_apps_list(&data);
+        gtk_notebook_append_page(data.notebook, data.apps, gtk_label_new(_("Programs")));
+    }
 
     /* and finally run it all */
     gtk_container_add(GTK_CONTAINER(win), GTK_WIDGET(vbox));
@@ -179,9 +247,17 @@ static void module_gtk_alert(GError *error)
 {
 }
 
+static void module_gtk_init(int argc, char **argv)
+{
+    if (!inited)
+        gtk_init(&argc, &argv);
+    inited = 1;
+}
+
 FM_DEFINE_MODULE(lxhotkey_gui, gtk)
 
 LXHotkeyGUIPluginInit fm_module_init_lxhotkey_gui = {
     .run = module_gtk_run,
-    .alert = module_gtk_alert
+    .alert = module_gtk_alert,
+    .init = module_gtk_init
 };

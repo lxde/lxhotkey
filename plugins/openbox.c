@@ -926,6 +926,8 @@ static gboolean obcfg_save(gpointer config, GError **error)
             ret = g_file_set_contents(cfg->path, contents, len, error);
         g_free(contents);
     }
+    if (ret)
+        ret = restart_openbox(error);
     return ret;
 }
 
@@ -1183,7 +1185,7 @@ _accel2_bound:
         }
         cfg->actions = g_list_prepend(cfg->actions, act);
     }
-    return restart_openbox(error);
+    return TRUE;
 }
 
 static GList *obcfg_get_app_keys(gpointer config, const char *mask, GError **error)
@@ -1347,7 +1349,7 @@ _accel2_bound:
         }
         cfg->execs = g_list_prepend(cfg->execs, app);
     }
-    return restart_openbox(error);
+    return TRUE;
 }
 
 static GList *obcfg_get_wm_actions(gpointer config, GError **error)
