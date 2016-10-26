@@ -6,7 +6,7 @@ Uploaders: Andriy Grytsenko <andrej@rep.kiev.ua>
 Build-Depends:
  debhelper (>= 9), dh-autoreconf, intltool,
  libfm-dev (>= 1.2.0), libunistring-dev, libx11-dev,
- libglib2.0-dev
+ libglib2.0-dev, libgtk2.0-dev
 Standards-Version: 3.9.7
 Homepage: http://www.lxde.org/
 Vcs-Browser: http://git.lxde.org/gitweb/?p=debian/lxhotkey.git
@@ -48,3 +48,14 @@ Description: LXHotkey keyboard shortcuts configurator (development files)
  .
  This package contains header file and dependencies required to create a
  plugin for LXHotkey.
+
+Package: lxhotkey-gtk
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, lxhotkey-core
+Provides: lxhotkey-gui
+Description: LXHotkey keyboard shortcuts configurator (GTK+ GUI plugin)
+ LXHotkey is an universal application for the Lightweight X11 Desktop
+ Environment (LXDE) which allows view and change global keyboard shortcuts
+ for Window Manager actions, including ones to start applications.
+ .
+ This package contains a GTK+ 2.0 GUI plugin.

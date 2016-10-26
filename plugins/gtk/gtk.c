@@ -41,7 +41,6 @@ typedef struct {
     GtkAction *del_action;
     GtkAction *edit_action;
     GtkTreeView *current_page;
-    gboolean changed;
 } PluginData;
 
 static const char menu_xml[] =
