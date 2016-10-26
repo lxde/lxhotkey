@@ -4,7 +4,7 @@ Icon=preferences-desktop-keyboard
 _Name=Setup Hot Keys
 _Comment=View and change Window Manager global shortcuts
 _Keywords=hotkey;shortcut;system;settings;
-Categories=SystemSettings;Settings;Core;GTK;
+Categories=DesktopSettings;Settings;Core;GTK;
 NotShowIn=GNOME;KDE;XFCE;MATE;
 Exec=lxhotkey --gui=gtk
 StartupNotify=true

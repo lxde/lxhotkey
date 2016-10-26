@@ -214,7 +214,7 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
 
     win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(win), 400, 300);
-    g_signal_connect(win, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(win, "unmap", G_CALLBACK(gtk_main_quit), NULL);
 
     vbox = (GtkBox *)gtk_vbox_new(FALSE, 0);
 

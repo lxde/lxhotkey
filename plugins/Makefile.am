@@ -18,11 +18,11 @@ pkglib_LTLIBRARIES += gtk.la
 endif
 
 ## Openbox module
-ob_la_SOURCES = openbox.c
+ob_la_SOURCES = openbox/openbox.c
 ob_la_LIBADD = -lfm-extra
 
 # GTK module
-gtk_la_SOURCES = gtk.c
+gtk_la_SOURCES = gtk/gtk.c
 gtk_la_CFLAGS = $(GTK_CFLAGS)
 gtk_la_LIBADD = $(GTK_LIBS)
 
@@ -31,13 +31,13 @@ gtk_la_LIBADD = $(GTK_LIBS)
 desktopdir=$(datadir)/applications
 desktop_in_files =
 if WITH_GTK
-desktop_in_files += lxhotkey-gtk.desktop.in
+desktop_in_files += gtk/lxhotkey-gtk.desktop.in
 endif
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
 EXTRA_DIST= \
-	lxhotkey-gtk.desktop.in lxhotkey-gtk.desktop
+	gtk/lxhotkey-gtk.desktop.in gtk/lxhotkey-gtk.desktop
 
 install-exec-hook:
 	rm -f $(DESTDIR)$(pkglibdir)/*.la
