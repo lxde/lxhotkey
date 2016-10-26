@@ -36,10 +36,11 @@ typedef struct {
     const LXHotkeyPluginInit *cb;
     gpointer *config;
     GtkNotebook *notebook;
-    GtkWidget *acts, *apps;
+    GtkTreeView *acts, *apps;
     GtkAction *save_action;
     GtkAction *del_action;
     GtkAction *edit_action;
+    GtkTreeView *current_page;
     gboolean changed;
 } PluginData;
 
@@ -172,9 +173,27 @@ static GtkActionEntry actions[] =
         { "About", GTK_STOCK_ABOUT, NULL, NULL, NULL, G_CALLBACK(on_about) }
 };
 
-static void on_notebook_switch_page(GtkNotebook *nb, gpointer *page, guint num,
+static void on_notebook_switch_page(GtkNotebook *nb, GtkTreeView *page, guint num,
                                     PluginData *data)
 {
+    gboolean has_selection;
+
+    data->current_page = page;
+    has_selection = gtk_tree_selection_get_selected(gtk_tree_view_get_selection(page), NULL, NULL);
+    gtk_action_set_sensitive(data->del_action, has_selection);
+    gtk_action_set_sensitive(data->edit_action, has_selection);
+}
+
+static void on_selection_changed(GtkTreeSelection *selection, PluginData *data)
+{
+    gboolean has_selection;
+
+    if (gtk_tree_view_get_selection(data->current_page) != selection)
+        return;
+
+    has_selection = gtk_tree_selection_get_selected(selection, NULL, NULL);
+    gtk_action_set_sensitive(data->del_action, has_selection);
+    gtk_action_set_sensitive(data->edit_action, has_selection);
 }
 
 static void set_actions_list(PluginData *data)
@@ -211,7 +230,7 @@ static void set_actions_list(PluginData *data)
         //FIXME: this is a stub, it should show something better than just first action
     }
     g_list_free(acts);
-    gtk_tree_view_set_model(GTK_TREE_VIEW(data->acts), GTK_TREE_MODEL(model));
+    gtk_tree_view_set_model(data->acts, GTK_TREE_MODEL(model));
     g_object_unref(model);
 }
 
@@ -231,7 +250,7 @@ static void set_apps_list(PluginData *data)
                                                             2, app->accel2, -1);
     }
     g_list_free(apps);
-    gtk_tree_view_set_model(GTK_TREE_VIEW(data->apps), GTK_TREE_MODEL(model));
+    gtk_tree_view_set_model(data->apps, GTK_TREE_MODEL(model));
     g_object_unref(model);
 }
 
@@ -304,37 +323,46 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
     /* setup notebook */
     if (cb->get_wm_keys)
     {
-        data.acts = gtk_tree_view_new();
-        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 0,
-                                                    _("Action"), gtk_cell_renderer_text_new(),
+        data.acts = GTK_TREE_VIEW(gtk_tree_view_new());
+        gtk_tree_view_insert_column_with_attributes(data.acts, 0, _("Action"),
+                                                    gtk_cell_renderer_text_new(),
                                                     "text", 0, NULL);
-        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 1,
-                                                    _("Option"), gtk_cell_renderer_text_new(),
+        gtk_tree_view_insert_column_with_attributes(data.acts, 1, _("Option"),
+                                                    gtk_cell_renderer_text_new(),
                                                     "text", 1, NULL);
-        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 2,
-                                                    _("Hotkey 1"), gtk_cell_renderer_text_new(),
+        gtk_tree_view_insert_column_with_attributes(data.acts, 2, _("Hotkey 1"),
+                                                    gtk_cell_renderer_text_new(),
                                                     "text", 2, NULL);
-        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.acts), 3,
-                                                    _("Hotkey 2"), gtk_cell_renderer_text_new(),
+        gtk_tree_view_insert_column_with_attributes(data.acts, 3, _("Hotkey 2"),
+                                                    gtk_cell_renderer_text_new(),
                                                     "text", 3, NULL);
         set_actions_list(&data);
-        gtk_notebook_append_page(data.notebook, data.acts, gtk_label_new(_("Actions")));
+        //FIXME: connect "row-activated" for Edit
+        g_signal_connect(gtk_tree_view_get_selection(data.acts), "changed",
+                         G_CALLBACK(on_selection_changed), &data);
+        gtk_notebook_append_page(data.notebook, GTK_WIDGET(data.acts),
+                                 gtk_label_new(_("Actions")));
+        data.current_page = data.acts;
     }
 
     if (cb->get_app_keys)
     {
-        data.apps = gtk_tree_view_new();
-        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.apps), 0,
-                                                    _("Command"), gtk_cell_renderer_text_new(),
+        data.apps = GTK_TREE_VIEW(gtk_tree_view_new());
+        gtk_tree_view_insert_column_with_attributes(data.apps, 0, _("Command"),
+                                                    gtk_cell_renderer_text_new(),
                                                     "text", 0, NULL);
-        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.apps), 1,
-                                                    _("Hotkey 1"), gtk_cell_renderer_text_new(),
+        gtk_tree_view_insert_column_with_attributes(data.apps, 1, _("Hotkey 1"),
+                                                    gtk_cell_renderer_text_new(),
                                                     "text", 1, NULL);
-        gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(data.apps), 2,
-                                                    _("Hotkey 2"), gtk_cell_renderer_text_new(),
+        gtk_tree_view_insert_column_with_attributes(data.apps, 2, _("Hotkey 2"),
+                                                    gtk_cell_renderer_text_new(),
                                                     "text", 2, NULL);
         set_apps_list(&data);
-        gtk_notebook_append_page(data.notebook, data.apps, gtk_label_new(_("Programs")));
+        //FIXME: connect "row-activated" for Edit
+        g_signal_connect(gtk_tree_view_get_selection(data.apps), "changed",
+                         G_CALLBACK(on_selection_changed), &data);
+        gtk_notebook_append_page(data.notebook, GTK_WIDGET(data.apps),
+                                 gtk_label_new(_("Programs")));
     }
 
     /* and finally run it all */
