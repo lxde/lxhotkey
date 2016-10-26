@@ -440,7 +440,7 @@ int main(int argc, char *argv[])
 {
     const char *cmd;
     gchar *wm_name;
-    LXHotkeyPlugin *plugin;
+    LXHotkeyPlugin *plugin = NULL;
     LXHotkeyGUIPlugin *gui_plugin = NULL;
     int ret = 1; /* failure */
     gpointer config = NULL;

@@ -27,6 +27,8 @@
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 
+#define LXHOTKEY_ICON "preferences-desktop-keyboard"
+
 static int inited = 0;
 
 typedef struct {
@@ -35,6 +37,9 @@ typedef struct {
     gpointer *config;
     GtkNotebook *notebook;
     GtkWidget *acts, *apps;
+    GtkAction *save_action;
+    GtkAction *del_action;
+    GtkAction *edit_action;
     gboolean changed;
 } PluginData;
 
@@ -43,6 +48,7 @@ static const char menu_xml[] =
   "<menu action='FileMenu'>"
     "<menuitem action='Save'/>"
     "<menuitem action='Reload'/>"
+    "<separator/>"
     "<menuitem action='Quit'/>"
   "</menu>"
   "<menu action='EditMenu'>"
@@ -74,17 +80,19 @@ static void on_reload(GtkAction *act, PluginData *data)
     if (error)
     {
         g_warning("error loading config: %s",error->message);
+        //FIXME: show errors instead
         g_error_free(error);
     }
     set_actions_list(data);
     set_apps_list(data);
+    gtk_action_set_sensitive(data->save_action, FALSE);
 }
 
 static void on_save(GtkAction *act, PluginData *data)
 {
-    if (!data->changed)
-        /* nothing to save */
-        return;
+    if (data->cb->save(*data->config, NULL))
+        gtk_action_set_sensitive(data->save_action, FALSE);
+    //FIXME: else show errors
 }
 
 static void on_quit(GtkAction *act, PluginData *data)
@@ -106,6 +114,40 @@ static void on_edit(GtkAction *act, PluginData *data)
 
 static void on_about(GtkAction *act, PluginData *data)
 {
+    GtkAboutDialog *about;
+    const gchar *authors[] = {
+        "Andriy Grytsenko <andrej@rep.kiev.ua>",
+        NULL
+    };
+    /* TRANSLATORS: Replace this string with your names, one name per line. */
+    gchar *translators = _("translator-credits");
+
+    about = GTK_ABOUT_DIALOG(gtk_about_dialog_new());
+    gtk_window_set_icon_name(GTK_WINDOW(about), LXHOTKEY_ICON);
+    gtk_about_dialog_set_version(about, VERSION);
+    gtk_about_dialog_set_program_name(about, "LXHotkey"); //FIXME: translated?
+    gtk_about_dialog_set_logo_icon_name(about, LXHOTKEY_ICON);
+
+    gtk_about_dialog_set_copyright(about, _("Copyright (C) 2016"));
+    gtk_about_dialog_set_comments(about, _( "Keyboard shortcuts configurator"));
+    gtk_about_dialog_set_license(about, "This program is free software; you can redistribute it and/or\n"
+                                        "modify it under the terms of the GNU General Public License\n"
+                                        "as published by the Free Software Foundation; either version 2\n"
+                                        "of the License, or (at your option) any later version.\n"
+                                        "\n"
+                                        "This program is distributed in the hope that it will be useful,\n"
+                                        "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+                                        "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+                                        "GNU General Public License for more details.\n"
+                                        "\n"
+                                        "You should have received a copy of the GNU General Public License\n"
+                                        "along with this program; if not, write to the Free Software Foundation,\n"
+                                        "Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.");
+    gtk_about_dialog_set_website(about, "http://lxde.org/");
+    gtk_about_dialog_set_authors(about, authors);
+    gtk_about_dialog_set_translator_credits(about, translators);
+    gtk_dialog_run(GTK_DIALOG(about));
+    gtk_widget_destroy(GTK_WIDGET(about));
 }
 
 static GtkActionEntry actions[] =
@@ -214,6 +256,7 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
 
     win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(win), 400, 300);
+    gtk_window_set_icon_name(GTK_WINDOW(win), LXHOTKEY_ICON);
     g_signal_connect(win, "unmap", G_CALLBACK(gtk_main_quit), NULL);
 
     vbox = (GtkBox *)gtk_vbox_new(FALSE, 0);
@@ -233,6 +276,13 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
 
     menubar = gtk_ui_manager_get_widget(ui, "/menubar");
     toolbar = GTK_TOOLBAR(gtk_ui_manager_get_widget(ui, "/toolbar"));
+
+    data.save_action = gtk_ui_manager_get_action(ui, "/menubar/FileMenu/Save");
+    gtk_action_set_sensitive(data.save_action, FALSE);
+    data.del_action = gtk_ui_manager_get_action(ui, "/menubar/EditMenu/Del");
+    data.edit_action = gtk_ui_manager_get_action(ui, "/menubar/EditMenu/Edit");
+    gtk_action_set_sensitive(data.del_action, FALSE);
+    gtk_action_set_sensitive(data.edit_action, FALSE);
 
     /* FIXME: use some style? */
     gtk_toolbar_set_icon_size(toolbar, GTK_ICON_SIZE_SMALL_TOOLBAR);
