@@ -22,6 +22,8 @@
 # include "config.h"
 #endif
 
+#define WANT_OPTIONS_EQUAL
+
 #include "lxhotkey.h"
 
 #include <X11/Xlib.h>
@@ -79,27 +81,6 @@ static void lkxeys_app_free(LXHotkeyApp *data)
     g_free(data->accel1);
     g_free(data->accel2);
     g_free(data);
-}
-
-/* recursively compare two lists of LXHotkeyAttr */
-static gboolean options_equal(GList *opts1, GList *opts2)
-{
-    while (opts1 && opts2) {
-        LXHotkeyAttr *attr1 = opts1->data, *attr2 = opts2->data;
-
-        if (g_strcmp0(attr1->name, attr2->name) != 0)
-            return FALSE;
-        if (attr1->values && attr2->values) {
-            if (g_strcmp0(attr1->values->data, attr2->values->data) != 0)
-                return FALSE;
-        } else if (attr1->values || attr2->values)
-            return FALSE;
-        if (!options_equal(attr1->subopts, attr2->subopts))
-            return FALSE;
-        opts1 = opts1->next;
-        opts2 = opts2->next;
-    }
-    return (opts1 == NULL && opts2 == NULL);
 }
 
 /* convert from OB format (A-Return) into GDK format (<Alt>Return) */

@@ -21,6 +21,7 @@ po/Makefile.in.in
 po/POTFILES
 .deps/
 .libs/
+.dirstamp
 *~
 *.o
 *.lo

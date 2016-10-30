@@ -88,6 +88,18 @@ AC_SUBST(GTK_LIBS)
 dnl Test for libunistring for correct UTF-8 printf
 AC_CHECK_LIB(unistring, ulc_fprintf)
 
+dnl Supress extra linking
+AC_MSG_CHECKING([whether $LD accepts --as-needed])
+case `$LD --as-needed -v 2>&1 </dev/null` in
+*GNU* | *'with BFD'*)
+    LDFLAGS="$LDFLAGS -Wl,--as-needed"
+    AC_MSG_RESULT([yes])
+    ;;
+*)
+    AC_MSG_RESULT([no])
+    ;;
+esac
+
 dnl Fix invalid sysconfdir when --prefix=/usr
 if test `eval "echo $sysconfdir"` = /usr/etc
 then

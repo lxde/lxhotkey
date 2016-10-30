@@ -22,7 +22,7 @@ ob_la_SOURCES = openbox/openbox.c
 ob_la_LIBADD = -lfm-extra
 
 # GTK module
-gtk_la_SOURCES = gtk/gtk.c
+gtk_la_SOURCES = gtk/gtk.c gtk/edit.c
 gtk_la_CFLAGS = $(GTK_CFLAGS)
 gtk_la_LIBADD = $(GTK_LIBS)
 
@@ -37,7 +37,8 @@ desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
 EXTRA_DIST= \
-	gtk/lxhotkey-gtk.desktop.in gtk/lxhotkey-gtk.desktop
+	gtk/lxhotkey-gtk.desktop.in gtk/lxhotkey-gtk.desktop \
+	gtk/edit.h
 
 install-exec-hook:
 	rm -f $(DESTDIR)$(pkglibdir)/*.la

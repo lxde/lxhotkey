@@ -23,25 +23,12 @@
 #endif
 
 #include "lxhotkey.h"
+#include "edit.h"
 
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 
-#define LXHOTKEY_ICON "preferences-desktop-keyboard"
-
 static int inited = 0;
-
-typedef struct {
-    const gchar *wm;
-    const LXHotkeyPluginInit *cb;
-    gpointer *config;
-    GtkNotebook *notebook;
-    GtkTreeView *acts, *apps;
-    GtkAction *save_action;
-    GtkAction *del_action;
-    GtkAction *edit_action;
-    GtkTreeView *current_page;
-} PluginData;
 
 static const char menu_xml[] =
 "<menubar>"
@@ -72,6 +59,12 @@ static const char menu_xml[] =
 static void set_actions_list(PluginData *data);
 static void set_apps_list(PluginData *data);
 
+void _main_refresh(PluginData *data)
+{
+    set_actions_list(data);
+    set_apps_list(data);
+}
+
 static void on_reload(GtkAction *act, PluginData *data)
 {
     GError *error = NULL;
@@ -83,8 +76,7 @@ static void on_reload(GtkAction *act, PluginData *data)
         //FIXME: show errors instead
         g_error_free(error);
     }
-    set_actions_list(data);
-    set_apps_list(data);
+    _main_refresh(data);
     gtk_action_set_sensitive(data->save_action, FALSE);
 }
 
@@ -102,6 +94,8 @@ static void on_quit(GtkAction *act, PluginData *data)
 
 static void on_new(GtkAction *act, PluginData *data)
 {
+    gtk_tree_selection_unselect_all(gtk_tree_view_get_selection(data->current_page));
+    _edit_action(data, NULL);
 }
 
 static void on_del(GtkAction *act, PluginData *data)
@@ -110,6 +104,7 @@ static void on_del(GtkAction *act, PluginData *data)
 
 static void on_edit(GtkAction *act, PluginData *data)
 {
+    _edit_action(data, NULL);
 }
 
 static void on_about(GtkAction *act, PluginData *data)
@@ -177,6 +172,7 @@ static void on_notebook_switch_page(GtkNotebook *nb, GtkTreeView *page, guint nu
 {
     gboolean has_selection;
 
+    _edit_cleanup(data); /* abort edit */
     data->current_page = page;
     has_selection = gtk_tree_selection_get_selected(gtk_tree_view_get_selection(page), NULL, NULL);
     gtk_action_set_sensitive(data->del_action, has_selection);
@@ -190,6 +186,7 @@ static void on_selection_changed(GtkTreeSelection *selection, PluginData *data)
     if (gtk_tree_view_get_selection(data->current_page) != selection)
         return;
 
+    _edit_cleanup(data); /* abort edit */
     has_selection = gtk_tree_selection_get_selected(selection, NULL, NULL);
     gtk_action_set_sensitive(data->del_action, has_selection);
     gtk_action_set_sensitive(data->edit_action, has_selection);
@@ -197,7 +194,9 @@ static void on_selection_changed(GtkTreeSelection *selection, PluginData *data)
 
 static void set_actions_list(PluginData *data)
 {
-    GtkListStore *model = gtk_list_store_new(4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    GtkListStore *model = gtk_list_store_new(5, G_TYPE_STRING, G_TYPE_STRING,
+                                                G_TYPE_STRING, G_TYPE_STRING,
+                                                G_TYPE_POINTER);
     GList *acts = data->cb->get_wm_keys(*data->config, "*", NULL);
     GList *l;
     LXHotkeyGlobal *act;
@@ -224,7 +223,8 @@ static void set_actions_list(PluginData *data)
         gtk_list_store_insert_with_values(model, &iter, -1, 0, attr->name,
                                                             1, val,
                                                             2, act->accel1,
-                                                            3, act->accel2, -1);
+                                                            3, act->accel2,
+                                                            4, act, -1);
         g_free(_val);
         //FIXME: this is a stub, it should show something better than just first action
     }
@@ -235,7 +235,8 @@ static void set_actions_list(PluginData *data)
 
 static void set_apps_list(PluginData *data)
 {
-    GtkListStore *model = gtk_list_store_new(3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    GtkListStore *model = gtk_list_store_new(4, G_TYPE_STRING, G_TYPE_STRING,
+                                                G_TYPE_STRING, G_TYPE_POINTER);
     GList *apps = data->cb->get_app_keys(*data->config, "*", NULL);
     GList *l;
     LXHotkeyApp *app;
@@ -246,7 +247,8 @@ static void set_apps_list(PluginData *data)
         app = l->data;
         gtk_list_store_insert_with_values(model, &iter, -1, 0, app->exec,
                                                             1, app->accel1,
-                                                            2, app->accel2, -1);
+                                                            2, app->accel2,
+                                                            3, app, -1);
     }
     g_list_free(apps);
     gtk_tree_view_set_model(data->apps, GTK_TREE_MODEL(model));
@@ -268,6 +270,26 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
         gtk_init(&inited, NULL);
     inited = 1;
 
+    /* force style for GtkComboBox, it's ugly when list reaches screen bottom */
+#if GTK_CHECK_VERSION(3, 0, 0)
+    GtkCssProvider *provider = gtk_css_provider_new();
+    if (gtk_css_provider_load_from_data(provider,
+                                        "#gtk-widget {\n"
+                                        "-GtkComboBox-appears-as-list : 1;\n"
+                                        "}\n", -1, NULL))
+        gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                                  GTK_STYLE_PROVIDER(provider),
+                                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    g_object_unref(provider);
+#else
+    gtk_rc_parse_string("style 'default-style'\n"
+                        "{\n"
+                        "  GtkComboBox::appears-as-list = 1\n"
+                        "}\n"
+                        "class 'GtkWidget' style 'default-style'");
+#endif
+
+    memset(&data, 0, sizeof(data));
     data.wm = wm;
     data.cb = cb;
     data.config = config;
@@ -341,7 +363,6 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
                          G_CALLBACK(on_selection_changed), &data);
         gtk_notebook_append_page(data.notebook, GTK_WIDGET(data.acts),
                                  gtk_label_new(_("Actions")));
-        data.current_page = data.acts;
     }
 
     if (cb->get_app_keys)
@@ -365,9 +386,11 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
     }
 
     /* and finally run it all */
+    data.current_page = (GtkTreeView *)gtk_notebook_get_nth_page(data.notebook, 0);
     gtk_container_add(GTK_CONTAINER(win), GTK_WIDGET(vbox));
     gtk_widget_show_all(win);
     gtk_main();
+    _edit_cleanup(&data);
 }
 
 static void module_gtk_alert(GError *error)

@@ -32,6 +32,7 @@ G_BEGIN_DECLS
  * @subopts: (element-type LXHotkeyAttr): (allow-none): list of suboptions
  * @desc: (allow-none): action or option description
  * @has_actions: %TRUE if @subopts contains actions, %FALSE if @subopts contains options
+ * @has_value: %TRUE if option has value even if @subopts isn't %NULL
  *
  * Data descriptor for actions and options. Actions are ativated by keybinding.
  * Each action may contain arbitrary number of options that alter its execution.
@@ -54,7 +55,47 @@ typedef struct {
     GList *subopts;
     gchar *desc;
     gboolean has_actions;
+    gboolean has_value;
 } LXHotkeyAttr;
+
+#ifdef WANT_OPTIONS_EQUAL
+static gboolean values_equal(GList *vals1, GList *vals2)
+{
+    while (vals1 && vals2) {
+        if (g_strcmp0(vals1->data, vals2->data) != 0)
+            return FALSE;
+        vals1 = vals1->next;
+        vals2 = vals2->next;
+    }
+    return (vals1 == NULL && vals2 == NULL);
+}
+
+/**
+ * options_equal
+ * @opts1: (element-type LXHotkeyAttr): list of options
+ * @opts2: (element-type LXHotkeyAttr): list of options
+ *
+ * Recursively compare two lists of options.
+ *
+ * Returns: %TRUE if two lists are equal.
+ */
+static gboolean options_equal(GList *opts1, GList *opts2)
+{
+    while (opts1 && opts2) {
+        LXHotkeyAttr *attr1 = opts1->data, *attr2 = opts2->data;
+
+        if (g_strcmp0(attr1->name, attr2->name) != 0)
+            return FALSE;
+        if (!values_equal(attr1->values, attr2->values))
+            return FALSE;
+        if (!options_equal(attr1->subopts, attr2->subopts))
+            return FALSE;
+        opts1 = opts1->next;
+        opts2 = opts2->next;
+    }
+    return (opts1 == NULL && opts2 == NULL);
+}
+#endif /* WANT_OPTIONS_EQUAL */
 
 /**
  * LXHotkeyGlobal:
@@ -80,7 +121,7 @@ typedef struct {
 /**
  * LXHotkeyApp:
  * @exec: a command line to execute
- * @actions: (element-type LXHotkeyAttr): (allow-none): list of options
+ * @options: (element-type LXHotkeyAttr): (allow-none): list of options
  * @accel1: a keybinding to activate @exec, in GDK accelerator format
  * @accel2: optional alternate keybinding to activate @exec
  * @data1: a pointer for using by WM plugin
