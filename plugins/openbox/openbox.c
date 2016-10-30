@@ -1356,7 +1356,20 @@ static GList *obcfg_get_wm_actions(gpointer config, GError **error)
 static GList *obcfg_get_app_options(gpointer config, GError **error)
 {
     if (!available_wm_actions)
+    {
+        GList *l, *opts = NULL;
+        LXHotkeyAttr *opt;
+
         available_wm_actions = convert_options(list_actions);
+        for (l = available_app_options; l; l = l->next)
+        {
+            opt = l->data;
+            if (strcmp(opt->name, "command") != 0)
+                /* remove exec line from available options, it's App->exec */
+                opts = g_list_prepend(opts, l->data);
+        }
+        available_app_options = g_list_reverse(opts);
+    }
     return available_app_options;
 }
 

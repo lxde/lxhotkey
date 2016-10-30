@@ -803,9 +803,6 @@ void _edit_action(PluginData *data, GError **error)
                                                 "text", 1, NULL);
     gtk_tree_view_set_headers_visible(data->edit_tree, FALSE);
     //FIXME: connect "row-activated" for Edit
-    g_signal_connect(gtk_tree_view_get_selection(data->edit_tree), "changed",
-                     G_CALLBACK(on_selection_changed), data);
-    update_options_tree(data);
 
     /* frame with fields for editing, hidden for now */
     data->edit_frame = gtk_frame_new(_("Add action"));
@@ -885,6 +882,9 @@ void _edit_action(PluginData *data, GError **error)
         gtk_action_set_visible(act, FALSE);
     }
     gtk_container_add(GTK_CONTAINER(data->edit_window), GTK_WIDGET(vbox));
+    g_signal_connect(gtk_tree_view_get_selection(data->edit_tree), "changed",
+                     G_CALLBACK(on_selection_changed), data);
+    update_options_tree(data);
     update_edit_toolbar(data);
     gtk_window_present(data->edit_window);
     gtk_widget_grab_focus(GTK_WIDGET(data->edit_tree));
