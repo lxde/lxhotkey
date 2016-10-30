@@ -27,6 +27,7 @@
 #include "lxhotkey.h"
 #include "edit.h"
 
+#include <stdlib.h>
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
@@ -491,7 +492,8 @@ static void on_option_changed(GtkComboBox *box, PluginData *data)
     else if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->edit_tree),
                                              &model, &iter))
     {
-        gtk_tree_model_get(model, &iter, 2, &opt, -1);
+        if (data->edit_mode == EDIT_MODE_EDIT)
+            gtk_tree_model_get(model, &iter, 2, &opt, -1);
         if (data->current_page == data->acts)
             is_action = (get_parent_template_list(model, &iter, data) == data->edit_template);
     }
@@ -517,8 +519,21 @@ static void on_option_changed(GtkComboBox *box, PluginData *data)
         {
             gtk_list_store_insert_with_values(values_store, NULL, i, 0, _(values->data),
                                                                      1, values->data, -1);
-            if (opt && opt->values && g_strcmp0(opt->values->data, values->data) == 0)
-                sel = i;
+            if (opt && opt->values)
+            {
+                if (((char *)values->data)[0] == '#')
+                {
+                    if (strpbrk(opt->values->data, "%/") == NULL)
+                        sel = i;
+                }
+                else if (((char *)values->data)[0] == '%')
+                {
+                    if (strpbrk(opt->values->data, "%/"))
+                        sel = i;
+                }
+                else if (g_strcmp0(opt->values->data, values->data) == 0)
+                    sel = i;
+            }
         }
         gtk_combo_box_set_model(data->edit_values, GTK_TREE_MODEL(values_store));
         g_object_unref(values_store);
@@ -543,9 +558,12 @@ static void on_option_changed(GtkComboBox *box, PluginData *data)
 
 static void on_value_changed(GtkComboBox *box, PluginData *data)
 {
+    LXHotkeyAttr *opt;
     const char *value;
     GtkTreeModel *model;
     GtkTreeIter iter;
+    gdouble num = 0;
+    long div;
 
     model = gtk_combo_box_get_model(box);
     if (!gtk_combo_box_get_active_iter(box, &iter))
@@ -560,8 +578,16 @@ static void on_value_changed(GtkComboBox *box, PluginData *data)
         /* if value is # then show data->edit_value_num */
         gtk_spin_button_set_range(GTK_SPIN_BUTTON(data->edit_value_num),
                                   -1000.0, +1000.0);
+        if (data->edit_mode == EDIT_MODE_EDIT &&
+            gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->edit_tree),
+                                            &model, &iter))
+        {
+            gtk_tree_model_get(model, &iter, 2, &opt, -1);
+            if (opt && opt->values)
+                num = strtol(opt->values->data, NULL, 10);
+        }
+        gtk_spin_button_set_value(GTK_SPIN_BUTTON(data->edit_value_num), num);
         gtk_widget_show(data->edit_value_num);
-        gtk_label_set_text(GTK_LABEL(data->edit_value_num_label), "");
         gtk_widget_hide(data->edit_value_num_label);
     }
     else if (value[0] == '%')
@@ -569,6 +595,24 @@ static void on_value_changed(GtkComboBox *box, PluginData *data)
         /* if value is % then show data->edit_value_num with label "%" */
         gtk_spin_button_set_range(GTK_SPIN_BUTTON(data->edit_value_num),
                                   0.0, +100.0);
+        if (data->edit_mode == EDIT_MODE_EDIT &&
+            gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->edit_tree),
+                                            &model, &iter))
+        {
+            gtk_tree_model_get(model, &iter, 2, &opt, -1);
+            if (opt && opt->values)
+            {
+                value = opt->values->data;
+                num = strtol(value, (char **)&value, 10);
+                if (*value == '/')
+                {
+                    div = strtol(value + 1, NULL, 10);
+                    div = MAX(div, 1);
+                    num /= div;
+                }
+            }
+        }
+        gtk_spin_button_set_value(GTK_SPIN_BUTTON(data->edit_value_num), num);
         gtk_widget_show(data->edit_value_num);
         gtk_label_set_text(GTK_LABEL(data->edit_value_num_label), "%");
         gtk_widget_show(data->edit_value_num_label);
