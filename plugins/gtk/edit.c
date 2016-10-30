@@ -523,12 +523,17 @@ static void on_option_changed(GtkComboBox *box, PluginData *data)
             {
                 if (((char *)values->data)[0] == '#')
                 {
-                    if (strpbrk(opt->values->data, "%/") == NULL)
+                    size_t len = strspn(opt->values->data, "0123456789");
+                    /* test if value is an integer number */
+                    if (len == strlen(opt->values->data))
                         sel = i;
                 }
                 else if (((char *)values->data)[0] == '%')
                 {
-                    if (strpbrk(opt->values->data, "%/"))
+                    const char *str = opt->values->data;
+                    size_t len = strspn(str, "0123456789");
+                    /* test if value is either a fraction or a percent value */
+                    if (len > 0 && (str[len] == '%' || str[len] == '/'))
                         sel = i;
                 }
                 else if (g_strcmp0(opt->values->data, values->data) == 0)
@@ -606,9 +611,10 @@ static void on_value_changed(GtkComboBox *box, PluginData *data)
                 num = strtol(value, (char **)&value, 10);
                 if (*value == '/')
                 {
+                    /* convert fraction into percent */
                     div = strtol(value + 1, NULL, 10);
                     div = MAX(div, 1);
-                    num /= div;
+                    num *= 100 / div;
                 }
             }
         }
