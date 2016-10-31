@@ -287,8 +287,8 @@ static const char edit_xml[] =
 static GtkActionEntry actions[] =
 {
     { "Cancel", GTK_STOCK_CANCEL, NULL, NULL, N_("Discard changes"), G_CALLBACK(on_cancel) },
-    { "Save", GTK_STOCK_SAVE, NULL, NULL, N_("Accept changes"), G_CALLBACK(on_save) },
-    { "AddAction", GTK_STOCK_ADD, NULL, NULL, N_("Add an action"), G_CALLBACK(on_add_action) },
+    { "Save", GTK_STOCK_APPLY, NULL, NULL, N_("Accept changes"), G_CALLBACK(on_save) },
+    { "AddAction", GTK_STOCK_NEW, NULL, NULL, N_("Add an action"), G_CALLBACK(on_add_action) },
     { "AddOption", GTK_STOCK_ADD, NULL, NULL, N_("Add an option to this command"),
                 G_CALLBACK(on_add_option) },
     { "Remove", GTK_STOCK_DELETE, NULL, "", N_("Remove selection"), G_CALLBACK(on_remove) },
@@ -363,8 +363,11 @@ static gboolean on_key_event(GtkButton *test, GdkEventKey *event, PluginData *da
     /* save new value now */
     text = gtk_accelerator_name(event->keyval, state);
     g_object_set_data_full(G_OBJECT(test), "accelerator_name", text, g_free);
-    /* change focus onto options tree now */
-    gtk_widget_grab_focus(GTK_WIDGET(data->edit_tree));
+    /* change focus onto exec line or actions tree now */
+    if (data->edit_exec)
+        gtk_widget_grab_focus(GTK_WIDGET(data->edit_exec));
+    else
+        gtk_widget_grab_focus(GTK_WIDGET(data->edit_tree));
     return FALSE;
 }
 
@@ -779,6 +782,7 @@ void _edit_action(PluginData *data, GError **error)
         align = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
         gtk_container_add(GTK_CONTAINER(align), gtk_label_new(_("Actions:")));
         gtk_box_pack_start(xbox, align, FALSE, TRUE, 0);
+        data->edit_exec = NULL;
     }
     else
     {
