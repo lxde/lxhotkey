@@ -185,6 +185,7 @@ static void on_add_action(GtkAction *act, PluginData *data)
 {
     data->edit_mode = EDIT_MODE_ADD;
     /* fill frame with empty data, set choices from data->edit_template, hide value */
+    gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Add action"));
     fill_edit_frame(data, NULL, data->edit_template, NULL);
     gtk_widget_hide(GTK_WIDGET(data->edit_values));
     gtk_widget_hide(GTK_WIDGET(data->edit_value));
@@ -196,6 +197,7 @@ static void on_add_option(GtkAction *act, PluginData *data)
 {
     data->edit_mode = EDIT_MODE_ADD;
     /* fill frame with empty data, set choices from data->edit_template */
+    gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Add option"));
     fill_edit_frame(data, NULL, data->edit_template, data->edit_options_copy);
     gtk_widget_show(data->edit_frame);
     gtk_widget_grab_focus(data->edit_frame);
@@ -233,6 +235,7 @@ static void on_edit(GtkAction *act, PluginData *data)
     }
     data->edit_mode = EDIT_MODE_EDIT;
     /* fill frame from selection */
+    gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Change option"));
     fill_edit_frame(data, opt, &single, NULL);
     gtk_widget_show(data->edit_frame);
     gtk_widget_grab_focus(data->edit_frame);
@@ -260,6 +263,7 @@ static void on_add_suboption(GtkAction *act, PluginData *data)
     gtk_tree_model_get(model, &iter, 2, &opt, -1);
     data->edit_mode = EDIT_MODE_OPTION;
     /* fill frame with empty data and set name choices from selection's subopts */
+    gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Add option"));
     fill_edit_frame(data, NULL, tmpl_list, opt->subopts);
     gtk_widget_show(data->edit_frame);
     gtk_widget_grab_focus(data->edit_frame);
@@ -359,6 +363,8 @@ static gboolean on_key_event(GtkButton *test, GdkEventKey *event, PluginData *da
     /* save new value now */
     text = gtk_accelerator_name(event->keyval, state);
     g_object_set_data_full(G_OBJECT(test), "accelerator_name", text, g_free);
+    /* change focus onto options tree now */
+    gtk_widget_grab_focus(GTK_WIDGET(data->edit_tree));
     return FALSE;
 }
 
@@ -805,7 +811,7 @@ void _edit_action(PluginData *data, GError **error)
     //FIXME: connect "row-activated" for Edit
 
     /* frame with fields for editing, hidden for now */
-    data->edit_frame = gtk_frame_new(_("Add action"));
+    data->edit_frame = gtk_frame_new(NULL);
     xbox = (GtkBox *)gtk_vbox_new(FALSE, 0);
     /* combobox for option/action name */
     align = gtk_alignment_new(0.0, 0.0, 0.0, 0.0);
