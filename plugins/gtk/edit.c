@@ -524,7 +524,7 @@ static void on_option_changed(GtkComboBox *box, PluginData *data)
     int i, sel;
     gboolean is_action = FALSE;
 
-    g_debug("on_option_changed");
+    /* g_debug("on_option_changed"); */
     opt = NULL;
     if (data->edit_mode == EDIT_MODE_ADD)
         is_action = (data->current_page == data->acts);

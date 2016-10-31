@@ -508,13 +508,11 @@ int main(int argc, char *argv[])
     }
 
     if (do_gui) {
-        if (gui_plugin && gui_plugin->t->run)
-        {
+        if (gui_plugin && gui_plugin->t->run) {
             if (gui_plugin->t->init)
                 gui_plugin->t->init(argc, argv);
             gui_plugin->t->run(wm_name, plugin->t, &config, &error);
-        }
-        else
+        } else
             g_set_error(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
                         _("GUI type %s currently isn't supported."), cmd);
         goto _exit;

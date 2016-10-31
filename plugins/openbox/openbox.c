@@ -427,7 +427,7 @@ static GList *convert_values(gpointer data)
     GList *list = NULL;
 
     for (array = data; array[0] != NULL; array++) {
-        g_debug("creating GList for string '%s'", array[0]);
+        /* g_debug("creating GList for string '%s'", array[0]); */
         list = g_list_prepend(list, array[0]);
     }
     return g_list_reverse(list);
