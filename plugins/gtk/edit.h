@@ -43,6 +43,7 @@ typedef struct {
     GtkEntry *edit_exec;
     GtkTreeView *edit_tree;
     /* edit window toolbar elements */
+    GtkAction *edit_apply_button;
     GtkAction *add_option_button;
     GtkAction *rm_option_button;
     GtkAction *edit_option_button;

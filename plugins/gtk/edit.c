@@ -163,7 +163,8 @@ static void update_edit_toolbar(PluginData *data)
     gtk_action_set_sensitive(data->edit_option_button,
                              (tmpl->subopts == NULL || tmpl->has_value));
     gtk_action_set_sensitive(data->add_suboption_button,
-                             g_list_length(tmpl->subopts) != g_list_length(opt->subopts));
+                             (tmpl->has_actions ||
+                              g_list_length(tmpl->subopts) != g_list_length(opt->subopts)));
 }
 
 static void on_cancel(GtkAction *act, PluginData *data)
@@ -203,10 +204,39 @@ static void on_add_option(GtkAction *act, PluginData *data)
     gtk_widget_grab_focus(data->edit_frame);
 }
 
+#define free_options(acts) g_list_free_full(acts, (GDestroyNotify)option_free)
+static void option_free(LXHotkeyAttr *attr)
+{
+    g_free(attr->name);
+    g_list_free_full(attr->values, g_free);
+    free_options(attr->subopts);
+    g_free(attr->desc);
+    g_slice_free(LXHotkeyAttr, attr);
+}
+
 static void on_remove(GtkAction *act, PluginData *data)
 {
-    //find and remove option from data->edit_options_copy
-    //remove selected row from model
+    LXHotkeyAttr *opt, *parent;
+    GtkTreeModel *model;
+    GtkTreeIter iter, parent_iter;
+
+    if (!gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->edit_tree),
+                                         &model, &iter))
+        /* no item selected */
+        return;
+    /* find and remove option from data->edit_options_copy */
+    gtk_tree_model_get(model, &iter, 2, &opt, -1);
+    if (gtk_tree_model_iter_parent(model, &parent_iter, &iter))
+    {
+        gtk_tree_model_get(model, &parent_iter, 2, &parent, -1);
+        parent->subopts = g_list_remove(parent->subopts, opt);
+    }
+    else
+        data->edit_options_copy = g_list_remove(data->edit_options_copy, opt);
+    option_free(opt);
+    /* remove selected row from model */
+    gtk_tree_store_remove(GTK_TREE_STORE(model), &iter);
+    gtk_action_set_sensitive(data->edit_apply_button, TRUE);
 }
 
 static void on_edit(GtkAction *act, PluginData *data)
@@ -258,12 +288,14 @@ static void on_add_suboption(GtkAction *act, PluginData *data)
     if (tmpl == NULL)
         /* no options found */
         return;
-
     tmpl_list = get_options_from_template(tmpl, data);
     gtk_tree_model_get(model, &iter, 2, &opt, -1);
     data->edit_mode = EDIT_MODE_OPTION;
     /* fill frame with empty data and set name choices from selection's subopts */
-    gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Add option"));
+    if (tmpl->has_actions)
+        gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Add action"));
+    else
+        gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Add option"));
     fill_edit_frame(data, NULL, tmpl_list, opt->subopts);
     gtk_widget_show(data->edit_frame);
     gtk_widget_grab_focus(data->edit_frame);
@@ -363,6 +395,7 @@ static gboolean on_key_event(GtkButton *test, GdkEventKey *event, PluginData *da
     /* save new value now */
     text = gtk_accelerator_name(event->keyval, state);
     g_object_set_data_full(G_OBJECT(test), "accelerator_name", text, g_free);
+    gtk_action_set_sensitive(data->edit_apply_button, TRUE);
     /* change focus onto exec line or actions tree now */
     if (data->edit_exec)
         gtk_widget_grab_focus(GTK_WIDGET(data->edit_exec));
@@ -419,21 +452,12 @@ static GList *copy_options(GList *orig)
         attr->values = g_list_copy_deep(attr_orig->values, (GCopyFunc)g_strdup, NULL);
         attr->subopts = copy_options(attr_orig->subopts);
         attr->desc = g_strdup(attr_orig->desc);
-        attr->has_actions = attr_orig->has_actions;
+        attr->has_actions = FALSE;
+        attr->has_value = FALSE;
         copy = g_list_prepend(copy, attr);
         orig = orig->next;
     }
     return g_list_reverse(copy);
-}
-
-#define free_options(acts) g_list_free_full(acts, (GDestroyNotify)option_free)
-static void option_free(LXHotkeyAttr *attr)
-{
-    g_free(attr->name);
-    g_list_free_full(attr->values, g_free);
-    free_options(attr->subopts);
-    g_free(attr->desc);
-    g_slice_free(LXHotkeyAttr, attr);
 }
 
 static void add_options_to_tree(GtkTreeStore *store, GtkTreeIter *parent_iter,
@@ -475,6 +499,12 @@ static void cancel_edit(PluginData *data)
     gtk_widget_hide(data->edit_frame);
 }
 
+static void on_exec_changed(GtkEntry *exec, PluginData *data)
+{
+    //FIXME: compare with original exec? is that too heavy?
+    gtk_action_set_sensitive(data->edit_apply_button, TRUE);
+}
+
 static void on_selection_changed(GtkTreeSelection *selection, PluginData *data)
 {
     if (edit_is_active(data))
@@ -494,7 +524,7 @@ static void on_option_changed(GtkComboBox *box, PluginData *data)
     int i, sel;
     gboolean is_action = FALSE;
 
-    /* g_debug("on_option_changed"); */
+    g_debug("on_option_changed");
     opt = NULL;
     if (data->edit_mode == EDIT_MODE_ADD)
         is_action = (data->current_page == data->acts);
@@ -502,9 +532,18 @@ static void on_option_changed(GtkComboBox *box, PluginData *data)
                                              &model, &iter))
     {
         if (data->edit_mode == EDIT_MODE_EDIT)
+        {
             gtk_tree_model_get(model, &iter, 2, &opt, -1);
-        if (data->current_page == data->acts)
-            is_action = (get_parent_template_list(model, &iter, data) == data->edit_template);
+            if (data->current_page == data->acts)
+                is_action = (get_parent_template_list(model, &iter, data) == data->edit_template);
+        }
+        else /* EDIT_MODE_OPTION */
+        {
+            tmpl = find_template_for_option(model, &iter,
+                                            get_parent_template_list(model, &iter, data));
+            if (tmpl)
+                is_action = tmpl->has_actions;
+        }
     }
     if (!gtk_combo_box_get_active_iter(box, &iter))
         /* no item selected */
@@ -641,11 +680,125 @@ _general:
     }
 }
 
+static void apply_options(PluginData *data, LXHotkeyAttr *opt)
+{
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+    char *name, *_value = NULL;
+    const char *value = NULL;
+    gboolean changed = FALSE;
+
+    /* process name */
+    if (gtk_widget_get_visible(GTK_WIDGET(data->edit_actions)) &&
+        gtk_combo_box_get_active_iter(data->edit_actions, &iter))
+    {
+        model = gtk_combo_box_get_model(data->edit_actions);
+        gtk_tree_model_get(model, &iter, 1, &name, -1);
+        if (g_strcmp0(opt->name, name) == 0)
+            g_free(name);
+        else
+        {
+            g_free(opt->name);
+            opt->name = name;
+            changed = TRUE;
+        }
+    }
+    /* process value */
+    if (gtk_widget_get_visible(data->edit_value_num))
+    {
+        gdouble num_val = gtk_spin_button_get_value(GTK_SPIN_BUTTON(data->edit_value_num));
+        if (gtk_widget_get_visible(data->edit_value_num_label))
+            value = _value = g_strdup_printf("%d%s", (int)num_val,
+                                             gtk_label_get_text(GTK_LABEL(data->edit_value_num_label)));
+        else
+            value = _value = g_strdup_printf("%d", (int)num_val);
+    }
+    else if (gtk_widget_get_visible(GTK_WIDGET(data->edit_values)) &&
+             gtk_combo_box_get_active_iter(data->edit_values, &iter))
+    {
+        model = gtk_combo_box_get_model(data->edit_values);
+        gtk_tree_model_get(model, &iter, 1, &_value, -1);
+        value = _value;
+    }
+    else if (gtk_widget_get_visible(GTK_WIDGET(data->edit_value)))
+    {
+        value = gtk_entry_get_text(data->edit_value);
+    }
+    if (opt->values && g_strcmp0(opt->values->data, value) == 0)
+        g_free(_value);
+    else
+    {
+        if (_value == NULL)
+            value = g_strdup(value);
+        if (opt->values == NULL)
+            opt->values = g_list_prepend(NULL, (gpointer)value);
+        else
+        {
+            g_free(opt->values->data);
+            opt->values->data = (gpointer)value;
+        }
+        changed = TRUE;
+    }
+    /* process changed state */
+    if (changed)
+        gtk_action_set_sensitive(data->edit_apply_button, TRUE);
+}
+
 static void on_apply_button(GtkButton *btn, PluginData *data)
 {
-    //insert/update option in data->edit_options_copy
-    //add/update row in the model
-    //update_edit_toolbar(data);
+    LXHotkeyAttr *opt;
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+
+    switch (data->edit_mode)
+    {
+    case EDIT_MODE_ADD:
+        opt = g_slice_new0(LXHotkeyAttr);
+        apply_options(data, opt);
+        /* insert new option/action */
+        data->edit_options_copy = g_list_append(data->edit_options_copy, opt);
+        model = gtk_tree_view_get_model(data->edit_tree);
+        /* update the tree */
+        gtk_tree_store_insert_with_values(GTK_TREE_STORE(model), NULL, NULL, -1,
+                                          0, opt->name,
+                                          1, opt->values ? opt->values->data : NULL,
+                                          2, opt, -1);
+        /* update toolbar */
+        update_edit_toolbar(data);
+        break;
+    case EDIT_MODE_EDIT:
+        if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->edit_tree),
+                                            &model, &iter))
+        {
+            gtk_tree_model_get(model, &iter, 2, &opt, -1);
+            apply_options(data, opt);
+            gtk_tree_store_set(GTK_TREE_STORE(model), &iter,
+                               1, opt->values ? opt->values->data : NULL);
+            update_edit_toolbar(data);
+        }
+        break;
+    case EDIT_MODE_OPTION:
+        if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->edit_tree),
+                                            &model, &iter))
+        {
+            LXHotkeyAttr *parent;
+            gtk_tree_model_get(model, &iter, 2, &parent, -1);
+            opt = g_slice_new0(LXHotkeyAttr);
+            apply_options(data, opt);
+            parent->subopts = g_list_append(parent->subopts, opt);
+            model = gtk_tree_view_get_model(data->edit_tree);
+            gtk_tree_store_insert_with_values(GTK_TREE_STORE(model), NULL, &iter, -1,
+                                              0, opt->name,
+                                              1, opt->values ? opt->values->data : NULL,
+                                              2, opt, -1);
+            gtk_tree_view_expand_all(data->edit_tree);
+            update_edit_toolbar(data);
+        }
+        break;
+    case EDIT_MODE_NONE:
+    default:
+        break;
+    }
     cancel_edit(data);
 }
 
@@ -755,10 +908,12 @@ void _edit_action(PluginData *data, GError **error)
     gtk_toolbar_set_icon_size(toolbar, GTK_ICON_SIZE_SMALL_TOOLBAR);
     gtk_toolbar_set_style(toolbar, GTK_TOOLBAR_ICONS);
     gtk_toolbar_set_show_arrow(toolbar, FALSE);
+    data->edit_apply_button = gtk_ui_manager_get_action(ui, "/toolbar/Save");
     data->add_option_button = gtk_ui_manager_get_action(ui, "/toolbar/AddOption");
     data->rm_option_button = gtk_ui_manager_get_action(ui, "/toolbar/Remove");
     data->edit_option_button = gtk_ui_manager_get_action(ui, "/toolbar/Change");
     data->add_suboption_button = gtk_ui_manager_get_action(ui, "/toolbar/AddSubOption");
+    gtk_action_set_sensitive(data->edit_apply_button, FALSE);
     gtk_box_pack_start(vbox, widget, FALSE, TRUE, 0);
 
     /* add frames for accel1 and accel2 */
@@ -791,7 +946,8 @@ void _edit_action(PluginData *data, GError **error)
         gtk_container_add(GTK_CONTAINER(align), gtk_label_new(_("Command line:")));
         gtk_box_pack_start(xbox, align, FALSE, TRUE, 0);
         data->edit_exec = GTK_ENTRY(gtk_entry_new());
-        if (app)
+        g_signal_connect(data->edit_exec, "changed", G_CALLBACK(on_exec_changed), data);
+        if (app && app->exec)
             gtk_entry_set_text(data->edit_exec, app->exec);
         align = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
         gtk_alignment_set_padding(GTK_ALIGNMENT(align), 0, 0, 4, 0);
