@@ -72,8 +72,7 @@ static void on_reload(GtkAction *act, PluginData *data)
     *data->config = data->cb->load(*data->config, &error);
     if (error)
     {
-        g_warning("error loading config: %s",error->message);
-        //FIXME: show errors instead
+        _show_error(_("Error loading config: "), error);
         g_error_free(error);
     }
     _main_refresh(data);
@@ -82,9 +81,15 @@ static void on_reload(GtkAction *act, PluginData *data)
 
 static void on_save(GtkAction *act, PluginData *data)
 {
-    if (data->cb->save(*data->config, NULL))
+    GError *error = NULL;
+
+    if (data->cb->save(*data->config, &error))
         gtk_action_set_sensitive(data->save_action, FALSE);
-    //FIXME: else show errors
+    else
+    {
+        _show_error(_("Error saving config: "), error);
+        g_error_free(error);
+    }
 }
 
 static void on_quit(GtkAction *act, PluginData *data)
@@ -102,6 +107,7 @@ static void on_del(GtkAction *act, PluginData *data)
 {
     LXHotkeyGlobal *gl = NULL;
     LXHotkeyApp *app = NULL;
+    GError *error = NULL;
     GtkTreeModel *model;
     GtkTreeIter iter;
 
@@ -117,12 +123,16 @@ static void on_del(GtkAction *act, PluginData *data)
             LXHotkeyGlobal rem_act = *gl;
 
             rem_act.accel1 = rem_act.accel2 = NULL;
-            if (data->cb->set_wm_key(*data->config, &rem_act, NULL))
+            if (data->cb->set_wm_key(*data->config, &rem_act, &error))
             {
                 gtk_action_set_sensitive(data->save_action, TRUE);
                 _main_refresh(data);
             }
-            //FIXME: handle errors
+            else
+            {
+                _show_error(_("Cannot delete keybinding: "), error);
+                g_error_free(error);
+            }
         }
     }
     else
@@ -136,12 +146,16 @@ static void on_del(GtkAction *act, PluginData *data)
             LXHotkeyApp rem_app = *app;
 
             rem_app.accel1 = rem_app.accel2 = NULL;
-            if (data->cb->set_app_key(*data->config, &rem_app, NULL))
+            if (data->cb->set_app_key(*data->config, &rem_app, &error))
             {
                 gtk_action_set_sensitive(data->save_action, TRUE);
                 _main_refresh(data);
             }
-            //FIXME: handle errors
+            else
+            {
+                _show_error(_("Cannot delete keybinding: "), error);
+                g_error_free(error);
+            }
         }
     }
 }
@@ -242,6 +256,12 @@ static void on_selection_changed(GtkTreeSelection *selection, PluginData *data)
     gtk_action_set_sensitive(data->edit_action, has_selection);
 }
 
+static void on_row_activated(GtkTreeView *view, GtkTreePath *path,
+                             GtkTreeViewColumn *column, PluginData *data)
+{
+    _edit_action(data, NULL);
+}
+
 static void set_actions_list(PluginData *data)
 {
     GtkListStore *model = gtk_list_store_new(5, G_TYPE_STRING, G_TYPE_STRING,
@@ -266,7 +286,14 @@ static void set_actions_list(PluginData *data)
         {
             opt = attr->subopts->data;
             if (opt->values)
-                _val = val = g_strdup_printf("%s:%s", opt->name, (char *)opt->values->data);
+            {
+                if (attr->subopts->next)
+                    _val = val = g_strdup_printf("%s:%s, ...", opt->name, (char *)opt->values->data);
+                else
+                    _val = val = g_strdup_printf("%s:%s", opt->name, (char *)opt->values->data);
+            }
+            else if (attr->subopts->next)
+                _val = val = g_strdup_printf("%s, ...", opt->name);
             else
                 val = opt->name;
         }
@@ -409,7 +436,7 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
                                                     gtk_cell_renderer_text_new(),
                                                     "text", 3, NULL);
         set_actions_list(&data);
-        //FIXME: connect "row-activated" for Edit
+        g_signal_connect(data.acts, "row-activated", G_CALLBACK(on_row_activated), &data);
         g_signal_connect(gtk_tree_view_get_selection(data.acts), "changed",
                          G_CALLBACK(on_selection_changed), &data);
         gtk_notebook_append_page(data.notebook, GTK_WIDGET(data.acts),
@@ -429,7 +456,7 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
                                                     gtk_cell_renderer_text_new(),
                                                     "text", 2, NULL);
         set_apps_list(&data);
-        //FIXME: connect "row-activated" for Edit
+        g_signal_connect(data.apps, "row-activated", G_CALLBACK(on_row_activated), &data);
         g_signal_connect(gtk_tree_view_get_selection(data.apps), "changed",
                          G_CALLBACK(on_selection_changed), &data);
         gtk_notebook_append_page(data.notebook, GTK_WIDGET(data.apps),
@@ -444,8 +471,24 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
     _edit_cleanup(&data);
 }
 
+void _show_error(const char *prefix, GError *error)
+{
+    GtkWidget *dlg;
+
+    if (error && error->message)
+    {
+        dlg = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR,
+                                     GTK_BUTTONS_OK, "%s%s", prefix, error->message);
+        gtk_window_set_title(GTK_WINDOW(dlg), _("Error"));
+        gtk_window_set_keep_above(GTK_WINDOW(dlg), TRUE);
+        gtk_dialog_run(GTK_DIALOG(dlg));
+        gtk_widget_destroy(dlg);
+    }
+}
+
 static void module_gtk_alert(GError *error)
 {
+    _show_error("", error);
 }
 
 static void module_gtk_init(int argc, char **argv)

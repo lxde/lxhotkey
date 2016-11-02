@@ -174,12 +174,14 @@ static void on_cancel(GtkAction *action, PluginData *data)
 
 static void on_save(GtkAction *action, PluginData *data)
 {
+    GError *error = NULL;
     LXHotkeyGlobal *act = NULL;
     LXHotkeyApp *app = NULL;
     GtkTreeModel *model;
     GtkTreeIter iter;
     LXHotkeyGlobal new_act;
     LXHotkeyApp new_app;
+    gboolean ok = FALSE;
 
     if (data->current_page == data->acts)
     {
@@ -204,8 +206,8 @@ static void on_save(GtkAction *action, PluginData *data)
                 LXHotkeyGlobal rem_act = *act;
 
                 rem_act.accel1 = rem_act.accel2 = NULL;
-                if (!data->cb->set_wm_key(*data->config, &rem_act, NULL))
-                    goto _exit; //FIXME: show error?
+                if (!data->cb->set_wm_key(*data->config, &rem_act, &error))
+                    goto _exit;
             }
             else if (g_strcmp0(act->accel1, new_act.accel1) == 0 &&
                      g_strcmp0(act->accel2, new_act.accel2) == 0)
@@ -213,8 +215,7 @@ static void on_save(GtkAction *action, PluginData *data)
                 goto _exit;
         }
         /* else it was added */
-        data->cb->set_wm_key(*data->config, &new_act, NULL);
-             //FIXME: show if error?
+        ok = data->cb->set_wm_key(*data->config, &new_act, &error);
     }
     else
     {
@@ -241,8 +242,8 @@ static void on_save(GtkAction *action, PluginData *data)
                 LXHotkeyApp rem_app = *app;
 
                 rem_app.accel1 = rem_app.accel2 = NULL;
-                if (!data->cb->set_app_key(*data->config, &rem_app, NULL))
-                    goto _exit; //FIXME: show error?
+                if (!data->cb->set_app_key(*data->config, &rem_app, &error))
+                    goto _exit;
             }
             else if (g_strcmp0(app->accel1, new_app.accel1) == 0 &&
                      g_strcmp0(app->accel2, new_app.accel2) == 0)
@@ -250,18 +251,21 @@ static void on_save(GtkAction *action, PluginData *data)
                 goto _exit;
         }
         /* else it was added */
-        data->cb->set_app_key(*data->config, &new_app, NULL);
-             //FIXME: show if error?
+        ok = data->cb->set_app_key(*data->config, &new_app, &error);
     }
 
-    /* success, update main window */
-    gtk_action_set_sensitive(data->save_action, TRUE);
-    gtk_widget_destroy(GTK_WIDGET(data->edit_window));
-    _main_refresh(data);
-    return;
-
 _exit:
+    if (error)
+    {
+        _show_error(_("Apply error: "), error);
+        g_error_free(error);
+    }
+    /* update main window */
+    if (ok)
+        gtk_action_set_sensitive(data->save_action, TRUE);
     gtk_widget_destroy(GTK_WIDGET(data->edit_window));
+    if (ok)
+        _main_refresh(data);
 }
 
 static void on_add_action(GtkAction *action, PluginData *data)
@@ -321,25 +325,19 @@ static void on_remove(GtkAction *act, PluginData *data)
     gtk_action_set_sensitive(data->edit_apply_button, TRUE);
 }
 
-static void on_edit(GtkAction *act, PluginData *data)
+static void start_edit(GtkTreeModel *model, GtkTreeIter *iter, PluginData *data)
 {
     const LXHotkeyAttr *opt;
     const GList *tmpl_list;
-    GtkTreeModel *model;
-    GtkTreeIter iter;
     GList single = { .prev = NULL, .next = NULL };
 
-    if (!gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->edit_tree),
-                                         &model, &iter))
-        /* no item selected */
-        return;
     /* name - only current from selection */
-    gtk_tree_model_get(model, &iter, 2, &opt, -1);
+    gtk_tree_model_get(model, iter, 2, &opt, -1);
     /* values - from template */
-    tmpl_list = get_parent_template_list(model, &iter, data);
+    tmpl_list = get_parent_template_list(model, iter, data);
     if (tmpl_list == data->edit_template) /* it's action */
         return;
-    single.data = (gpointer)find_template_for_option(model, &iter, tmpl_list);
+    single.data = (gpointer)find_template_for_option(model, iter, tmpl_list);
     if (single.data == NULL)
     {
         g_warning("no template found for option '%s'", opt->name);
@@ -351,6 +349,18 @@ static void on_edit(GtkAction *act, PluginData *data)
     fill_edit_frame(data, opt, &single, NULL);
     gtk_widget_show(data->edit_frame);
     gtk_widget_grab_focus(data->edit_frame);
+}
+
+static void on_edit(GtkAction *act, PluginData *data)
+{
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+
+    if (!gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->edit_tree),
+                                         &model, &iter))
+        /* no item selected */
+        return;
+    start_edit(model, &iter, data);
 }
 
 static void on_add_suboption(GtkAction *act, PluginData *data)
@@ -596,6 +606,19 @@ static void on_exec_changed(GtkEntry *exec, PluginData *data)
         gtk_action_set_sensitive(data->edit_apply_button, FALSE);
     else
         gtk_action_set_sensitive(data->edit_apply_button, TRUE);
+}
+
+static void on_row_activated(GtkTreeView *view, GtkTreePath *path,
+                             GtkTreeViewColumn *column, PluginData *data)
+{
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+
+    model = gtk_tree_view_get_model(view);
+    if (!gtk_tree_model_get_iter(model, &iter, path))
+        /* invalid path */
+        return;
+    start_edit(model, &iter, data);
 }
 
 static void on_selection_changed(GtkTreeSelection *selection, PluginData *data)
@@ -1068,7 +1091,7 @@ void _edit_action(PluginData *data, GError **error)
                                                 gtk_cell_renderer_text_new(),
                                                 "text", 1, NULL);
     gtk_tree_view_set_headers_visible(data->edit_tree, FALSE);
-    //FIXME: connect "row-activated" for Edit
+    g_signal_connect(data->edit_tree, "row-activated", G_CALLBACK(on_row_activated), data);
 
     /* frame with fields for editing, hidden for now */
     data->edit_frame = gtk_frame_new(NULL);

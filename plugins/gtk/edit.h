@@ -69,4 +69,6 @@ void _edit_action(PluginData *data, GError **error);
 
 void _edit_cleanup(PluginData *data);
 
+void _show_error(const char *prefix, GError *error);
+
 #endif /* _EDIT_H_ */
