@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-02 16:10+0200\n"
+"POT-Creation-Date: 2016-11-02 22:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,42 +90,42 @@ msgstr ""
 msgid "LXHotkey: sorry, cannot configure keys remotely.\n"
 msgstr ""
 
-#: ../src/lxhotkey.c:499
+#: ../src/lxhotkey.c:502
 #, c-format
 msgid "Window manager %s isn't supported now, sorry."
 msgstr ""
 
-#: ../src/lxhotkey.c:506 ../plugins/gtk/gtk.c:75
+#: ../src/lxhotkey.c:509 ../plugins/gtk/gtk.c:75
 msgid "Problems loading configuration: "
 msgstr ""
 
-#: ../src/lxhotkey.c:517
+#: ../src/lxhotkey.c:518
 #, c-format
 msgid "GUI type %s currently isn't supported."
 msgstr ""
 
 #. invalid request
-#: ../src/lxhotkey.c:534 ../src/lxhotkey.c:610
+#: ../src/lxhotkey.c:535 ../src/lxhotkey.c:611
 msgid "Invalid request: "
 msgstr ""
 
-#: ../src/lxhotkey.c:544 ../src/lxhotkey.c:622 ../plugins/gtk/gtk.c:90
+#: ../src/lxhotkey.c:545 ../src/lxhotkey.c:623 ../plugins/gtk/gtk.c:90
 msgid "Problems saving configuration: "
 msgstr ""
 
-#: ../src/lxhotkey.c:561
+#: ../src/lxhotkey.c:562
 msgid "ACTION(s)"
 msgstr ""
 
-#: ../src/lxhotkey.c:561 ../src/lxhotkey.c:639
+#: ../src/lxhotkey.c:562 ../src/lxhotkey.c:640
 msgid "KEY(s)"
 msgstr ""
 
-#: ../src/lxhotkey.c:639
+#: ../src/lxhotkey.c:640
 msgid "EXEC"
 msgstr ""
 
-#: ../src/lxhotkey.c:660
+#: ../src/lxhotkey.c:661
 msgid "Requested operation isn't supported."
 msgstr ""
 
@@ -602,8 +602,7 @@ msgstr ""
 msgid "Duplicate <keyboard> section in the rc.xml file."
 msgstr ""
 
-#: ../plugins/openbox/openbox.c:531 ../plugins/openbox/openbox.c:537
-#: ../plugins/openbox/openbox.c:779
+#: ../plugins/openbox/openbox.c:537 ../plugins/openbox/openbox.c:779
 msgid "Internal error."
 msgstr ""
 
@@ -628,22 +627,22 @@ msgstr ""
 msgid "Could not find the rc.xml file anywhere."
 msgstr ""
 
-#: ../plugins/openbox/openbox.c:935 ../plugins/openbox/openbox.c:1048
-#: ../plugins/openbox/openbox.c:1192 ../plugins/openbox/openbox.c:1210
+#: ../plugins/openbox/openbox.c:935 ../plugins/openbox/openbox.c:1060
+#: ../plugins/openbox/openbox.c:1219 ../plugins/openbox/openbox.c:1237
 msgid "No WM configuration is available."
 msgstr ""
 
-#: ../plugins/openbox/openbox.c:1052
+#: ../plugins/openbox/openbox.c:1064
 msgid "Keybinding should activate at least one action."
 msgstr ""
 
-#: ../plugins/openbox/openbox.c:1074 ../plugins/openbox/openbox.c:1084
-#: ../plugins/openbox/openbox.c:1236 ../plugins/openbox/openbox.c:1246
+#: ../plugins/openbox/openbox.c:1086 ../plugins/openbox/openbox.c:1096
+#: ../plugins/openbox/openbox.c:1263 ../plugins/openbox/openbox.c:1273
 #, c-format
 msgid "Hotkey '%s' is already bound to an action."
 msgstr ""
 
-#: ../plugins/openbox/openbox.c:1214
+#: ../plugins/openbox/openbox.c:1241
 msgid "The exec line cannot be empty."
 msgstr ""
 
