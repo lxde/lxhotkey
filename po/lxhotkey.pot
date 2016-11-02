@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-30 17:59+0200\n"
+"POT-Creation-Date: 2016-11-02 16:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,37 +95,37 @@ msgstr ""
 msgid "Window manager %s isn't supported now, sorry."
 msgstr ""
 
-#: ../src/lxhotkey.c:506
+#: ../src/lxhotkey.c:506 ../plugins/gtk/gtk.c:75
 msgid "Problems loading configuration: "
 msgstr ""
 
-#: ../src/lxhotkey.c:519
+#: ../src/lxhotkey.c:517
 #, c-format
 msgid "GUI type %s currently isn't supported."
 msgstr ""
 
 #. invalid request
-#: ../src/lxhotkey.c:536 ../src/lxhotkey.c:612
+#: ../src/lxhotkey.c:534 ../src/lxhotkey.c:610
 msgid "Invalid request: "
 msgstr ""
 
-#: ../src/lxhotkey.c:546 ../src/lxhotkey.c:624
+#: ../src/lxhotkey.c:544 ../src/lxhotkey.c:622 ../plugins/gtk/gtk.c:90
 msgid "Problems saving configuration: "
 msgstr ""
 
-#: ../src/lxhotkey.c:563
+#: ../src/lxhotkey.c:561
 msgid "ACTION(s)"
 msgstr ""
 
-#: ../src/lxhotkey.c:563 ../src/lxhotkey.c:641
+#: ../src/lxhotkey.c:561 ../src/lxhotkey.c:639
 msgid "KEY(s)"
 msgstr ""
 
-#: ../src/lxhotkey.c:641
+#: ../src/lxhotkey.c:639
 msgid "EXEC"
 msgstr ""
 
-#: ../src/lxhotkey.c:662
+#: ../src/lxhotkey.c:660
 msgid "Requested operation isn't supported."
 msgstr ""
 
@@ -647,87 +647,97 @@ msgstr ""
 msgid "The exec line cannot be empty."
 msgstr ""
 
+#: ../plugins/gtk/gtk.c:133 ../plugins/gtk/gtk.c:156
+msgid "Cannot delete keybinding: "
+msgstr ""
+
 #. TRANSLATORS: Replace this string with your names, one name per line.
-#: ../plugins/gtk/gtk.c:118
+#: ../plugins/gtk/gtk.c:176
 msgid "translator-credits"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:126
+#: ../plugins/gtk/gtk.c:184
 msgid "Copyright (C) 2016"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:127
+#: ../plugins/gtk/gtk.c:185
 msgid "Keyboard shortcuts configurator"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:150
+#: ../plugins/gtk/gtk.c:208
 msgid "_File"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:151
+#: ../plugins/gtk/gtk.c:209
 msgid "_Reload"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:152
+#: ../plugins/gtk/gtk.c:210
 msgid ""
 "Drop all unsaved changes and reload all keys from Window Manager "
 "configuration"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:155
+#: ../plugins/gtk/gtk.c:213
 msgid "Save all changes and apply them to Window Manager configuration"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:158
+#: ../plugins/gtk/gtk.c:216
 msgid "Exit the application without saving"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:159
+#: ../plugins/gtk/gtk.c:217
 msgid "_Edit"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:160
+#: ../plugins/gtk/gtk.c:218
 msgid "Create new action"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:162
+#: ../plugins/gtk/gtk.c:220
 msgid "Remove selected action"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:164
+#: ../plugins/gtk/gtk.c:222
 msgid "Change selected action"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:166
+#: ../plugins/gtk/gtk.c:224
 msgid "_Help"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:348
+#: ../plugins/gtk/gtk.c:426
 msgid "Action"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:351
+#: ../plugins/gtk/gtk.c:429
 msgid "Option"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:354 ../plugins/gtk/gtk.c:374
+#: ../plugins/gtk/gtk.c:432 ../plugins/gtk/gtk.c:452
+#: ../plugins/gtk/edit.c:1044
 msgid "Hotkey 1"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:357 ../plugins/gtk/gtk.c:377
+#: ../plugins/gtk/gtk.c:435 ../plugins/gtk/gtk.c:455
+#: ../plugins/gtk/edit.c:1048
 msgid "Hotkey 2"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:365
+#: ../plugins/gtk/gtk.c:443
 msgid "Actions"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:371
+#: ../plugins/gtk/gtk.c:449
 msgid "Command"
 msgstr ""
 
-#: ../plugins/gtk/gtk.c:385
+#: ../plugins/gtk/gtk.c:463
 msgid "Programs"
+msgstr ""
+
+#: ../plugins/gtk/gtk.c:482 ../plugins/gtk/edit.c:480
+msgid "Error"
 msgstr ""
 
 #: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:1
@@ -740,4 +750,76 @@ msgstr ""
 
 #: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:3
 msgid "hotkey;shortcut;system;settings;"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:260
+msgid "Apply error: "
+msgstr ""
+
+#. fill frame with empty data, set choices from data->edit_template, hide value
+#: ../plugins/gtk/edit.c:275 ../plugins/gtk/edit.c:388
+msgid "Add action"
+msgstr ""
+
+#. fill frame with empty data, set choices from data->edit_template
+#: ../plugins/gtk/edit.c:287 ../plugins/gtk/edit.c:390
+msgid "Add option"
+msgstr ""
+
+#. fill frame from selection
+#: ../plugins/gtk/edit.c:348
+msgid "Change option"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:413
+msgid "Discard changes"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:414
+msgid "Accept changes"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:415
+msgid "Add an action"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:416
+msgid "Add an option to this command"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:418
+msgid "Remove selection"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:419
+msgid "Change selected option"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:420
+msgid "Add an option to selection"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:477
+#, c-format
+msgid "Key combination '%s' cannot be used as a global hotkey, sorry."
+msgstr ""
+
+#: ../plugins/gtk/edit.c:1061
+msgid "Actions:"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:1069
+msgid "Command line:"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:1080
+msgid "Options:"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:1102
+msgid "<b>Name:</b>"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:1123
+msgid "<b>Value:</b>"
 msgstr ""

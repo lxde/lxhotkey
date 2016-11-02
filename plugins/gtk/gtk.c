@@ -72,7 +72,7 @@ static void on_reload(GtkAction *act, PluginData *data)
     *data->config = data->cb->load(*data->config, &error);
     if (error)
     {
-        _show_error(_("Error loading config: "), error);
+        _show_error(_("Problems loading configuration: "), error);
         g_error_free(error);
     }
     _main_refresh(data);
@@ -87,7 +87,7 @@ static void on_save(GtkAction *act, PluginData *data)
         gtk_action_set_sensitive(data->save_action, FALSE);
     else
     {
-        _show_error(_("Error saving config: "), error);
+        _show_error(_("Problems saving configuration: "), error);
         g_error_free(error);
     }
 }
