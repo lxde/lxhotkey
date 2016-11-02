@@ -494,6 +494,9 @@ int main(int argc, char *argv[])
         for (gui_plugin = gui_plugins; gui_plugin; gui_plugin = gui_plugin->next)
             if (g_ascii_strcasecmp(gui_plugin->name, cmd) == 0)
                 break;
+    /* initialize GUI before error may be reported */
+    if (gui_plugin && gui_plugin->t->init)
+        gui_plugin->t->init(argc, argv);
     if (!plugin) {
         g_set_error(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
                     _("Window manager %s isn't supported now, sorry."), wm_name);
@@ -508,11 +511,9 @@ int main(int argc, char *argv[])
     }
 
     if (do_gui) {
-        if (gui_plugin && gui_plugin->t->run) {
-            if (gui_plugin->t->init)
-                gui_plugin->t->init(argc, argv);
+        if (gui_plugin && gui_plugin->t->run)
             gui_plugin->t->run(wm_name, plugin->t, &config, &error);
-        } else
+        else
             g_set_error(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
                         _("GUI type %s currently isn't supported."), cmd);
         goto _exit;
