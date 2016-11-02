@@ -245,6 +245,7 @@ static LXHotkeyAttr options_NextWindow[] = {
     { N_("desktop"), BOOLEAN_VALUES, NULL, NULL, FALSE },
     { N_("linear"), BOOLEAN_VALUES, NULL, NULL, FALSE },
     { N_("interactive"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    /* TRANSLATORS: finalactions means actions when done */
     { N_("finalactions"), NULL, NULL, NULL, TRUE },
     { NULL }
 };
@@ -264,6 +265,7 @@ static LXHotkeyAttr options_DirectionalCycleWindows[] = {
     { NULL }
 };
 
+/* TRANSLATORS: these values are in regard to desktop */
 static char * values_to[] = { "#",  N_("current"), N_("next"), N_("previous"),
                               N_("last"), N_("north"), N_("up"), N_("south"),
                               N_("down"), N_("west"), N_("left"), N_("east"),
@@ -320,8 +322,9 @@ static LXHotkeyAttr options_Resize[] = {
     { NULL }
 };
 
-static char * values_xM[] = { "#", N_("current"), N_("center"), NULL };
-static char * values_width[] = { "#", "%", N_("current"), NULL };
+static char * values_xM[] = { N_("#"), N_("current"), N_("center"), NULL };
+/* TRANSLATORS: % in config means some fraction value, usually measured in percents */
+static char * values_width[] = { "#", N_("%"), "current", NULL };
 static char * values_monitorM[] = { "#", N_("current"), N_("all"), N_("next"), N_("prev"), NULL };
 
 static LXHotkeyAttr options_MoveResizeTo[] = {
@@ -333,7 +336,8 @@ static LXHotkeyAttr options_MoveResizeTo[] = {
     { NULL }
 };
 
-static char * values_xR[] = { "#", NULL };
+/* TRANSLATORS: # in config means either pixels, or monitor number */
+static char * values_xR[] = { N_("#"), NULL };
 
 static LXHotkeyAttr options_MoveRelative[] = {
     { "x", TO_BE_CONVERTED(values_xR), NULL, NULL, FALSE },

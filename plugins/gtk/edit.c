@@ -270,8 +270,8 @@ _exit:
 
 static void on_add_action(GtkAction *action, PluginData *data)
 {
-    data->edit_mode = EDIT_MODE_ADD;
     /* fill frame with empty data, set choices from data->edit_template, hide value */
+    data->edit_mode = EDIT_MODE_ADD;
     gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Add action"));
     fill_edit_frame(data, NULL, data->edit_template, NULL);
     gtk_widget_hide(GTK_WIDGET(data->edit_values));
@@ -282,8 +282,8 @@ static void on_add_action(GtkAction *action, PluginData *data)
 
 static void on_add_option(GtkAction *act, PluginData *data)
 {
-    data->edit_mode = EDIT_MODE_ADD;
     /* fill frame with empty data, set choices from data->edit_template */
+    data->edit_mode = EDIT_MODE_ADD;
     gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Add option"));
     fill_edit_frame(data, NULL, data->edit_template, data->edit_options_copy);
     gtk_widget_show(data->edit_frame);
@@ -343,8 +343,8 @@ static void start_edit(GtkTreeModel *model, GtkTreeIter *iter, PluginData *data)
         g_warning("no template found for option '%s'", opt->name);
         return;
     }
-    data->edit_mode = EDIT_MODE_EDIT;
     /* fill frame from selection */
+    data->edit_mode = EDIT_MODE_EDIT;
     gtk_frame_set_label(GTK_FRAME(data->edit_frame), _("Change option"));
     fill_edit_frame(data, opt, &single, NULL);
     gtk_widget_show(data->edit_frame);
