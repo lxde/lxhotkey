@@ -100,6 +100,50 @@ static void on_new(GtkAction *act, PluginData *data)
 
 static void on_del(GtkAction *act, PluginData *data)
 {
+    LXHotkeyGlobal *gl = NULL;
+    LXHotkeyApp *app = NULL;
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+
+    _edit_cleanup(data);
+    if (data->current_page == data->acts)
+    {
+        /* global */
+        if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->acts),
+                                            &model, &iter))
+            gtk_tree_model_get(model, &iter, 4, &gl, -1);
+        if (gl)
+        {
+            LXHotkeyGlobal rem_act = *gl;
+
+            rem_act.accel1 = rem_act.accel2 = NULL;
+            if (data->cb->set_wm_key(*data->config, &rem_act, NULL))
+            {
+                gtk_action_set_sensitive(data->save_action, TRUE);
+                _main_refresh(data);
+            }
+            //FIXME: handle errors
+        }
+    }
+    else
+    {
+        /* application */
+        if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->apps),
+                                            &model, &iter))
+            gtk_tree_model_get(model, &iter, 3, &app, -1);
+        if (act)
+        {
+            LXHotkeyApp rem_app = *app;
+
+            rem_app.accel1 = rem_app.accel2 = NULL;
+            if (data->cb->set_app_key(*data->config, &rem_app, NULL))
+            {
+                gtk_action_set_sensitive(data->save_action, TRUE);
+                _main_refresh(data);
+            }
+            //FIXME: handle errors
+        }
+    }
 }
 
 static void on_edit(GtkAction *act, PluginData *data)
@@ -171,12 +215,18 @@ static void on_notebook_switch_page(GtkNotebook *nb, GtkTreeView *page, guint nu
                                     PluginData *data)
 {
     gboolean has_selection;
+    gboolean can_edit;
 
     _edit_cleanup(data); /* abort edit */
     data->current_page = page;
     has_selection = gtk_tree_selection_get_selected(gtk_tree_view_get_selection(page), NULL, NULL);
-    gtk_action_set_sensitive(data->del_action, has_selection);
-    gtk_action_set_sensitive(data->edit_action, has_selection);
+    if (page == data->acts)
+        can_edit = (data->cb->set_wm_key != NULL);
+    else /* apps page */
+        can_edit = (data->cb->set_app_key != NULL);
+    gtk_action_set_sensitive(data->del_action, has_selection && can_edit);
+    gtk_action_set_sensitive(data->edit_action, has_selection && can_edit);
+    gtk_action_set_sensitive(data->add_action, can_edit);
 }
 
 static void on_selection_changed(GtkTreeSelection *selection, PluginData *data)
@@ -319,6 +369,7 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
 
     data.save_action = gtk_ui_manager_get_action(ui, "/menubar/FileMenu/Save");
     gtk_action_set_sensitive(data.save_action, FALSE);
+    data.add_action = gtk_ui_manager_get_action(ui, "/menubar/EditMenu/New");
     data.del_action = gtk_ui_manager_get_action(ui, "/menubar/EditMenu/Del");
     data.edit_action = gtk_ui_manager_get_action(ui, "/menubar/EditMenu/Edit");
     gtk_action_set_sensitive(data.del_action, FALSE);

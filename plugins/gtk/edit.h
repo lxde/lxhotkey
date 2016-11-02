@@ -32,6 +32,7 @@ typedef struct {
     GtkNotebook *notebook;
     GtkTreeView *acts, *apps;
     GtkAction *save_action;
+    GtkAction *add_action;
     GtkAction *del_action;
     GtkAction *edit_action;
     GtkTreeView *current_page;

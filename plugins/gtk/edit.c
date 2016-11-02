@@ -167,22 +167,104 @@ static void update_edit_toolbar(PluginData *data)
                               g_list_length(tmpl->subopts) != g_list_length(opt->subopts)));
 }
 
-static void on_cancel(GtkAction *act, PluginData *data)
+static void on_cancel(GtkAction *action, PluginData *data)
 {
     gtk_widget_destroy(GTK_WIDGET(data->edit_window));
 }
 
-static void on_save(GtkAction *act, PluginData *data)
+static void on_save(GtkAction *action, PluginData *data)
 {
-    // a) if actions list or command line changed then remove old binding and add new
-    // b) else if keys changed then update binding
-    // c) else skip (d) and (e)
-    // d) gtk_action_set_sensitive(data->save_action, TRUE)
-    // e) _main_refresh(data)
+    LXHotkeyGlobal *act = NULL;
+    LXHotkeyApp *app = NULL;
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+    LXHotkeyGlobal new_act;
+    LXHotkeyApp new_app;
+
+    if (data->current_page == data->acts)
+    {
+        /* it's global */
+        new_act.accel1 = g_object_get_data(G_OBJECT(data->edit_key1), "accelerator_name");
+        new_act.accel2 = g_object_get_data(G_OBJECT(data->edit_key2), "accelerator_name");
+        if (new_act.accel1 == NULL || new_act.accel1[0] == 0)
+        {
+            new_act.accel1 = new_act.accel2;
+            new_act.accel2 = NULL;
+        }
+        new_act.actions = data->edit_options_copy;
+        if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->acts),
+                                            &model, &iter))
+            gtk_tree_model_get(model, &iter, 4, &act, -1);
+        if (act)
+        {
+            /* global edited */
+            if (!options_equal(act->actions, new_act.actions))
+            {
+                /* actions list changed, remove old binding and add new */
+                LXHotkeyGlobal rem_act = *act;
+
+                rem_act.accel1 = rem_act.accel2 = NULL;
+                if (!data->cb->set_wm_key(*data->config, &rem_act, NULL))
+                    goto _exit; //FIXME: show error?
+            }
+            else if (g_strcmp0(act->accel1, new_act.accel1) == 0 &&
+                     g_strcmp0(act->accel2, new_act.accel2) == 0)
+                /* nothing was changed */
+                goto _exit;
+        }
+        /* else it was added */
+        data->cb->set_wm_key(*data->config, &new_act, NULL);
+             //FIXME: show if error?
+    }
+    else
+    {
+        /* it's application */
+        new_app.accel1 = g_object_get_data(G_OBJECT(data->edit_key1), "accelerator_name");
+        new_app.accel2 = g_object_get_data(G_OBJECT(data->edit_key2), "accelerator_name");
+        if (new_app.accel1 == NULL || new_app.accel1[0] == 0)
+        {
+            new_app.accel1 = new_app.accel2;
+            new_app.accel2 = NULL;
+        }
+        new_app.exec = (char *)gtk_entry_get_text(data->edit_exec);
+        new_app.options = data->edit_options_copy;
+        if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->apps),
+                                            &model, &iter))
+            gtk_tree_model_get(model, &iter, 3, &app, -1);
+        if (app)
+        {
+            /* app edited */
+            if (g_strcmp0(app->exec, new_app.exec) != 0 ||
+                !options_equal(app->options, new_app.options))
+            {
+                /* exec line or options list changed, remove old binding and add new */
+                LXHotkeyApp rem_app = *app;
+
+                rem_app.accel1 = rem_app.accel2 = NULL;
+                if (!data->cb->set_app_key(*data->config, &rem_app, NULL))
+                    goto _exit; //FIXME: show error?
+            }
+            else if (g_strcmp0(app->accel1, new_app.accel1) == 0 &&
+                     g_strcmp0(app->accel2, new_app.accel2) == 0)
+                /* nothing was changed */
+                goto _exit;
+        }
+        /* else it was added */
+        data->cb->set_app_key(*data->config, &new_app, NULL);
+             //FIXME: show if error?
+    }
+
+    /* success, update main window */
+    gtk_action_set_sensitive(data->save_action, TRUE);
+    gtk_widget_destroy(GTK_WIDGET(data->edit_window));
+    _main_refresh(data);
+    return;
+
+_exit:
     gtk_widget_destroy(GTK_WIDGET(data->edit_window));
 }
 
-static void on_add_action(GtkAction *act, PluginData *data)
+static void on_add_action(GtkAction *action, PluginData *data)
 {
     data->edit_mode = EDIT_MODE_ADD;
     /* fill frame with empty data, set choices from data->edit_template, hide value */
@@ -344,6 +426,7 @@ static gboolean on_key_event(GtkButton *test, GdkEventKey *event, PluginData *da
 {
     GdkModifierType state;
     char *text;
+    const char *label;
 
     /* ignore Tab completely so user can leave focus */
     if (event->keyval == GDK_KEY_Tab)
@@ -389,6 +472,9 @@ static gboolean on_key_event(GtkButton *test, GdkEventKey *event, PluginData *da
         gtk_dialog_run(GTK_DIALOG(dlg));
         gtk_widget_destroy(dlg);
         gtk_button_set_label(test, g_object_get_data(G_OBJECT(test), "original_label"));
+        gtk_action_set_sensitive(data->edit_apply_button,
+                                 ((label = gtk_button_get_label(GTK_BUTTON(data->edit_key1))) && label[0]) ||
+                                 ((gtk_button_get_label(GTK_BUTTON(data->edit_key2))) && label[0]));
         return FALSE;
     }
     g_free(text);
@@ -415,6 +501,7 @@ static GtkWidget *key_button_new(PluginData *data, const char *hotkey)
         gtk_accelerator_parse(hotkey, &keyval, &state);
     label = gtk_accelerator_get_label(keyval, state);
     w = gtk_button_new_with_label(label);
+    g_object_set_data_full(G_OBJECT(w), "accelerator_name", g_strdup(hotkey), g_free);
     g_object_set_data_full(G_OBJECT(w), "original_label", label, g_free);
     g_signal_connect(w, "focus-in-event", G_CALLBACK(on_focus_in_event), data);
     g_signal_connect(w, "focus-out-event", G_CALLBACK(on_focus_out_event), data);
@@ -501,8 +588,14 @@ static void cancel_edit(PluginData *data)
 
 static void on_exec_changed(GtkEntry *exec, PluginData *data)
 {
+    const char *value;
+
     //FIXME: compare with original exec? is that too heavy?
-    gtk_action_set_sensitive(data->edit_apply_button, TRUE);
+    if (((value = gtk_button_get_label(GTK_BUTTON(data->edit_key1))) == NULL || value[0] == 0) &&
+        ((value = gtk_button_get_label(GTK_BUTTON(data->edit_key2))) == NULL || value[0] == 0))
+        gtk_action_set_sensitive(data->edit_apply_button, FALSE);
+    else
+        gtk_action_set_sensitive(data->edit_apply_button, TRUE);
 }
 
 static void on_selection_changed(GtkTreeSelection *selection, PluginData *data)
@@ -740,7 +833,10 @@ static void apply_options(PluginData *data, LXHotkeyAttr *opt)
         changed = TRUE;
     }
     /* process changed state */
-    if (changed)
+    if (((value = gtk_button_get_label(GTK_BUTTON(data->edit_key1))) == NULL || value[0] == 0) &&
+        ((value = gtk_button_get_label(GTK_BUTTON(data->edit_key2))) == NULL || value[0] == 0))
+        gtk_action_set_sensitive(data->edit_apply_button, FALSE);
+    else if (changed)
         gtk_action_set_sensitive(data->edit_apply_button, TRUE);
 }
 
@@ -852,7 +948,9 @@ void _edit_action(PluginData *data, GError **error)
     {
         if (data->cb->get_wm_actions == NULL) /* not available for edit */
             return;
-        data->edit_template = data->cb->get_wm_actions(data->config, NULL);
+        if (data->cb->set_wm_key == NULL) /* not available for save */
+            return;
+        data->edit_template = data->cb->get_wm_actions(*data->config, NULL);
         //FIXME: test for error
         is_action = TRUE;
         if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->acts),
@@ -870,7 +968,9 @@ void _edit_action(PluginData *data, GError **error)
     {
         if (data->cb->get_app_options == NULL) /* not available for edit */
             return;
-        data->edit_template = data->cb->get_app_options(data->config, NULL);
+        if (data->cb->set_app_key == NULL) /* not available for save */
+            return;
+        data->edit_template = data->cb->get_app_options(*data->config, NULL);
         //FIXME: test for error
         if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(data->apps),
                                             &model, &iter))
