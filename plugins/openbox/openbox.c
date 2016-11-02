@@ -1003,7 +1003,7 @@ static FmXmlFileItem *make_new_xml_binding(ObXmlFile *cfg, GList *actions,
                                            const gchar *exec)
 {
     FmXmlFileItem *binding = fm_xml_file_item_new(ObXmlFile_keybind);
-    FmXmlFileItem *item;
+    FmXmlFileItem *item, *opt;
     char *obkey = key_to_obkey(accel);
 
     fm_xml_file_item_set_attribute(binding, "key", obkey);
@@ -1015,14 +1015,15 @@ static FmXmlFileItem *make_new_xml_binding(ObXmlFile *cfg, GList *actions,
         item = fm_xml_file_item_new(ObXmlFile_action);
         fm_xml_file_item_set_attribute(item, "name", "Execute");
         fm_xml_file_item_append_child(binding, item);
-        binding = item;
-        item = fm_xml_file_item_new(ObXmlFile_command);
-        fm_xml_file_item_append_text(item, exec, -1, FALSE);
-        fm_xml_file_item_append_child(binding, item);
+        opt = fm_xml_file_item_new(ObXmlFile_command);
+        fm_xml_file_item_append_text(opt, exec, -1, FALSE);
+        fm_xml_file_item_append_child(item, opt);
     }
+    else
+        item = binding;
     for (; actions; actions = actions->next) {
-        item = make_new_xml_item(cfg, actions->data, opts, (exec == NULL));
-        fm_xml_file_item_append_child(binding, item);
+        opt = make_new_xml_item(cfg, actions->data, opts, (exec == NULL));
+        fm_xml_file_item_append_child(item, opt);
     }
     return binding;
 }
