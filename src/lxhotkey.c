@@ -170,13 +170,18 @@ static gchar *get_wm_info(void)
 /* test if we are called from X which is local */
 static gboolean test_X_is_local(void)
 {
-//    const char *display = g_getenv("DISPLAY");
+    const char *display = g_getenv("DISPLAY");
+    int Xnum;
+    char lockfile[32];
 
-//    if (!display)
-//        return FALSE;
-//    display = strchr(display, ':');
-//    return (display && display[1] == '0');
-    return TRUE; // FIXME: TODO!
+    if (display)
+        display = strchr(display, ':');
+    if (!display || display[1] < '0' || display[1] > '9')
+        /* invalid environment */
+        return FALSE;
+    Xnum = atoi(&display[1]);
+    snprintf(lockfile, sizeof(lockfile), "/tmp/.X%d-lock", Xnum);
+    return g_file_test(lockfile, G_FILE_TEST_IS_REGULAR);
 }
 
 
@@ -439,7 +444,7 @@ static void print_suboptions(GList *sub, int indent)
 int main(int argc, char *argv[])
 {
     const char *cmd;
-    gchar *wm_name;
+    gchar *wm_name = NULL;
     LXHotkeyPlugin *plugin = NULL;
     LXHotkeyGUIPlugin *gui_plugin = NULL;
     int ret = 1; /* failure */
@@ -468,11 +473,6 @@ int main(int argc, char *argv[])
         cmd += 4;
     }
 
-    if (!test_X_is_local()) {
-        fprintf(stderr, _("LXHotkey: sorry, cannot configure keys remotely.\n"));
-        return 1;
-    }
-
     /* init LibFM and FmModule */
     fm_init(NULL);
     fm_modules_add_directory(PACKAGE_PLUGINS_DIR);
@@ -482,14 +482,7 @@ int main(int argc, char *argv[])
 
     LXKEYS_ERROR = g_quark_from_static_string("lxhotkey-error");
 
-    /* detect current WM and find a module for it */
-    wm_name = get_wm_info();
-    if (!wm_name)
-        goto _exit;
     CHECK_MODULES();
-    for (plugin = plugins; plugin; plugin = plugin->next)
-        if (g_ascii_strcasecmp(plugin->name, wm_name) == 0)
-            break;
     if (do_gui) /* load GUI plugin if requested */
         for (gui_plugin = gui_plugins; gui_plugin; gui_plugin = gui_plugin->next)
             if (g_ascii_strcasecmp(gui_plugin->name, cmd) == 0)
@@ -497,6 +490,22 @@ int main(int argc, char *argv[])
     /* initialize GUI before error may be reported */
     if (gui_plugin && gui_plugin->t->init)
         gui_plugin->t->init(argc, argv);
+    if (!test_X_is_local()) {
+        g_set_error_literal(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
+                            _("Sorry, cannot configure keys remotely."));
+        goto _exit;
+    }
+    /* detect current WM and find a module for it */
+    wm_name = get_wm_info();
+    if (!wm_name)
+    {
+        g_set_error_literal(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
+                            _("Could not determine window manager running."));
+        goto _exit;
+    }
+    for (plugin = plugins; plugin; plugin = plugin->next)
+        if (g_ascii_strcasecmp(plugin->name, wm_name) == 0)
+            break;
     if (!plugin) {
         g_set_error(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
                     _("Window manager %s isn't supported now, sorry."), wm_name);
