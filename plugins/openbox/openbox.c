@@ -526,10 +526,10 @@ static gboolean tag_handler_keybind(FmXmlFileItem *item, GList *children,
     LXHotkeyGlobal *act;
     guint i;
 
-    if (!cfg->stack) { /* corruption! */
-        g_set_error_literal(error, LXKEYS_OB_ERROR, LXKEYS_PARSE_ERROR,
-                            _("Internal error."));
-        return FALSE;
+    if (!cfg->stack) { /* empty keybind tag, just ignore it and remove */
+        g_warning("Openbox config: empty keybind tag in rc.xml, going to remove it");
+        fm_xml_file_item_destroy(item);
+        return TRUE;
     }
     oblist = cfg->stack->data;
     if (oblist->parent != item) { /* corruption! */
