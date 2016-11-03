@@ -612,9 +612,9 @@ static gboolean tag_handler_keybind(FmXmlFileItem *item, GList *children,
     } else {
         for (l = cfg->actions; l; l = l->next)
             /* if the same actions list was gathered already */
-            if (options_equal(((LXHotkeyGlobal *)l->data)->actions, actions)
+            if (options_equal((act = l->data)->actions, actions)
                 /* and it has no secondary keybinding */
-                && ((LXHotkeyGlobal *)l->data)->accel2 == NULL)
+                && act->accel2 == NULL)
                 break;
         if (l == NULL) {
             act = g_new0(LXHotkeyGlobal, 1);
