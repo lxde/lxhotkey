@@ -1045,8 +1045,8 @@ static inline void replace_key(FmXmlFileItem *item, const char *key, char **kptr
 static gboolean obcfg_set_wm_key(gpointer config, LXHotkeyGlobal *data, GError **error)
 {
     ObXmlFile *cfg = (ObXmlFile *)config;
-    GList *l;
-    LXHotkeyGlobal *act;
+    GList *l, *ll;
+    LXHotkeyGlobal *act = NULL;
 
     if (cfg == NULL) {
         g_set_error_literal(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
@@ -1057,8 +1057,15 @@ static gboolean obcfg_set_wm_key(gpointer config, LXHotkeyGlobal *data, GError *
                             _("Keybinding should activate at least one action."));
         return FALSE;
     }
+    /* find if that action(s) is present */
+    for (ll = cfg->actions; ll; ll = ll->next)
+        if (options_equal((act = ll->data)->actions, data->actions))
+            break;
     /* find if those keys are already bound elsewhere */
     for (l = cfg->actions; l; l = l->next) {
+        if (l == ll)
+            /* it's our action */
+            continue;
         if (data->accel1) {
             if (strcmp(data->accel1, ((LXHotkeyGlobal *)l->data)->accel1) == 0 ||
                 g_strcmp0(data->accel1, ((LXHotkeyGlobal *)l->data)->accel2) == 0)
@@ -1092,12 +1099,8 @@ _accel2_bound:
             }
         }
     }
-    /* find if that action(s) is present */
-    for (l = cfg->actions; l; l = l->next)
-        if (options_equal((act = l->data)->actions, data->actions))
-            break;
     /* if found then either change keys or remove the keybinding */
-    if (l != NULL) {
+    if (ll != NULL) {
         if (data->accel1 == NULL) {
             /* removal requested */
             if (act->data1)
@@ -1105,7 +1108,7 @@ _accel2_bound:
             if (act->data2)
                 fm_xml_file_item_destroy(act->data2);
             lkxeys_action_free(act);
-            cfg->actions = g_list_delete_link(cfg->actions, l);
+            cfg->actions = g_list_delete_link(cfg->actions, ll);
         } else {
             if (data->accel2 == NULL) {
                 /* new data contains only one binding */
@@ -1207,8 +1210,8 @@ static GList *obcfg_get_app_keys(gpointer config, const char *mask, GError **err
 static gboolean obcfg_set_app_key(gpointer config, LXHotkeyApp *data, GError **error)
 {
     ObXmlFile *cfg = (ObXmlFile *)config;
-    GList *l;
-    LXHotkeyApp *app;
+    GList *l, *ll;
+    LXHotkeyApp *app = NULL;
 
     if (cfg == NULL) {
         g_set_error_literal(error, LXKEYS_OB_ERROR, LXKEYS_FILE_ERROR,
@@ -1219,6 +1222,11 @@ static gboolean obcfg_set_app_key(gpointer config, LXHotkeyApp *data, GError **e
                             _("The exec line cannot be empty."));
         return FALSE;
     }
+    /* find if that action(s) is present */
+    for (ll = cfg->execs; ll; ll = ll->next)
+        if (g_strcmp0((app = ll->data)->exec, data->exec) == 0
+            && options_equal(app->options, data->options))
+            break;
     /* find if those keys are already bound elsewhere */
     for (l = cfg->actions; l; l = l->next) {
         if (data->accel1) {
@@ -1233,6 +1241,9 @@ static gboolean obcfg_set_app_key(gpointer config, LXHotkeyApp *data, GError **e
         }
     }
     for (l = cfg->execs; l; l = l->next) {
+        if (l == ll)
+            /* it's our action */
+            continue;
         if (data->accel1) {
             if (strcmp(data->accel1, ((LXHotkeyApp *)l->data)->accel1) == 0 ||
                 g_strcmp0(data->accel1, ((LXHotkeyApp *)l->data)->accel2) == 0) {
@@ -1254,13 +1265,8 @@ _accel2_bound:
             }
         }
     }
-    /* find if that action(s) is present */
-    for (l = cfg->execs; l; l = l->next)
-        if (g_strcmp0((app = l->data)->exec, data->exec) == 0
-            && options_equal(app->options, data->options))
-            break;
     /* if found then either change keys or remove the keybinding */
-    if (l != NULL) {
+    if (ll != NULL) {
         if (data->accel1 == NULL) {
             /* removal requested */
             if (app->data1)
@@ -1268,7 +1274,7 @@ _accel2_bound:
             if (app->data2)
                 fm_xml_file_item_destroy(app->data2);
             lkxeys_app_free(app);
-            cfg->execs = g_list_delete_link(cfg->execs, l);
+            cfg->execs = g_list_delete_link(cfg->execs, ll);
         } else {
             if (data->accel2 == NULL) {
                 /* new data contains only one binding */
