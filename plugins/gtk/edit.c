@@ -33,7 +33,10 @@
 #include <gdk/gdkkeysyms.h>
 
 #if !GTK_CHECK_VERSION(2, 21, 0)
-# define GDK_KEY_Tab    GDK_Tab
+# define GDK_KEY_Tab            GDK_Tab
+# define GDK_KEY_BackSpace      GDK_BackSpace
+# define GDK_KEY_Escape         GDK_Escape
+# define GDK_KEY_space          GDK_space
 #endif
 
 enum {
@@ -465,12 +468,36 @@ static gboolean on_key_event(GtkButton *test, GdkEventKey *event, PluginData *da
     /* if not keypress query then ignore key press */
     if (event->type != GDK_KEY_PRESS)
         return FALSE;
+    /* if Escape pressed then reset to last saved */
+    if (state == 0 && event->keyval == GDK_KEY_Escape)
+    {
+        gtk_button_set_label(test, g_object_get_data(G_OBJECT(test), "original_label"));
+        goto _done;
+    }
+    /* if BackSpace pressed then just clear the button */
+    if (state == 0 && event->keyval == GDK_KEY_BackSpace)
+    {
+        gtk_button_set_label(test, "");
+        g_object_set_data(G_OBJECT(test), "accelerator_name", NULL);
+        g_object_set_data(G_OBJECT(test), "original_label", NULL);
+_done:
+        gtk_action_set_sensitive(data->edit_apply_button,
+                                 ((label = gtk_button_get_label(GTK_BUTTON(data->edit_key1))) && label[0]) ||
+                                 ((gtk_button_get_label(GTK_BUTTON(data->edit_key2))) && label[0]));
+        if (data->edit_exec)
+            gtk_widget_grab_focus(GTK_WIDGET(data->edit_exec));
+        else
+            gtk_widget_grab_focus(GTK_WIDGET(data->edit_tree));
+        return FALSE;
+    }
     /* update the label now */
     text = gtk_accelerator_get_label(event->keyval, state);
     gtk_button_set_label(test, text);
     /* drop single printable and printable with single Shift, Ctrl, Alt */
     if (event->length != 0 && (state == 0 || state == GDK_SHIFT_MASK ||
-                               state == GDK_CONTROL_MASK || state == GDK_MOD1_MASK))
+                               state == GDK_CONTROL_MASK || state == GDK_MOD1_MASK) &&
+        /* but make an exception for Alt+Space, it should be acceptable */
+        (event->keyval != GDK_KEY_space || state != GDK_MOD1_MASK))
     {
         GtkWidget* dlg;
         dlg = gtk_message_dialog_new(NULL, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
@@ -487,8 +514,8 @@ static gboolean on_key_event(GtkButton *test, GdkEventKey *event, PluginData *da
                                  ((gtk_button_get_label(GTK_BUTTON(data->edit_key2))) && label[0]));
         return FALSE;
     }
-    g_free(text);
     /* save new value now */
+    g_object_set_data_full(G_OBJECT(test), "original_label", text, g_free);
     text = gtk_accelerator_name(event->keyval, state);
     g_object_set_data_full(G_OBJECT(test), "accelerator_name", text, g_free);
     gtk_action_set_sensitive(data->edit_apply_button, TRUE);
