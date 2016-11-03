@@ -36,9 +36,11 @@ endif
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-EXTRA_DIST= \
+EXTRA_DIST = \
 	gtk/lxhotkey-gtk.desktop.in gtk/lxhotkey-gtk.desktop \
 	gtk/edit.h
+
+DISTCLEANFILES = gtk/lxhotkey-gtk.desktop
 
 install-exec-hook:
 	rm -f $(DESTDIR)$(pkglibdir)/*.la

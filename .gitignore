@@ -19,6 +19,7 @@ missing
 stamp-*
 po/Makefile.in.in
 po/POTFILES
+po/LINGUAS
 .deps/
 .libs/
 .dirstamp
@@ -31,3 +32,4 @@ lxhotkey
 *.tar.xz
 man/lxhotkey.1
 *.desktop
+*.gmo

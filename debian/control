@@ -52,6 +52,7 @@ Description: LXHotkey keyboard shortcuts configurator (development files)
 Package: lxhotkey-gtk
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}, lxhotkey-core
+Recommends: lxhotkey-data
 Provides: lxhotkey-gui
 Description: LXHotkey keyboard shortcuts configurator (GTK+ GUI plugin)
  LXHotkey is an universal application for the Lightweight X11 Desktop
@@ -59,3 +60,13 @@ Description: LXHotkey keyboard shortcuts configurator (GTK+ GUI plugin)
  for Window Manager actions, including ones to start applications.
  .
  This package contains a GTK+ 2.0 GUI plugin.
+
+Package: lxhotkey-data
+Architecture: all
+Depends: ${misc:Depends}
+Description: LXHotkey keyboard shortcuts configurator (data files)
+ LXHotkey is an universal application for the Lightweight X11 Desktop
+ Environment (LXDE) which allows view and change global keyboard shortcuts
+ for Window Manager actions, including ones to start applications.
+ .
+ This package contains internationalization files.

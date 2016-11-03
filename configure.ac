@@ -30,6 +30,14 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package.])
 
 AM_GLIB_GNU_GETTEXT
 
+# Generate po/LINGUAS for available PO files
+rm -f $srcdir/po/LINGUAS
+for po_file in `ls $srcdir/po/*.po | sort`;
+do
+    lang=`echo "$po_file" | sed "s|.*/po/\(.*\)\.po|\1|g"`
+    echo $lang >> $srcdir/po/LINGUAS
+done
+
 # Handle --enable-debug option
 AC_ARG_ENABLE(debug,
     [AC_HELP_STRING([--enable-debug],
