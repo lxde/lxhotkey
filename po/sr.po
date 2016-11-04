@@ -1,0 +1,855 @@
+# Serbian translation of LXHotKey package
+# Copyright (C) The LXDE Project
+# This file is distributed under the same license as the LXHotKey package.
+# Jay A. Fleming <tito.nehru.naser@gmail.com>, 2016.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: LXHotKey\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-11-02 23:47+0200\n"
+"PO-Revision-Date: 2016-11-04 10:42+0100\n"
+"Last-Translator: Jay Alexander Fleming <tito.nehru.naser@gmail.com>\n"
+"Language-Team: \n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.7.6\n"
+
+#: ../src/lxhotkey.c:240
+#, c-format
+msgid "Usage: %s global [<action>]      - show keys bound to action(s)\n"
+msgstr "Употреба:\n"
+" %s global [<радња>]      — приказује тастере придружене радњама(и)\n"
+
+#: ../src/lxhotkey.c:241
+#, c-format
+msgid "       %s global <action> <key>  - bind a key to the action\n"
+msgstr "       %s global <радња> <тастер>  — придружује тастер радњи\n"
+
+#: ../src/lxhotkey.c:242
+#, c-format
+msgid "       %s app [<exec>]           - show keys bound to exec line\n"
+msgstr "       %s app [<наредба>]           — приказује тастере придружене "
+"линији наредбе\n"
+
+#: ../src/lxhotkey.c:243
+#, c-format
+msgid "       %s app <exec> <key>       - bind a key to some exec line\n"
+msgstr "       %s app <наредба> <тастер>       — придружује тастер линији "
+"наредбе\n"
+
+#: ../src/lxhotkey.c:244
+#, c-format
+msgid "       %s app <exec> --          - unbind all keys from exec line\n"
+msgstr "       %s app <наредба> --          — раздружује тастер од линије "
+"наредбе\n"
+
+#: ../src/lxhotkey.c:245
+#, c-format
+msgid "       %s show <key>             - show the action bound to a key\n"
+msgstr "       %s show <тастер>             — приказује радњу придружену "
+"тастеру\n"
+
+#: ../src/lxhotkey.c:246
+#, c-format
+msgid "       %s --gui=<type>           - start with GUI\n"
+msgstr "       %s --gui=<врста>           — покреће програм кроз граф. сучеље\n"
+
+#: ../src/lxhotkey.c:341
+msgid "empty option name."
+msgstr "поставка без назива."
+
+#: ../src/lxhotkey.c:344
+msgid "empty action name."
+msgstr "радња без назива."
+
+#: ../src/lxhotkey.c:376
+#, c-format
+msgid "no matching option '%s' found for action '%s'."
+msgstr "не нађох поставку „%s“ сагласну радњи „%s“."
+
+#: ../src/lxhotkey.c:380
+#, c-format
+msgid "action '%s' isn't supported by WM %s."
+msgstr "радња „%s“ није подржана у упр. прозора „%s“."
+
+#: ../src/lxhotkey.c:397
+#, c-format
+msgid "value '%s' is not supported for option '%s'."
+msgstr "вредност „%s“ није подржана за поставку „%s“."
+
+#: ../src/lxhotkey.c:401
+#, c-format
+msgid "value '%s' is not supported for action '%s'."
+msgstr "вредност „%s“ није подржана за радњу „%s“."
+
+#: ../src/lxhotkey.c:414
+#, c-format
+msgid "action '%s' does not support options."
+msgstr "радња „%s“ не подржава поставке."
+
+#: ../src/lxhotkey.c:495
+msgid "Sorry, cannot configure keys remotely."
+msgstr "На жалост, не познајем удаљено подешавање тастера"
+
+#: ../src/lxhotkey.c:503
+msgid "Could not determine window manager running."
+msgstr "Не могу да одредим употребљеног управника прозора."
+
+#: ../src/lxhotkey.c:511
+#, c-format
+msgid "Window manager %s isn't supported now, sorry."
+msgstr "На жалост, управник прозора „%s“ још увек није подржан."
+
+#: ../src/lxhotkey.c:518 ../plugins/gtk/gtk.c:75
+msgid "Problems loading configuration: "
+msgstr "Проблеми при читању подешавања: "
+
+#: ../src/lxhotkey.c:527
+#, c-format
+msgid "GUI type %s currently isn't supported."
+msgstr "Граф. сучеље „%s-врсте“ за сада није подржано."
+
+#. invalid request
+#: ../src/lxhotkey.c:544 ../src/lxhotkey.c:620
+msgid "Invalid request: "
+msgstr "Захтев није ваљан: "
+
+#: ../src/lxhotkey.c:554 ../src/lxhotkey.c:632 ../plugins/gtk/gtk.c:90
+msgid "Problems saving configuration: "
+msgstr "Проблеми при упису подешавања: "
+
+#: ../src/lxhotkey.c:571
+msgid "ACTION(s)"
+msgstr "РАДЊА(е)"
+
+#: ../src/lxhotkey.c:571 ../src/lxhotkey.c:649
+msgid "KEY(s)"
+msgstr "ТАСТЕР(и)"
+
+#: ../src/lxhotkey.c:649
+msgid "EXEC"
+msgstr "НАРЕДБА"
+
+#: ../src/lxhotkey.c:670
+msgid "Requested operation isn't supported."
+msgstr "Није подржана захтевана операција."
+
+#: ../plugins/openbox/openbox.c:184
+msgid "Failed to reconfigure Openbox."
+msgstr "Није успело преподешавање Опенбокса."
+
+#. reuse GList
+#. reuse GList
+#: ../plugins/openbox/openbox.c:203
+msgid "yes"
+msgstr "да"
+
+#: ../plugins/openbox/openbox.c:203
+msgid "no"
+msgstr "не"
+
+#: ../plugins/openbox/openbox.c:206
+msgid "enabled"
+msgstr "омогућено"
+
+#: ../plugins/openbox/openbox.c:207
+#, fuzzy
+msgid "wmclass"
+msgstr "класа_упр.прозора"
+
+#: ../plugins/openbox/openbox.c:208
+msgid "name"
+msgstr "назив"
+
+#: ../plugins/openbox/openbox.c:209
+msgid "icon"
+msgstr "икона"
+
+#: ../plugins/openbox/openbox.c:214 ../plugins/openbox/openbox.c:288
+msgid "command"
+msgstr "наредба"
+
+#: ../plugins/openbox/openbox.c:215 ../plugins/openbox/openbox.c:293
+#, fuzzy
+msgid "prompt"
+msgstr "Упит"
+
+#: ../plugins/openbox/openbox.c:216
+#, fuzzy
+msgid "startupnotify"
+msgstr "обавештење_при_покретању"
+
+#: ../plugins/openbox/openbox.c:220 ../plugins/openbox/openbox.c:325
+msgid "center"
+msgstr "на средини"
+
+#: ../plugins/openbox/openbox.c:221
+msgid "default"
+msgstr "уобичајено"
+
+#: ../plugins/openbox/openbox.c:221
+msgid "primary"
+msgstr "главно"
+
+#: ../plugins/openbox/openbox.c:221
+msgid "mouse"
+msgstr "миш"
+
+#: ../plugins/openbox/openbox.c:222
+#, fuzzy
+msgid "active"
+msgstr "укључено"
+
+#: ../plugins/openbox/openbox.c:222 ../plugins/openbox/openbox.c:328
+msgid "all"
+msgstr "све"
+
+#: ../plugins/openbox/openbox.c:227 ../plugins/openbox/openbox.c:335
+msgid "monitor"
+msgstr "екран"
+
+#: ../plugins/openbox/openbox.c:232
+msgid "menu"
+msgstr "изборник"
+
+#: ../plugins/openbox/openbox.c:233
+msgid "position"
+msgstr "положај"
+
+#: ../plugins/openbox/openbox.c:237
+msgid "list"
+msgstr "списак"
+
+#: ../plugins/openbox/openbox.c:237
+msgid "icons"
+msgstr "иконе"
+
+#: ../plugins/openbox/openbox.c:237
+msgid "none"
+msgstr "ништа"
+
+#: ../plugins/openbox/openbox.c:240 ../plugins/openbox/openbox.c:259
+#, fuzzy
+msgid "dialog"
+msgstr "прозорче"
+
+#: ../plugins/openbox/openbox.c:241 ../plugins/openbox/openbox.c:260
+msgid "bar"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:242 ../plugins/openbox/openbox.c:261
+msgid "raise"
+msgstr "издигни"
+
+#: ../plugins/openbox/openbox.c:243
+msgid "allDesktops"
+msgstr "све_површи"
+
+#: ../plugins/openbox/openbox.c:244 ../plugins/openbox/openbox.c:262
+msgid "panels"
+msgstr "панели"
+
+#: ../plugins/openbox/openbox.c:245
+msgid "desktop"
+msgstr "радна површ"
+
+#: ../plugins/openbox/openbox.c:246
+msgid "linear"
+msgstr "равномерно"
+
+#: ../plugins/openbox/openbox.c:247
+msgid "interactive"
+msgstr ""
+
+#. TRANSLATORS: finalactions means actions when done
+#: ../plugins/openbox/openbox.c:249 ../plugins/openbox/openbox.c:264
+#, fuzzy
+msgid "finalactions"
+msgstr "на_крају_уради"
+
+#: ../plugins/openbox/openbox.c:253 ../plugins/openbox/openbox.c:270
+#: ../plugins/openbox/openbox.c:305 ../plugins/openbox/openbox.c:358
+msgid "north"
+msgstr "северно"
+
+#: ../plugins/openbox/openbox.c:253
+msgid "northeast"
+msgstr "североисточно"
+
+#: ../plugins/openbox/openbox.c:253 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:306 ../plugins/openbox/openbox.c:358
+msgid "east"
+msgstr "источно"
+
+#: ../plugins/openbox/openbox.c:254
+msgid "southeast"
+msgstr "југоисточно"
+
+#: ../plugins/openbox/openbox.c:254 ../plugins/openbox/openbox.c:270
+#: ../plugins/openbox/openbox.c:305 ../plugins/openbox/openbox.c:358
+msgid "south"
+msgstr "јужно"
+
+#: ../plugins/openbox/openbox.c:254
+msgid "southwest"
+msgstr "југозападно"
+
+#: ../plugins/openbox/openbox.c:255 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:306 ../plugins/openbox/openbox.c:358
+msgid "west"
+msgstr "западно"
+
+#: ../plugins/openbox/openbox.c:255
+msgid "northwest"
+msgstr "сецерозападно"
+
+#: ../plugins/openbox/openbox.c:258 ../plugins/openbox/openbox.c:300
+#: ../plugins/openbox/openbox.c:361
+msgid "direction"
+msgstr "правац"
+
+#: ../plugins/openbox/openbox.c:263
+msgid "desktops"
+msgstr "радне површи"
+
+#. TRANSLATORS: these values are in regard to desktop
+#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:280
+#: ../plugins/openbox/openbox.c:304 ../plugins/openbox/openbox.c:325
+#: ../plugins/openbox/openbox.c:328
+msgid "current"
+msgstr "текућа"
+
+#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:304
+#: ../plugins/openbox/openbox.c:328
+msgid "next"
+msgstr "наредна"
+
+#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:304
+msgid "previous"
+msgstr "претходна"
+
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:280
+#: ../plugins/openbox/openbox.c:305
+msgid "last"
+msgstr "последња"
+
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:305
+msgid "up"
+msgstr "горња"
+
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:306
+msgid "down"
+msgstr "доња"
+
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:306
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:351
+msgid "left"
+msgstr "лева"
+
+#: ../plugins/openbox/openbox.c:272 ../plugins/openbox/openbox.c:307
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:352
+msgid "right"
+msgstr "десна"
+
+#: ../plugins/openbox/openbox.c:275 ../plugins/openbox/openbox.c:310
+#, fuzzy
+msgid "to"
+msgstr "у"
+
+#: ../plugins/openbox/openbox.c:276 ../plugins/openbox/openbox.c:311
+#, fuzzy
+msgid "wrap"
+msgstr "преломи"
+
+#: ../plugins/openbox/openbox.c:283
+#, fuzzy
+msgid "where"
+msgstr "где"
+
+#: ../plugins/openbox/openbox.c:297
+msgid "both"
+msgstr "обје"
+
+#: ../plugins/openbox/openbox.c:297
+msgid "horizontal"
+msgstr "водоравно"
+
+#: ../plugins/openbox/openbox.c:297
+msgid "vertical"
+msgstr "усправно"
+
+#: ../plugins/openbox/openbox.c:312
+msgid "follow"
+msgstr "прати"
+
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:353
+#: ../plugins/openbox/openbox.c:365
+msgid "top"
+msgstr "горе"
+
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:354
+#: ../plugins/openbox/openbox.c:365
+msgid "bottom"
+msgstr "доле"
+
+#: ../plugins/openbox/openbox.c:317
+msgid "topleft"
+msgstr "горе-лево"
+
+#: ../plugins/openbox/openbox.c:317
+msgid "topright"
+msgstr "горе-десно"
+
+#: ../plugins/openbox/openbox.c:317
+msgid "bottomleft"
+msgstr "доле-лево"
+
+#: ../plugins/openbox/openbox.c:318
+msgid "bottomright"
+msgstr "доле-десно"
+
+#: ../plugins/openbox/openbox.c:321
+msgid "edge"
+msgstr "ивица"
+
+#. TRANSLATORS: # in config means either pixels, or monitor number
+#: ../plugins/openbox/openbox.c:325 ../plugins/openbox/openbox.c:340
+msgid "#"
+msgstr "?број"
+
+#. TRANSLATORS: % in config means some fraction value, usually measured in percents
+#: ../plugins/openbox/openbox.c:327
+msgid "%"
+msgstr "%"
+
+#: ../plugins/openbox/openbox.c:328
+msgid "prev"
+msgstr "претходни"
+
+#: ../plugins/openbox/openbox.c:333
+msgid "width"
+msgstr "ширина"
+
+#: ../plugins/openbox/openbox.c:334
+msgid "height"
+msgstr "висина"
+
+#: ../plugins/openbox/openbox.c:365
+msgid "normal"
+msgstr "обично"
+
+#: ../plugins/openbox/openbox.c:368
+msgid "layer"
+msgstr "слој"
+
+#. global actions
+#: ../plugins/openbox/openbox.c:374
+msgid "Execute"
+msgstr "Изврши"
+
+#: ../plugins/openbox/openbox.c:375
+msgid "ShowMenu"
+msgstr "Прикажи_изборник"
+
+#: ../plugins/openbox/openbox.c:376
+msgid "NextWindow"
+msgstr "Наредни_прозор"
+
+#: ../plugins/openbox/openbox.c:377
+msgid "PreviousWindow"
+msgstr "Претходни_прозор"
+
+#: ../plugins/openbox/openbox.c:378
+msgid "DirectionalCycleWindows"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:379
+msgid "DirectionalTargetWindow"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:380
+msgid "GoToDesktop"
+msgstr "Иди_на_површ"
+
+#: ../plugins/openbox/openbox.c:381
+msgid "AddDesktop"
+msgstr "Додај_површ"
+
+#: ../plugins/openbox/openbox.c:382
+msgid "RemoveDesktop"
+msgstr "Уклони_површ"
+
+#: ../plugins/openbox/openbox.c:383
+msgid "ToggleDockAutohide"
+msgstr "Укљ-Искљ_Самоскривање"
+
+#: ../plugins/openbox/openbox.c:384
+msgid "Reconfigure"
+msgstr "Преподеси"
+
+#: ../plugins/openbox/openbox.c:385
+msgid "Restart"
+msgstr "Покрени_опет"
+
+#: ../plugins/openbox/openbox.c:386
+msgid "Exit"
+msgstr "Изађи"
+
+#. windows actions
+#: ../plugins/openbox/openbox.c:388
+msgid "Focus"
+msgstr "У_жижи"
+
+#: ../plugins/openbox/openbox.c:389
+msgid "Raise"
+msgstr "Издигни"
+
+#: ../plugins/openbox/openbox.c:390
+msgid "Lower"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:391
+msgid "RaiseLower"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:392
+msgid "Unfocus"
+msgstr "Ван_жиже"
+
+#: ../plugins/openbox/openbox.c:393
+msgid "FocusToBottom"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:394
+msgid "Iconify"
+msgstr "Умањи"
+
+#: ../plugins/openbox/openbox.c:395
+msgid "Close"
+msgstr "Затвори"
+
+#: ../plugins/openbox/openbox.c:396
+msgid "ToggleShade"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:397
+msgid "Shade"
+msgstr "Замотај"
+
+#: ../plugins/openbox/openbox.c:398
+msgid "Unshade"
+msgstr "Одмотај"
+
+#: ../plugins/openbox/openbox.c:399
+msgid "ToggleOmnipresent"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:400
+msgid "ToggleMaximize"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:401
+msgid "Maximize"
+msgstr "Увећај"
+
+#: ../plugins/openbox/openbox.c:402
+msgid "Unmaximize"
+msgstr "Врати"
+
+#: ../plugins/openbox/openbox.c:403
+msgid "ToggleFullscreen"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:404
+msgid "ToggleDecorations"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:405
+msgid "Decorate"
+msgstr "Украси"
+
+#: ../plugins/openbox/openbox.c:406
+msgid "Undecorate"
+msgstr "Не_украшавај"
+
+#: ../plugins/openbox/openbox.c:407
+msgid "SendToDesktop"
+msgstr "Шаљи_на_површ"
+
+#: ../plugins/openbox/openbox.c:408
+msgid "Move"
+msgstr "Помери"
+
+#: ../plugins/openbox/openbox.c:409
+msgid "Resize"
+msgstr "Промени величину"
+
+#: ../plugins/openbox/openbox.c:410
+msgid "MoveResizeTo"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:411
+msgid "MoveRelative"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:412
+msgid "ResizeRelative"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:413
+msgid "MoveToEdge"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:414
+msgid "GrowToEdge"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:415
+msgid "ShrinkToEdge"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:416
+msgid "GrowToFill"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:417
+msgid "ToggleAlwaysOnTop"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:418
+msgid "ToggleAlwaysOnBottom"
+msgstr ""
+
+#: ../plugins/openbox/openbox.c:419
+msgid "SendToLayer"
+msgstr "Шаљи_на_слој"
+
+#: ../plugins/openbox/openbox.c:510
+msgid "Duplicate <keyboard> section in the rc.xml file."
+msgstr "Двострука вредност одељка „<keyboard>“ у датотеци „rc.xml“!"
+
+#: ../plugins/openbox/openbox.c:541 ../plugins/openbox/openbox.c:783
+msgid "Internal error."
+msgstr "Унутрашња грешка."
+
+#: ../plugins/openbox/openbox.c:585
+msgid "rc.xml error: no key is set for a keybind."
+msgstr "Грешка у датотеци „rc.xml“: нема тастера за придруживање."
+
+#: ../plugins/openbox/openbox.c:656
+msgid "Invalid rc.xml: action with a sub-action."
+msgstr "Није ваљана „rc.xml“ датотека: радња са под-радњом."
+
+#: ../plugins/openbox/openbox.c:772
+msgid "rc.xml error: no name is set for action."
+msgstr "Грешка у датотеци „rc.xml“: радња је без назива."
+
+#: ../plugins/openbox/openbox.c:802
+#, c-format
+msgid "rc.xml error: empty tag <%s> is prohibited."
+msgstr "Грешка у датотеци „rc.xml“: Није дозвољена празна ознака „<%s>“."
+
+#: ../plugins/openbox/openbox.c:891
+msgid "Could not find the rc.xml file anywhere."
+msgstr "Не могу нигде да нађем датотеку „rc.xml“."
+
+#: ../plugins/openbox/openbox.c:939 ../plugins/openbox/openbox.c:1064
+#: ../plugins/openbox/openbox.c:1223 ../plugins/openbox/openbox.c:1241
+msgid "No WM configuration is available."
+msgstr "Није доступно подешавање управника прозора."
+
+#: ../plugins/openbox/openbox.c:1068
+msgid "Keybinding should activate at least one action."
+msgstr "Придруживање мора да покреће бар једну радњу."
+
+#: ../plugins/openbox/openbox.c:1090 ../plugins/openbox/openbox.c:1100
+#: ../plugins/openbox/openbox.c:1267 ../plugins/openbox/openbox.c:1277
+#, fuzzy, c-format
+msgid "Hotkey '%s' is already bound to an action."
+msgstr "Пречица „%s“ је придружена другој радњи."
+
+#: ../plugins/openbox/openbox.c:1245
+msgid "The exec line cannot be empty."
+msgstr "Линиија наредбе не може да буде празна."
+
+#: ../plugins/gtk/gtk.c:133 ../plugins/gtk/gtk.c:156
+msgid "Cannot delete keybinding: "
+msgstr "Не могу да уклоним придруживање: "
+
+#. TRANSLATORS: Replace this string with your names, one name per line.
+#: ../plugins/gtk/gtk.c:176
+msgid "translator-credits"
+msgstr "Српски — Jay A. Fleming <tito.nehru.naser@gmail.com>"
+
+#: ../plugins/gtk/gtk.c:184
+msgid "Copyright (C) 2016"
+msgstr "Ауторска права — 2016."
+
+#: ../plugins/gtk/gtk.c:185
+msgid "Keyboard shortcuts configurator"
+msgstr "Управник пречица тастатуре"
+
+#: ../plugins/gtk/gtk.c:208
+msgid "_File"
+msgstr "_Датотека"
+
+#: ../plugins/gtk/gtk.c:209
+msgid "_Reload"
+msgstr "_Освежи"
+
+#: ../plugins/gtk/gtk.c:210
+msgid ""
+"Drop all unsaved changes and reload all keys from Window Manager "
+"configuration"
+msgstr ""
+"Поништи све несачуване измене и учитај вредности из подешавања управника "
+"прозора"
+
+#: ../plugins/gtk/gtk.c:213
+msgid "Save all changes and apply them to Window Manager configuration"
+msgstr "Сачувај све измене и примени их на подешавања управника прозора"
+
+#: ../plugins/gtk/gtk.c:216
+msgid "Exit the application without saving"
+msgstr "Напусти програм без чувања измена"
+
+#: ../plugins/gtk/gtk.c:217
+msgid "_Edit"
+msgstr "_Уреди"
+
+#: ../plugins/gtk/gtk.c:218
+msgid "Create new action"
+msgstr "Створи нову радњу"
+
+#: ../plugins/gtk/gtk.c:220
+msgid "Remove selected action"
+msgstr "Уклони одабрану радњу"
+
+#: ../plugins/gtk/gtk.c:222
+msgid "Change selected action"
+msgstr "Измени одабрану радњу"
+
+#: ../plugins/gtk/gtk.c:224
+msgid "_Help"
+msgstr "_Помоћ"
+
+#: ../plugins/gtk/gtk.c:426
+msgid "Action"
+msgstr "Радња"
+
+#: ../plugins/gtk/gtk.c:429
+msgid "Option"
+msgstr "Поставка"
+
+#: ../plugins/gtk/gtk.c:432 ../plugins/gtk/gtk.c:452
+#: ../plugins/gtk/edit.c:1044
+msgid "Hotkey 1"
+msgstr "Пречица 1"
+
+#: ../plugins/gtk/gtk.c:435 ../plugins/gtk/gtk.c:455
+#: ../plugins/gtk/edit.c:1048
+msgid "Hotkey 2"
+msgstr "Пречица 2"
+
+#: ../plugins/gtk/gtk.c:443
+msgid "Actions"
+msgstr "Радње"
+
+#: ../plugins/gtk/gtk.c:449
+msgid "Command"
+msgstr "Наредба"
+
+#: ../plugins/gtk/gtk.c:463
+msgid "Programs"
+msgstr "Програми"
+
+#: ../plugins/gtk/gtk.c:482 ../plugins/gtk/edit.c:480
+msgid "Error"
+msgstr "Грешка"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:1
+msgid "Setup Hot Keys"
+msgstr "Подешавања „врућих“ тастера"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:2
+msgid "View and change Window Manager global shortcuts"
+msgstr "Преглед и измена општих пречица управника прозора"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:3
+msgid "hotkey;shortcut;system;settings;"
+msgstr "тастер;пречица;систем;поставке;"
+
+#: ../plugins/gtk/edit.c:260
+msgid "Apply error: "
+msgstr ""
+
+#: ../plugins/gtk/edit.c:275 ../plugins/gtk/edit.c:388
+msgid "Add action"
+msgstr "Додај радњу"
+
+#: ../plugins/gtk/edit.c:287 ../plugins/gtk/edit.c:390
+msgid "Add option"
+msgstr "Додај поставку"
+
+#: ../plugins/gtk/edit.c:348
+msgid "Change option"
+msgstr "Измени поставку"
+
+#: ../plugins/gtk/edit.c:413
+msgid "Discard changes"
+msgstr "Поништи измене"
+
+#: ../plugins/gtk/edit.c:414
+msgid "Accept changes"
+msgstr "Сачувај промене"
+
+#: ../plugins/gtk/edit.c:415
+msgid "Add an action"
+msgstr "Додај радњу"
+
+#: ../plugins/gtk/edit.c:416
+msgid "Add an option to this command"
+msgstr "Додај поставку овој наредби"
+
+#: ../plugins/gtk/edit.c:418
+msgid "Remove selection"
+msgstr "Уклони одабрано"
+
+#: ../plugins/gtk/edit.c:419
+msgid "Change selected option"
+msgstr "Измени одабрану поставку"
+
+#: ../plugins/gtk/edit.c:420
+msgid "Add an option to selection"
+msgstr "Додај поставку одабраном"
+
+#: ../plugins/gtk/edit.c:477
+#, c-format
+msgid "Key combination '%s' cannot be used as a global hotkey, sorry."
+msgstr "Комбинација тастера „%s“ не може да се употреби као општа пречица."
+
+#: ../plugins/gtk/edit.c:1061
+msgid "Actions:"
+msgstr "Радње:"
+
+#: ../plugins/gtk/edit.c:1069
+msgid "Command line:"
+msgstr "Линија наредбе:"
+
+#: ../plugins/gtk/edit.c:1080
+msgid "Options:"
+msgstr "Поставке:"
+
+#: ../plugins/gtk/edit.c:1102
+msgid "<b>Name:</b>"
+msgstr "<b>Назив:</b>"
+
+#: ../plugins/gtk/edit.c:1123
+msgid "<b>Value:</b>"
+msgstr "<b>Вредност:</b>"
