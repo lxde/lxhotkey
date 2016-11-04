@@ -1,0 +1,840 @@
+# Ukrainian translation for LXHotkey.
+# Copyright (C) 2016 LXDE development team.
+# This file is distributed under the same license as the LXHotkey package.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LXHotkey 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-11-02 23:47+0200\n"
+"PO-Revision-Date: 2016-11-04 13:22+0200\n"
+"Last-Translator: Andriy Grytsenko <andrej@rep.kiev.ua>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/lxhotkey.c:240
+#, c-format
+msgid "Usage: %s global [<action>]      - show keys bound to action(s)\n"
+msgstr "Використання: %s global [<дія>]          - показати клавіші, прив'язані до дії\n"
+
+#: ../src/lxhotkey.c:241
+#, c-format
+msgid "       %s global <action> <key>  - bind a key to the action\n"
+msgstr "              %s global <дія> <клавіша>  - прив'язати клавішу до дії\n"
+
+#: ../src/lxhotkey.c:242
+#, c-format
+msgid "       %s app [<exec>]           - show keys bound to exec line\n"
+msgstr "              %s app <команда>           - показати клавіші, прив'язані до команди\n"
+
+#: ../src/lxhotkey.c:243
+#, c-format
+msgid "       %s app <exec> <key>       - bind a key to some exec line\n"
+msgstr "              %s app <команда> <клавіша> - прив'язати клавішу до команди\n"
+
+#: ../src/lxhotkey.c:244
+#, c-format
+msgid "       %s app <exec> --          - unbind all keys from exec line\n"
+msgstr "              %s app <команда> --        - від'вязати всі клавіші від команди\n"
+
+#: ../src/lxhotkey.c:245
+#, c-format
+msgid "       %s show <key>             - show the action bound to a key\n"
+msgstr "              %s <клавіша>               - показати дію, прив'язану до клавіші\n"
+
+#: ../src/lxhotkey.c:246
+#, c-format
+msgid "       %s --gui=<type>           - start with GUI\n"
+msgstr "              %s --gui=<тип>             - запустити графічний інтерфейс\n"
+
+#: ../src/lxhotkey.c:341
+msgid "empty option name."
+msgstr "порожня назва параметру."
+
+#: ../src/lxhotkey.c:344
+msgid "empty action name."
+msgstr "порожня назва дії."
+
+#: ../src/lxhotkey.c:376
+#, c-format
+msgid "no matching option '%s' found for action '%s'."
+msgstr "не знайдено підходящого параметру '%s' до дії '%s'."
+
+#: ../src/lxhotkey.c:380
+#, c-format
+msgid "action '%s' isn't supported by WM %s."
+msgstr "дія '%s' не підтримується менеджером вікон %s."
+
+#: ../src/lxhotkey.c:397
+#, c-format
+msgid "value '%s' is not supported for option '%s'."
+msgstr "значення '%s' не підтримується для параметру '%s'."
+
+#: ../src/lxhotkey.c:401
+#, c-format
+msgid "value '%s' is not supported for action '%s'."
+msgstr "значення '%s' не підтримується для дії '%s'."
+
+#: ../src/lxhotkey.c:414
+#, c-format
+msgid "action '%s' does not support options."
+msgstr "дія '%s' не має параметрів."
+
+#: ../src/lxhotkey.c:495
+msgid "Sorry, cannot configure keys remotely."
+msgstr "Вибачте, але змінювати прив'язки клавіш можна лише локально."
+
+#: ../src/lxhotkey.c:503
+msgid "Could not determine window manager running."
+msgstr "Не вийшло визначити запущений менеджер вікон."
+
+#: ../src/lxhotkey.c:511
+#, c-format
+msgid "Window manager %s isn't supported now, sorry."
+msgstr "Вибачте, але менеджер вікон %s не підтримується."
+
+#: ../src/lxhotkey.c:518 ../plugins/gtk/gtk.c:75
+msgid "Problems loading configuration: "
+msgstr "Проблеми завантаження конфігурації: "
+
+#: ../src/lxhotkey.c:527
+#, c-format
+msgid "GUI type %s currently isn't supported."
+msgstr "Графічний інтерфейс %s не підтримується."
+
+#. invalid request
+#: ../src/lxhotkey.c:544 ../src/lxhotkey.c:620
+msgid "Invalid request: "
+msgstr "Поганий запит: "
+
+#: ../src/lxhotkey.c:554 ../src/lxhotkey.c:632 ../plugins/gtk/gtk.c:90
+msgid "Problems saving configuration: "
+msgstr "Проблеми збереження конфігурації: "
+
+#: ../src/lxhotkey.c:571
+msgid "ACTION(s)"
+msgstr "ДІЇ"
+
+#: ../src/lxhotkey.c:571 ../src/lxhotkey.c:649
+msgid "KEY(s)"
+msgstr "КЛАВІШІ"
+
+#: ../src/lxhotkey.c:649
+msgid "EXEC"
+msgstr "КОМАНДА"
+
+#: ../src/lxhotkey.c:670
+msgid "Requested operation isn't supported."
+msgstr "Запитана операція не підтримується."
+
+#: ../plugins/openbox/openbox.c:184
+msgid "Failed to reconfigure Openbox."
+msgstr "Не вдалося переконфігурувати Openbox."
+
+#. reuse GList
+#. reuse GList
+#: ../plugins/openbox/openbox.c:203
+msgid "yes"
+msgstr "так"
+
+#: ../plugins/openbox/openbox.c:203
+msgid "no"
+msgstr "ні"
+
+#: ../plugins/openbox/openbox.c:206
+msgid "enabled"
+msgstr "ввімнено"
+
+#: ../plugins/openbox/openbox.c:207
+msgid "wmclass"
+msgstr "клас менеджера вікон"
+
+#: ../plugins/openbox/openbox.c:208
+msgid "name"
+msgstr "назва"
+
+#: ../plugins/openbox/openbox.c:209
+msgid "icon"
+msgstr "значок"
+
+#: ../plugins/openbox/openbox.c:214 ../plugins/openbox/openbox.c:288
+msgid "command"
+msgstr "команда"
+
+#: ../plugins/openbox/openbox.c:215 ../plugins/openbox/openbox.c:293
+msgid "prompt"
+msgstr "запрошення"
+
+#: ../plugins/openbox/openbox.c:216
+msgid "startupnotify"
+msgstr "повідомлення запуску"
+
+#: ../plugins/openbox/openbox.c:220 ../plugins/openbox/openbox.c:325
+msgid "center"
+msgstr "центр"
+
+#: ../plugins/openbox/openbox.c:221
+msgid "default"
+msgstr "за замовчанням"
+
+#: ../plugins/openbox/openbox.c:221
+msgid "primary"
+msgstr "первинний"
+
+#: ../plugins/openbox/openbox.c:221
+msgid "mouse"
+msgstr "миша"
+
+#: ../plugins/openbox/openbox.c:222
+msgid "active"
+msgstr "активний"
+
+#: ../plugins/openbox/openbox.c:222 ../plugins/openbox/openbox.c:328
+msgid "all"
+msgstr "всі"
+
+#: ../plugins/openbox/openbox.c:227 ../plugins/openbox/openbox.c:335
+msgid "monitor"
+msgstr "монітор"
+
+#: ../plugins/openbox/openbox.c:232
+msgid "menu"
+msgstr "меню"
+
+#: ../plugins/openbox/openbox.c:233
+msgid "position"
+msgstr "позиція"
+
+#: ../plugins/openbox/openbox.c:237
+msgid "list"
+msgstr "перелік"
+
+#: ../plugins/openbox/openbox.c:237
+msgid "icons"
+msgstr "значки"
+
+#: ../plugins/openbox/openbox.c:237
+msgid "none"
+msgstr "жодного"
+
+#: ../plugins/openbox/openbox.c:240 ../plugins/openbox/openbox.c:259
+msgid "dialog"
+msgstr "діалог"
+
+#: ../plugins/openbox/openbox.c:241 ../plugins/openbox/openbox.c:260
+msgid "bar"
+msgstr "пенал"
+
+#: ../plugins/openbox/openbox.c:242 ../plugins/openbox/openbox.c:261
+msgid "raise"
+msgstr "підняти"
+
+#: ../plugins/openbox/openbox.c:243
+msgid "allDesktops"
+msgstr "всі стільниці"
+
+#: ../plugins/openbox/openbox.c:244 ../plugins/openbox/openbox.c:262
+msgid "panels"
+msgstr "панелі"
+
+#: ../plugins/openbox/openbox.c:245
+msgid "desktop"
+msgstr "стільниця"
+
+#: ../plugins/openbox/openbox.c:246
+msgid "linear"
+msgstr "лінійний"
+
+#: ../plugins/openbox/openbox.c:247
+msgid "interactive"
+msgstr "інтерактивний"
+
+#. TRANSLATORS: finalactions means actions when done
+#: ../plugins/openbox/openbox.c:249 ../plugins/openbox/openbox.c:264
+msgid "finalactions"
+msgstr "дії по завершенню"
+
+#: ../plugins/openbox/openbox.c:253 ../plugins/openbox/openbox.c:270
+#: ../plugins/openbox/openbox.c:305 ../plugins/openbox/openbox.c:358
+msgid "north"
+msgstr "північ"
+
+#: ../plugins/openbox/openbox.c:253
+msgid "northeast"
+msgstr "північний схід"
+
+#: ../plugins/openbox/openbox.c:253 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:306 ../plugins/openbox/openbox.c:358
+msgid "east"
+msgstr "схід"
+
+#: ../plugins/openbox/openbox.c:254
+msgid "southeast"
+msgstr "південний схід"
+
+#: ../plugins/openbox/openbox.c:254 ../plugins/openbox/openbox.c:270
+#: ../plugins/openbox/openbox.c:305 ../plugins/openbox/openbox.c:358
+msgid "south"
+msgstr "південь"
+
+#: ../plugins/openbox/openbox.c:254
+msgid "southwest"
+msgstr "південний захід"
+
+#: ../plugins/openbox/openbox.c:255 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:306 ../plugins/openbox/openbox.c:358
+msgid "west"
+msgstr "захід"
+
+#: ../plugins/openbox/openbox.c:255
+msgid "northwest"
+msgstr "північний захід"
+
+#: ../plugins/openbox/openbox.c:258 ../plugins/openbox/openbox.c:300
+#: ../plugins/openbox/openbox.c:361
+msgid "direction"
+msgstr "напрямок"
+
+#: ../plugins/openbox/openbox.c:263
+msgid "desktops"
+msgstr "стільниці"
+
+#. TRANSLATORS: these values are in regard to desktop
+#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:280
+#: ../plugins/openbox/openbox.c:304 ../plugins/openbox/openbox.c:325
+#: ../plugins/openbox/openbox.c:328
+msgid "current"
+msgstr "поточний"
+
+#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:304
+#: ../plugins/openbox/openbox.c:328
+msgid "next"
+msgstr "наступний"
+
+#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:304
+msgid "previous"
+msgstr "попередній"
+
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:280
+#: ../plugins/openbox/openbox.c:305
+msgid "last"
+msgstr "останній"
+
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:305
+msgid "up"
+msgstr "вгору"
+
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:306
+msgid "down"
+msgstr "донизу"
+
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:306
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:351
+msgid "left"
+msgstr "ліворуч"
+
+#: ../plugins/openbox/openbox.c:272 ../plugins/openbox/openbox.c:307
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:352
+msgid "right"
+msgstr "праворуч"
+
+#: ../plugins/openbox/openbox.c:275 ../plugins/openbox/openbox.c:310
+msgid "to"
+msgstr "до"
+
+#: ../plugins/openbox/openbox.c:276 ../plugins/openbox/openbox.c:311
+msgid "wrap"
+msgstr "згорнути"
+
+#: ../plugins/openbox/openbox.c:283
+msgid "where"
+msgstr "де"
+
+#: ../plugins/openbox/openbox.c:297
+msgid "both"
+msgstr "обидва"
+
+#: ../plugins/openbox/openbox.c:297
+msgid "horizontal"
+msgstr "горизонтально"
+
+#: ../plugins/openbox/openbox.c:297
+msgid "vertical"
+msgstr "вертикально"
+
+#: ../plugins/openbox/openbox.c:312
+msgid "follow"
+msgstr "слідкувати"
+
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:353
+#: ../plugins/openbox/openbox.c:365
+msgid "top"
+msgstr "верхній"
+
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:354
+#: ../plugins/openbox/openbox.c:365
+msgid "bottom"
+msgstr "нижній"
+
+#: ../plugins/openbox/openbox.c:317
+msgid "topleft"
+msgstr "верхній ліворуч"
+
+#: ../plugins/openbox/openbox.c:317
+msgid "topright"
+msgstr "верхній праворуч"
+
+#: ../plugins/openbox/openbox.c:317
+msgid "bottomleft"
+msgstr "нижній ліворуч"
+
+#: ../plugins/openbox/openbox.c:318
+msgid "bottomright"
+msgstr "нижній праворуч"
+
+#: ../plugins/openbox/openbox.c:321
+msgid "edge"
+msgstr "край"
+
+#. TRANSLATORS: # in config means either pixels, or monitor number
+#: ../plugins/openbox/openbox.c:325 ../plugins/openbox/openbox.c:340
+msgid "#"
+msgstr "число"
+
+#. TRANSLATORS: % in config means some fraction value, usually measured in percents
+#: ../plugins/openbox/openbox.c:327
+msgid "%"
+msgstr "частка"
+
+#: ../plugins/openbox/openbox.c:328
+msgid "prev"
+msgstr "попередній"
+
+#: ../plugins/openbox/openbox.c:333
+msgid "width"
+msgstr "ширина"
+
+#: ../plugins/openbox/openbox.c:334
+msgid "height"
+msgstr "висота"
+
+#: ../plugins/openbox/openbox.c:365
+msgid "normal"
+msgstr "звичайний"
+
+#: ../plugins/openbox/openbox.c:368
+msgid "layer"
+msgstr "шар"
+
+#. global actions
+#: ../plugins/openbox/openbox.c:374
+msgid "Execute"
+msgstr "виконати"
+
+#: ../plugins/openbox/openbox.c:375
+msgid "ShowMenu"
+msgstr "показати меню"
+
+#: ../plugins/openbox/openbox.c:376
+msgid "NextWindow"
+msgstr "наступне вікно"
+
+#: ../plugins/openbox/openbox.c:377
+msgid "PreviousWindow"
+msgstr "попереднє вікно"
+
+#: ../plugins/openbox/openbox.c:378
+msgid "DirectionalCycleWindows"
+msgstr "перейти до вікна у напрямку"
+
+#: ../plugins/openbox/openbox.c:379
+msgid "DirectionalTargetWindow"
+msgstr "обрати вікно у напрямку"
+
+#: ../plugins/openbox/openbox.c:380
+msgid "GoToDesktop"
+msgstr "перейти до стільниці"
+
+#: ../plugins/openbox/openbox.c:381
+msgid "AddDesktop"
+msgstr "додати стільницю"
+
+#: ../plugins/openbox/openbox.c:382
+msgid "RemoveDesktop"
+msgstr "видалити стільницю"
+
+#: ../plugins/openbox/openbox.c:383
+msgid "ToggleDockAutohide"
+msgstr "ввімкнути/вимкнути ховання доку"
+
+#: ../plugins/openbox/openbox.c:384
+msgid "Reconfigure"
+msgstr "переконфігурувати"
+
+#: ../plugins/openbox/openbox.c:385
+msgid "Restart"
+msgstr "перезапустити"
+
+#: ../plugins/openbox/openbox.c:386
+msgid "Exit"
+msgstr "вийти"
+
+#. windows actions
+#: ../plugins/openbox/openbox.c:388
+msgid "Focus"
+msgstr "отримати фокус"
+
+#: ../plugins/openbox/openbox.c:389
+msgid "Raise"
+msgstr "підняти"
+
+#: ../plugins/openbox/openbox.c:390
+msgid "Lower"
+msgstr "опустити"
+
+#: ../plugins/openbox/openbox.c:391
+msgid "RaiseLower"
+msgstr "підняти та опустити"
+
+#: ../plugins/openbox/openbox.c:392
+msgid "Unfocus"
+msgstr "залишити фокус"
+
+#: ../plugins/openbox/openbox.c:393
+msgid "FocusToBottom"
+msgstr "фокус на нижнє"
+
+#: ../plugins/openbox/openbox.c:394
+msgid "Iconify"
+msgstr "згорнути"
+
+#: ../plugins/openbox/openbox.c:395
+msgid "Close"
+msgstr "закрити"
+
+#: ../plugins/openbox/openbox.c:396
+msgid "ToggleShade"
+msgstr "ввімкнути/вимнути тінь"
+
+#: ../plugins/openbox/openbox.c:397
+msgid "Shade"
+msgstr "затінити"
+
+#: ../plugins/openbox/openbox.c:398
+msgid "Unshade"
+msgstr "зняти затінення"
+
+#: ../plugins/openbox/openbox.c:399
+msgid "ToggleOmnipresent"
+msgstr "ввімкнути/вимкнути \"Показувати всюди\""
+
+#: ../plugins/openbox/openbox.c:400
+msgid "ToggleMaximize"
+msgstr "ввімкнути/вимкнути \"Максимізувати\""
+
+#: ../plugins/openbox/openbox.c:401
+msgid "Maximize"
+msgstr "максимізувати"
+
+#: ../plugins/openbox/openbox.c:402
+msgid "Unmaximize"
+msgstr "зняти максимізацію"
+
+#: ../plugins/openbox/openbox.c:403
+msgid "ToggleFullscreen"
+msgstr "ввімкнути/вимкнути \"На повний екран\""
+
+#: ../plugins/openbox/openbox.c:404
+msgid "ToggleDecorations"
+msgstr "ввімкнути/вимкнути рамку"
+
+#: ../plugins/openbox/openbox.c:405
+msgid "Decorate"
+msgstr "обрамити"
+
+#: ../plugins/openbox/openbox.c:406
+msgid "Undecorate"
+msgstr "зняти обрамлення"
+
+#: ../plugins/openbox/openbox.c:407
+msgid "SendToDesktop"
+msgstr "надіслати до стільниці"
+
+#: ../plugins/openbox/openbox.c:408
+msgid "Move"
+msgstr "перемістити"
+
+#: ../plugins/openbox/openbox.c:409
+msgid "Resize"
+msgstr "змінити розмір"
+
+#: ../plugins/openbox/openbox.c:410
+msgid "MoveResizeTo"
+msgstr "змінити розмір та перемістити"
+
+#: ../plugins/openbox/openbox.c:411
+msgid "MoveRelative"
+msgstr "відносне переміщення"
+
+#: ../plugins/openbox/openbox.c:412
+msgid "ResizeRelative"
+msgstr "відносна зміна розміру"
+
+#: ../plugins/openbox/openbox.c:413
+msgid "MoveToEdge"
+msgstr "перемістити до краю"
+
+#: ../plugins/openbox/openbox.c:414
+msgid "GrowToEdge"
+msgstr "розширити до краю"
+
+#: ../plugins/openbox/openbox.c:415
+msgid "ShrinkToEdge"
+msgstr "підрізати по краю"
+
+#: ../plugins/openbox/openbox.c:416
+msgid "GrowToFill"
+msgstr "розширити до заповнення"
+
+#: ../plugins/openbox/openbox.c:417
+msgid "ToggleAlwaysOnTop"
+msgstr "ввімкнути/вимкнути \"Завжди нагорі\""
+
+#: ../plugins/openbox/openbox.c:418
+msgid "ToggleAlwaysOnBottom"
+msgstr "ввімкнути/вимкнути \"Завжди внизу\""
+
+#: ../plugins/openbox/openbox.c:419
+msgid "SendToLayer"
+msgstr "надіслати до шару"
+
+#: ../plugins/openbox/openbox.c:510
+msgid "Duplicate <keyboard> section in the rc.xml file."
+msgstr "Подвійна секція <keyboard> в файлі rc.xml."
+
+#: ../plugins/openbox/openbox.c:541 ../plugins/openbox/openbox.c:783
+msgid "Internal error."
+msgstr "Внутрішня помилка."
+
+#: ../plugins/openbox/openbox.c:585
+msgid "rc.xml error: no key is set for a keybind."
+msgstr "Помилка у rc.xml: клавішу прив'язки не зазначено."
+
+#: ../plugins/openbox/openbox.c:656
+msgid "Invalid rc.xml: action with a sub-action."
+msgstr "Помилка у rc.xml: дія всередині іншої дії."
+
+#: ../plugins/openbox/openbox.c:772
+msgid "rc.xml error: no name is set for action."
+msgstr "Помилка у rc.xml: не зазначено назви дії."
+
+#: ../plugins/openbox/openbox.c:802
+#, c-format
+msgid "rc.xml error: empty tag <%s> is prohibited."
+msgstr "Помилка у rc.xml: використання порожнього тегу <%s> заборонено."
+
+#: ../plugins/openbox/openbox.c:891
+msgid "Could not find the rc.xml file anywhere."
+msgstr "Ніде не вдалося знайти файл rc.xml."
+
+#: ../plugins/openbox/openbox.c:939 ../plugins/openbox/openbox.c:1064
+#: ../plugins/openbox/openbox.c:1223 ../plugins/openbox/openbox.c:1241
+msgid "No WM configuration is available."
+msgstr "Не вдалося отримати конфігурацію менеджера вікон."
+
+#: ../plugins/openbox/openbox.c:1068
+msgid "Keybinding should activate at least one action."
+msgstr "Прив'язка має активувати щонайменше одну дію."
+
+#: ../plugins/openbox/openbox.c:1090 ../plugins/openbox/openbox.c:1100
+#: ../plugins/openbox/openbox.c:1267 ../plugins/openbox/openbox.c:1277
+#, c-format
+msgid "Hotkey '%s' is already bound to an action."
+msgstr "Клавішу '%s' вже прив'язано до іншої дії."
+
+#: ../plugins/openbox/openbox.c:1245
+msgid "The exec line cannot be empty."
+msgstr "Командний рядок не може бути порожнім."
+
+#: ../plugins/gtk/gtk.c:133 ../plugins/gtk/gtk.c:156
+msgid "Cannot delete keybinding: "
+msgstr "Неможливо видалити прив'язку клавіш: "
+
+#. TRANSLATORS: Replace this string with your names, one name per line.
+#: ../plugins/gtk/gtk.c:176
+msgid "translator-credits"
+msgstr "Андрій Гриценко <andrej@rep.kiev.ua>"
+
+#: ../plugins/gtk/gtk.c:184
+msgid "Copyright (C) 2016"
+msgstr "Права застережено (C) 2016"
+
+#: ../plugins/gtk/gtk.c:185
+msgid "Keyboard shortcuts configurator"
+msgstr "Зміна прив'язок клавіш"
+
+#: ../plugins/gtk/gtk.c:208
+msgid "_File"
+msgstr "_Файл"
+
+#: ../plugins/gtk/gtk.c:209
+msgid "_Reload"
+msgstr "_Перезавантажити"
+
+#: ../plugins/gtk/gtk.c:210
+msgid ""
+"Drop all unsaved changes and reload all keys from Window Manager "
+"configuration"
+msgstr ""
+"Відкинути всі не збережені зміни та перезавантажити всі прив'язки з "
+"конфігурації менеджера вікон"
+
+#: ../plugins/gtk/gtk.c:213
+msgid "Save all changes and apply them to Window Manager configuration"
+msgstr ""
+"Зберегти всі зміни та застосувати їх до конфігурації менеджера вікон"
+
+#: ../plugins/gtk/gtk.c:216
+msgid "Exit the application without saving"
+msgstr "Вийти з програми без збереження"
+
+#: ../plugins/gtk/gtk.c:217
+msgid "_Edit"
+msgstr "_Редагувати"
+
+#: ../plugins/gtk/gtk.c:218
+msgid "Create new action"
+msgstr "Створити нову дію"
+
+#: ../plugins/gtk/gtk.c:220
+msgid "Remove selected action"
+msgstr "Видалити обрану дію"
+
+#: ../plugins/gtk/gtk.c:222
+msgid "Change selected action"
+msgstr "Змінити параметри обраної дії"
+
+#: ../plugins/gtk/gtk.c:224
+msgid "_Help"
+msgstr "_Допомога"
+
+#: ../plugins/gtk/gtk.c:426
+msgid "Action"
+msgstr "Дія"
+
+#: ../plugins/gtk/gtk.c:429
+msgid "Option"
+msgstr "Параметр"
+
+#: ../plugins/gtk/gtk.c:432 ../plugins/gtk/gtk.c:452
+#: ../plugins/gtk/edit.c:1044
+msgid "Hotkey 1"
+msgstr "Прив'язка 1"
+
+#: ../plugins/gtk/gtk.c:435 ../plugins/gtk/gtk.c:455
+#: ../plugins/gtk/edit.c:1048
+msgid "Hotkey 2"
+msgstr "Прив'язка 2"
+
+#: ../plugins/gtk/gtk.c:443
+msgid "Actions"
+msgstr "Дії"
+
+#: ../plugins/gtk/gtk.c:449
+msgid "Command"
+msgstr "Команда"
+
+#: ../plugins/gtk/gtk.c:463
+msgid "Programs"
+msgstr "Програми"
+
+#: ../plugins/gtk/gtk.c:482 ../plugins/gtk/edit.c:480
+msgid "Error"
+msgstr "Помилка"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:1
+msgid "Setup Hot Keys"
+msgstr "Налаштувати гарячі клавіші"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:2
+msgid "View and change Window Manager global shortcuts"
+msgstr ""
+"Переглянути або змінити глобальні прив'язки клавіш менеджера вікон"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:3
+msgid "hotkey;shortcut;system;settings;"
+msgstr "прив'язка;гаряча клавіша;стільниця;налаштування;"
+
+#: ../plugins/gtk/edit.c:260
+msgid "Apply error: "
+msgstr "Помилка застосування: "
+
+#: ../plugins/gtk/edit.c:275 ../plugins/gtk/edit.c:388
+msgid "Add action"
+msgstr "Додати дію"
+
+#: ../plugins/gtk/edit.c:287 ../plugins/gtk/edit.c:390
+msgid "Add option"
+msgstr "Додати параметр"
+
+#: ../plugins/gtk/edit.c:348
+msgid "Change option"
+msgstr "Змінити параметр"
+
+#: ../plugins/gtk/edit.c:413
+msgid "Discard changes"
+msgstr "Відкинути зміни"
+
+#: ../plugins/gtk/edit.c:414
+msgid "Accept changes"
+msgstr "Прийняти зміни"
+
+#: ../plugins/gtk/edit.c:415
+msgid "Add an action"
+msgstr "Додати дію"
+
+#: ../plugins/gtk/edit.c:416
+msgid "Add an option to this command"
+msgstr "Додати параметр до цієї команди"
+
+#: ../plugins/gtk/edit.c:418
+msgid "Remove selection"
+msgstr "Видалити обрану дію або параметр"
+
+#: ../plugins/gtk/edit.c:419
+msgid "Change selected option"
+msgstr "Змінити обраний параметр"
+
+#: ../plugins/gtk/edit.c:420
+msgid "Add an option to selection"
+msgstr "Додати параметр до обраної дії або параметру"
+
+#: ../plugins/gtk/edit.c:477
+#, c-format
+msgid "Key combination '%s' cannot be used as a global hotkey, sorry."
+msgstr ""
+"Вибачте, але комбінація клавіш '%s' не може бути використана в якості "
+"глобальної."
+
+#: ../plugins/gtk/edit.c:1061
+msgid "Actions:"
+msgstr "Дії:"
+
+#: ../plugins/gtk/edit.c:1069
+msgid "Command line:"
+msgstr "Командний рядок:"
+
+#: ../plugins/gtk/edit.c:1080
+msgid "Options:"
+msgstr "Параметри:"
+
+#: ../plugins/gtk/edit.c:1102
+msgid "<b>Name:</b>"
+msgstr "<b>Назва:</b>"
+
+#: ../plugins/gtk/edit.c:1123
+msgid "<b>Value:</b>"
+msgstr "<b>Значення:</b>"
