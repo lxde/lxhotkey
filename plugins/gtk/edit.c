@@ -129,6 +129,7 @@ static void update_edit_toolbar(PluginData *data)
     const GList *tmpl_list;
     GtkTreeModel *model;
     GtkTreeIter iter;
+    gboolean is_action;
 
     /* update AddOption button -- exec only */
     if (gtk_action_get_visible(data->add_option_button))
@@ -149,6 +150,7 @@ static void update_edit_toolbar(PluginData *data)
     gtk_action_set_sensitive(data->rm_option_button, TRUE);
     gtk_tree_model_get(model, &iter, 2, &opt, -1);
     tmpl_list = get_parent_template_list(model, &iter, data);
+    is_action = (data->current_page == data->acts && tmpl_list == data->edit_template);
     while (tmpl_list)
     {
         tmpl = tmpl_list->data;
@@ -164,7 +166,7 @@ static void update_edit_toolbar(PluginData *data)
         return;
     }
     gtk_action_set_sensitive(data->edit_option_button,
-                             (tmpl->subopts == NULL || tmpl->has_value));
+                             !is_action && (tmpl->subopts == NULL || tmpl->has_value));
     gtk_action_set_sensitive(data->add_suboption_button,
                              (tmpl->has_actions ||
                               g_list_length(tmpl->subopts) != g_list_length(opt->subopts)));
@@ -338,7 +340,8 @@ static void start_edit(GtkTreeModel *model, GtkTreeIter *iter, PluginData *data)
     gtk_tree_model_get(model, iter, 2, &opt, -1);
     /* values - from template */
     tmpl_list = get_parent_template_list(model, iter, data);
-    if (tmpl_list == data->edit_template) /* it's action */
+    if (data->current_page == data->acts &&
+        tmpl_list == data->edit_template) /* it's action */
         return;
     single.data = (gpointer)find_template_for_option(model, iter, tmpl_list);
     if (single.data == NULL)
@@ -589,16 +592,18 @@ static void add_options_to_tree(GtkTreeStore *store, GtkTreeIter *parent_iter,
 {
     LXHotkeyAttr *opt;
     GtkTreeIter iter;
+    const char *val;
 
     while (list)
     {
         opt = list->data;
+        val = opt->values ? opt->values->data : NULL;
         gtk_tree_store_insert_with_values(store, &iter, parent_iter, -1,
                                           0, opt->name,
-                                          1, opt->values ? opt->values->data : NULL,
+                                          1, val,
                                           2, opt,
                                           3, _(opt->name),
-                                          4, opt->values ? _(opt->values->data) : NULL, -1);
+                                          4, (val && val[0]) ? _(val) : NULL, -1);
         if (opt->subopts)
             add_options_to_tree(store, &iter, opt->subopts);
         list = list->next;
@@ -899,6 +904,7 @@ static void on_apply_button(GtkButton *btn, PluginData *data)
     LXHotkeyAttr *opt;
     GtkTreeModel *model;
     GtkTreeIter iter;
+    const char *val;
 
     switch (data->edit_mode)
     {
@@ -909,12 +915,13 @@ static void on_apply_button(GtkButton *btn, PluginData *data)
         data->edit_options_copy = g_list_append(data->edit_options_copy, opt);
         model = gtk_tree_view_get_model(data->edit_tree);
         /* update the tree */
+        val = opt->values ? opt->values->data : NULL;
         gtk_tree_store_insert_with_values(GTK_TREE_STORE(model), NULL, NULL, -1,
                                           0, opt->name,
-                                          1, opt->values ? opt->values->data : NULL,
+                                          1, val,
                                           2, opt,
                                           3, _(opt->name),
-                                          4, opt->values ? _(opt->values->data) : NULL, -1);
+                                          4, (val && val[0]) ? _(val) : NULL, -1);
         /* update toolbar */
         update_edit_toolbar(data);
         break;
@@ -924,9 +931,10 @@ static void on_apply_button(GtkButton *btn, PluginData *data)
         {
             gtk_tree_model_get(model, &iter, 2, &opt, -1);
             apply_options(data, opt);
+            val = opt->values ? opt->values->data : NULL;
             gtk_tree_store_set(GTK_TREE_STORE(model), &iter,
-                               1, opt->values ? opt->values->data : NULL,
-                               4, opt->values ? _(opt->values->data) : NULL, -1);
+                               1, val,
+                               4, (val && val[0]) ? _(val) : NULL, -1);
             update_edit_toolbar(data);
         }
         break;
@@ -940,12 +948,13 @@ static void on_apply_button(GtkButton *btn, PluginData *data)
             apply_options(data, opt);
             parent->subopts = g_list_append(parent->subopts, opt);
             model = gtk_tree_view_get_model(data->edit_tree);
+            val = opt->values ? opt->values->data : NULL;
             gtk_tree_store_insert_with_values(GTK_TREE_STORE(model), NULL, &iter, -1,
                                               0, opt->name,
-                                              1, opt->values ? opt->values->data : NULL,
+                                              1, val,
                                               2, opt,
                                               3, _(opt->name),
-                                              4, opt->values ? _(opt->values->data) : NULL, -1);
+                                              4, (val && val[0]) ? _(val) : NULL, -1);
             gtk_tree_view_expand_all(data->edit_tree);
             update_edit_toolbar(data);
         }
