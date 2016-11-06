@@ -146,7 +146,7 @@ msgstr "ні"
 
 #: ../plugins/openbox/openbox.c:206
 msgid "enabled"
-msgstr "ввімнено"
+msgstr "ввімкнено"
 
 #: ../plugins/openbox/openbox.c:207
 msgid "wmclass"
