@@ -596,7 +596,9 @@ static void add_options_to_tree(GtkTreeStore *store, GtkTreeIter *parent_iter,
         gtk_tree_store_insert_with_values(store, &iter, parent_iter, -1,
                                           0, opt->name,
                                           1, opt->values ? opt->values->data : NULL,
-                                          2, opt, -1);
+                                          2, opt,
+                                          3, _(opt->name),
+                                          4, opt->values ? _(opt->values->data) : NULL, -1);
         if (opt->subopts)
             add_options_to_tree(store, &iter, opt->subopts);
         list = list->next;
@@ -605,9 +607,11 @@ static void add_options_to_tree(GtkTreeStore *store, GtkTreeIter *parent_iter,
 
 static void update_options_tree(PluginData *data)
 {
-    GtkTreeStore *store = gtk_tree_store_new(3, G_TYPE_STRING, /* option name */
+    GtkTreeStore *store = gtk_tree_store_new(5, G_TYPE_STRING, /* option name */
                                                 G_TYPE_STRING, /* option value */
-                                                G_TYPE_POINTER); /* LXHotkeyAttr */
+                                                G_TYPE_POINTER, /* LXHotkeyAttr */
+                                                G_TYPE_STRING, /* shown name */
+                                                G_TYPE_STRING); /* shown value */
 
     add_options_to_tree(store, NULL, data->edit_options_copy);
     gtk_tree_view_set_model(data->edit_tree, GTK_TREE_MODEL(store));
@@ -908,7 +912,9 @@ static void on_apply_button(GtkButton *btn, PluginData *data)
         gtk_tree_store_insert_with_values(GTK_TREE_STORE(model), NULL, NULL, -1,
                                           0, opt->name,
                                           1, opt->values ? opt->values->data : NULL,
-                                          2, opt, -1);
+                                          2, opt,
+                                          3, _(opt->name),
+                                          4, opt->values ? _(opt->values->data) : NULL, -1);
         /* update toolbar */
         update_edit_toolbar(data);
         break;
@@ -919,7 +925,8 @@ static void on_apply_button(GtkButton *btn, PluginData *data)
             gtk_tree_model_get(model, &iter, 2, &opt, -1);
             apply_options(data, opt);
             gtk_tree_store_set(GTK_TREE_STORE(model), &iter,
-                               1, opt->values ? opt->values->data : NULL);
+                               1, opt->values ? opt->values->data : NULL,
+                               4, opt->values ? _(opt->values->data) : NULL, -1);
             update_edit_toolbar(data);
         }
         break;
@@ -936,7 +943,9 @@ static void on_apply_button(GtkButton *btn, PluginData *data)
             gtk_tree_store_insert_with_values(GTK_TREE_STORE(model), NULL, &iter, -1,
                                               0, opt->name,
                                               1, opt->values ? opt->values->data : NULL,
-                                              2, opt, -1);
+                                              2, opt,
+                                              3, _(opt->name),
+                                              4, opt->values ? _(opt->values->data) : NULL, -1);
             gtk_tree_view_expand_all(data->edit_tree);
             update_edit_toolbar(data);
         }
@@ -1113,10 +1122,10 @@ void _edit_action(PluginData *data, GError **error)
     gtk_box_pack_start(vbox, widget, FALSE, TRUE, 0);
     gtk_tree_view_insert_column_with_attributes(data->edit_tree, 0, NULL,
                                                 gtk_cell_renderer_text_new(),
-                                                "text", 0, NULL);
+                                                "text", 3, NULL);
     gtk_tree_view_insert_column_with_attributes(data->edit_tree, 1, NULL,
                                                 gtk_cell_renderer_text_new(),
-                                                "text", 1, NULL);
+                                                "text", 4, NULL);
     gtk_tree_view_set_headers_visible(data->edit_tree, FALSE);
     g_signal_connect(data->edit_tree, "row-activated", G_CALLBACK(on_row_activated), data);
 

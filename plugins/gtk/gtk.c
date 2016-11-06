@@ -288,16 +288,16 @@ static void set_actions_list(PluginData *data)
             if (opt->values)
             {
                 if (attr->subopts->next)
-                    _val = val = g_strdup_printf("%s:%s, ...", opt->name, (char *)opt->values->data);
+                    _val = val = g_strdup_printf("%s:%s, ...", _(opt->name), _((char *)opt->values->data));
                 else
-                    _val = val = g_strdup_printf("%s:%s", opt->name, (char *)opt->values->data);
+                    _val = val = g_strdup_printf("%s:%s", _(opt->name), _((char *)opt->values->data));
             }
             else if (attr->subopts->next)
-                _val = val = g_strdup_printf("%s, ...", opt->name);
+                _val = val = g_strdup_printf("%s, ...", _(opt->name));
             else
-                val = opt->name;
+                val = _(opt->name);
         }
-        gtk_list_store_insert_with_values(model, &iter, -1, 0, attr->name,
+        gtk_list_store_insert_with_values(model, &iter, -1, 0, _(attr->name),
                                                             1, val,
                                                             2, act->accel1,
                                                             3, act->accel2,
