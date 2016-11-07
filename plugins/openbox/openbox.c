@@ -284,6 +284,11 @@ static LXHotkeyAttr options_AddDesktop[] = {
     { NULL }
 };
 
+static LXHotkeyAttr options_ToggleShowDesktop[] = {
+    { N_("strict"), BOOLEAN_VALUES, NULL, NULL, FALSE },
+    { NULL }
+};
+
 static LXHotkeyAttr options_Restart[] = {
     { N_("command"), NULL, NULL, NULL, FALSE },
     { NULL }
@@ -380,6 +385,7 @@ static LXHotkeyAttr list_actions[] = {
     { N_("GoToDesktop"), NULL, TO_BE_CONVERTED(options_GoToDesktop), NULL, FALSE },
     { N_("AddDesktop"), NULL, TO_BE_CONVERTED(options_AddDesktop), NULL, FALSE },
     { N_("RemoveDesktop"), NULL, TO_BE_PREVIOUS, NULL, FALSE },
+    { N_("ToggleShowDesktop"), NULL, TO_BE_CONVERTED(options_ToggleShowDesktop), NULL, FALSE },
     { N_("ToggleDockAutohide"), NULL, NULL, NULL, FALSE },
     { N_("Reconfigure"), NULL, NULL, NULL, FALSE },
     { N_("Restart"), NULL, TO_BE_CONVERTED(options_Restart), NULL, FALSE },
