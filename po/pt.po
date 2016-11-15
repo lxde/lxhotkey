@@ -1,0 +1,843 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-11-04 21:45+0000\n"
+"PO-Revision-Date: 2016-11-15 21:45+0000\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: pt\n"
+
+#: ../src/lxhotkey.c:240
+#, c-format
+msgid "Usage: %s global [<action>]      - show keys bound to action(s)\n"
+msgstr ""
+"Utilização: %s global [<ação>]      - mostra as teclas associadas à ação\n"
+
+#: ../src/lxhotkey.c:241
+#, c-format
+msgid "       %s global <action> <key>  - bind a key to the action\n"
+msgstr "       %s global <ação> <tecla>  - associa a tecla a uma ação\n"
+
+#: ../src/lxhotkey.c:242
+#, c-format
+msgid "       %s app [<exec>]           - show keys bound to exec line\n"
+msgstr ""
+"       %s app [<exec>]           - mostra as teclas associadas a linha exec\n"
+
+#: ../src/lxhotkey.c:243
+#, c-format
+msgid "       %s app <exec> <key>       - bind a key to some exec line\n"
+msgstr ""
+"       %s app <exec> <tecla>       - associa a tecla a uma linha exec\n"
+
+#: ../src/lxhotkey.c:244
+#, c-format
+msgid "       %s app <exec> --          - unbind all keys from exec line\n"
+msgstr ""
+"       %s app <exec> --          - dissocia todas as teclas da linha exec\n"
+
+#: ../src/lxhotkey.c:245
+#, c-format
+msgid "       %s show <key>             - show the action bound to a key\n"
+msgstr ""
+"       %s show <key>             - mostra a ação associada a uma tecla\n"
+
+#: ../src/lxhotkey.c:246
+#, c-format
+msgid "       %s --gui=<type>           - start with GUI\n"
+msgstr "       %s --gui=<type>           - inicia a interface gráfica\n"
+
+#: ../src/lxhotkey.c:341
+msgid "empty option name."
+msgstr "nome de opção vazio."
+
+#: ../src/lxhotkey.c:344
+msgid "empty action name."
+msgstr "nome de ação vazio."
+
+#: ../src/lxhotkey.c:376
+#, c-format
+msgid "no matching option '%s' found for action '%s'."
+msgstr "encontrada opção não coincidente '%s' para a ação '%s'."
+
+#: ../src/lxhotkey.c:380
+#, c-format
+msgid "action '%s' isn't supported by WM %s."
+msgstr "a ação '%s' não é suportada pelo gestor de janelas %s."
+
+#: ../src/lxhotkey.c:397
+#, c-format
+msgid "value '%s' is not supported for option '%s'."
+msgstr "o valor '%s' não é suportado pela opção '%s'."
+
+#: ../src/lxhotkey.c:401
+#, c-format
+msgid "value '%s' is not supported for action '%s'."
+msgstr "o valor '%s' não é suportado pela ação '%s'."
+
+#: ../src/lxhotkey.c:414
+#, c-format
+msgid "action '%s' does not support options."
+msgstr "a ação '%s' não tem suporte a opções."
+
+#: ../src/lxhotkey.c:495
+msgid "Sorry, cannot configure keys remotely."
+msgstr "Não pode configurar teclas de atalho remotamente."
+
+#: ../src/lxhotkey.c:503
+msgid "Could not determine window manager running."
+msgstr "Não foi possível determinar o gestor de janelas em execução."
+
+#: ../src/lxhotkey.c:511
+#, c-format
+msgid "Window manager %s isn't supported now, sorry."
+msgstr "O gestor de janelas %s ainda não é suportado."
+
+#: ../src/lxhotkey.c:518 ../plugins/gtk/gtk.c:75
+msgid "Problems loading configuration: "
+msgstr "Problemas ao carregar a configuração:"
+
+#: ../src/lxhotkey.c:527
+#, c-format
+msgid "GUI type %s currently isn't supported."
+msgstr "O tipo de GUI %s ainda não é suportado"
+
+#. invalid request
+#: ../src/lxhotkey.c:544 ../src/lxhotkey.c:620
+msgid "Invalid request: "
+msgstr "Pedido inválido:"
+
+#: ../src/lxhotkey.c:554 ../src/lxhotkey.c:632 ../plugins/gtk/gtk.c:90
+msgid "Problems saving configuration: "
+msgstr "Erros ao guardar a configuração:"
+
+#: ../src/lxhotkey.c:571
+msgid "ACTION(s)"
+msgstr "Ação/Ações"
+
+#: ../src/lxhotkey.c:571 ../src/lxhotkey.c:649
+msgid "KEY(s)"
+msgstr "Tecla(s)"
+
+#: ../src/lxhotkey.c:649
+msgid "EXEC"
+msgstr "EXEC"
+
+#: ../src/lxhotkey.c:670
+msgid "Requested operation isn't supported."
+msgstr "A operação solicitada não é suportada."
+
+#: ../plugins/openbox/openbox.c:184
+msgid "Failed to reconfigure Openbox."
+msgstr "Falha ao reconfigurar o Openbox."
+
+#. reuse GList
+#. reuse GList
+#: ../plugins/openbox/openbox.c:203
+msgid "yes"
+msgstr "sim"
+
+#: ../plugins/openbox/openbox.c:203
+msgid "no"
+msgstr "não"
+
+#: ../plugins/openbox/openbox.c:206
+msgid "enabled"
+msgstr "ativa"
+
+#: ../plugins/openbox/openbox.c:207
+msgid "wmclass"
+msgstr "classe do gestor de janelas"
+
+#: ../plugins/openbox/openbox.c:208
+msgid "name"
+msgstr "nome"
+
+#: ../plugins/openbox/openbox.c:209
+msgid "icon"
+msgstr "ícone"
+
+#: ../plugins/openbox/openbox.c:214 ../plugins/openbox/openbox.c:288
+msgid "command"
+msgstr "comando"
+
+#: ../plugins/openbox/openbox.c:215 ../plugins/openbox/openbox.c:293
+msgid "prompt"
+msgstr "perguntar"
+
+#: ../plugins/openbox/openbox.c:216
+msgid "startupnotify"
+msgstr "notificação de arranque"
+
+#: ../plugins/openbox/openbox.c:220 ../plugins/openbox/openbox.c:325
+msgid "center"
+msgstr "centrar"
+
+#: ../plugins/openbox/openbox.c:221
+msgid "default"
+msgstr "padrão"
+
+#: ../plugins/openbox/openbox.c:221
+msgid "primary"
+msgstr "principal"
+
+#: ../plugins/openbox/openbox.c:221
+msgid "mouse"
+msgstr "rato"
+
+#: ../plugins/openbox/openbox.c:222
+msgid "active"
+msgstr "ativa"
+
+#: ../plugins/openbox/openbox.c:222 ../plugins/openbox/openbox.c:328
+msgid "all"
+msgstr "todas"
+
+#: ../plugins/openbox/openbox.c:227 ../plugins/openbox/openbox.c:335
+msgid "monitor"
+msgstr "monitor"
+
+#: ../plugins/openbox/openbox.c:232
+msgid "menu"
+msgstr "menu"
+
+#: ../plugins/openbox/openbox.c:233
+msgid "position"
+msgstr "posição"
+
+#: ../plugins/openbox/openbox.c:237
+msgid "list"
+msgstr "lista"
+
+#: ../plugins/openbox/openbox.c:237
+msgid "icons"
+msgstr "ícones"
+
+#: ../plugins/openbox/openbox.c:237
+msgid "none"
+msgstr "nenhuma"
+
+#: ../plugins/openbox/openbox.c:240 ../plugins/openbox/openbox.c:259
+msgid "dialog"
+msgstr "diálogo"
+
+#: ../plugins/openbox/openbox.c:241 ../plugins/openbox/openbox.c:260
+msgid "bar"
+msgstr "barra"
+
+#: ../plugins/openbox/openbox.c:242 ../plugins/openbox/openbox.c:261
+msgid "raise"
+msgstr "mostrar"
+
+#: ../plugins/openbox/openbox.c:243
+msgid "allDesktops"
+msgstr "todas as áreas de trabalho"
+
+#: ../plugins/openbox/openbox.c:244 ../plugins/openbox/openbox.c:262
+msgid "panels"
+msgstr "painéis"
+
+#: ../plugins/openbox/openbox.c:245
+msgid "desktop"
+msgstr "área de trabalho"
+
+#: ../plugins/openbox/openbox.c:246
+msgid "linear"
+msgstr "linear"
+
+#: ../plugins/openbox/openbox.c:247
+msgid "interactive"
+msgstr "interativo"
+
+#. TRANSLATORS: finalactions means actions when done
+#: ../plugins/openbox/openbox.c:249 ../plugins/openbox/openbox.c:264
+msgid "finalactions"
+msgstr "ações finais"
+
+#: ../plugins/openbox/openbox.c:253 ../plugins/openbox/openbox.c:270
+#: ../plugins/openbox/openbox.c:305 ../plugins/openbox/openbox.c:358
+msgid "north"
+msgstr "norte"
+
+#: ../plugins/openbox/openbox.c:253
+msgid "northeast"
+msgstr "nordeste"
+
+#: ../plugins/openbox/openbox.c:253 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:306 ../plugins/openbox/openbox.c:358
+msgid "east"
+msgstr "este"
+
+#: ../plugins/openbox/openbox.c:254
+msgid "southeast"
+msgstr "sudeste"
+
+#: ../plugins/openbox/openbox.c:254 ../plugins/openbox/openbox.c:270
+#: ../plugins/openbox/openbox.c:305 ../plugins/openbox/openbox.c:358
+msgid "south"
+msgstr "sul"
+
+#: ../plugins/openbox/openbox.c:254
+msgid "southwest"
+msgstr "sudoeste"
+
+#: ../plugins/openbox/openbox.c:255 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:306 ../plugins/openbox/openbox.c:358
+msgid "west"
+msgstr "oeste"
+
+#: ../plugins/openbox/openbox.c:255
+msgid "northwest"
+msgstr "noroeste"
+
+#: ../plugins/openbox/openbox.c:258 ../plugins/openbox/openbox.c:300
+#: ../plugins/openbox/openbox.c:361
+msgid "direction"
+msgstr "direção"
+
+#: ../plugins/openbox/openbox.c:263
+msgid "desktops"
+msgstr "áreas de trabalho"
+
+#. TRANSLATORS: these values are in regard to desktop
+#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:280
+#: ../plugins/openbox/openbox.c:304 ../plugins/openbox/openbox.c:325
+#: ../plugins/openbox/openbox.c:328
+msgid "current"
+msgstr "atual"
+
+#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:304
+#: ../plugins/openbox/openbox.c:328
+msgid "next"
+msgstr "seguinte"
+
+#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:304
+msgid "previous"
+msgstr "anterior"
+
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:280
+#: ../plugins/openbox/openbox.c:305
+msgid "last"
+msgstr "última"
+
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:305
+msgid "up"
+msgstr "subir"
+
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:306
+msgid "down"
+msgstr "descer"
+
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:306
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:351
+msgid "left"
+msgstr "esquerda"
+
+#: ../plugins/openbox/openbox.c:272 ../plugins/openbox/openbox.c:307
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:352
+msgid "right"
+msgstr "direita"
+
+#: ../plugins/openbox/openbox.c:275 ../plugins/openbox/openbox.c:310
+msgid "to"
+msgstr "para"
+
+#: ../plugins/openbox/openbox.c:276 ../plugins/openbox/openbox.c:311
+msgid "wrap"
+msgstr "moldar"
+
+#: ../plugins/openbox/openbox.c:283
+msgid "where"
+msgstr "onde"
+
+#: ../plugins/openbox/openbox.c:297
+msgid "both"
+msgstr "ambas"
+
+#: ../plugins/openbox/openbox.c:297
+msgid "horizontal"
+msgstr "horizontal"
+
+#: ../plugins/openbox/openbox.c:297
+msgid "vertical"
+msgstr "vertical"
+
+#: ../plugins/openbox/openbox.c:312
+msgid "follow"
+msgstr "seguir"
+
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:353
+#: ../plugins/openbox/openbox.c:365
+msgid "top"
+msgstr "cima"
+
+#: ../plugins/openbox/openbox.c:316 ../plugins/openbox/openbox.c:354
+#: ../plugins/openbox/openbox.c:365
+msgid "bottom"
+msgstr "baixo"
+
+#: ../plugins/openbox/openbox.c:317
+msgid "topleft"
+msgstr "cima/esquerda"
+
+#: ../plugins/openbox/openbox.c:317
+msgid "topright"
+msgstr "cima/direita"
+
+#: ../plugins/openbox/openbox.c:317
+msgid "bottomleft"
+msgstr "baixo/esquerda"
+
+#: ../plugins/openbox/openbox.c:318
+msgid "bottomright"
+msgstr "baixo/direita"
+
+#: ../plugins/openbox/openbox.c:321
+msgid "edge"
+msgstr "margem"
+
+#. TRANSLATORS: # in config means either pixels, or monitor number
+#: ../plugins/openbox/openbox.c:325 ../plugins/openbox/openbox.c:340
+msgid "#"
+msgstr "#"
+
+#. TRANSLATORS: % in config means some fraction value, usually measured in percents
+#: ../plugins/openbox/openbox.c:327
+msgid "%"
+msgstr "%"
+
+#: ../plugins/openbox/openbox.c:328
+msgid "prev"
+msgstr "anterior"
+
+#: ../plugins/openbox/openbox.c:333
+msgid "width"
+msgstr "largura"
+
+#: ../plugins/openbox/openbox.c:334
+msgid "height"
+msgstr "altura"
+
+#: ../plugins/openbox/openbox.c:365
+msgid "normal"
+msgstr "normal"
+
+#: ../plugins/openbox/openbox.c:368
+msgid "layer"
+msgstr "camada"
+
+#. global actions
+#: ../plugins/openbox/openbox.c:374
+msgid "Execute"
+msgstr "Executar"
+
+#: ../plugins/openbox/openbox.c:375
+msgid "ShowMenu"
+msgstr "Mostrar menu"
+
+#: ../plugins/openbox/openbox.c:376
+msgid "NextWindow"
+msgstr "Janela seguinte"
+
+#: ../plugins/openbox/openbox.c:377
+msgid "PreviousWindow"
+msgstr "Janela anterior"
+
+#: ../plugins/openbox/openbox.c:378
+msgid "DirectionalCycleWindows"
+msgstr "Percorrer janelas"
+
+#: ../plugins/openbox/openbox.c:379
+msgid "DirectionalTargetWindow"
+msgstr "Janela de destino"
+
+#: ../plugins/openbox/openbox.c:380
+msgid "GoToDesktop"
+msgstr "Ir para área de trabalho"
+
+#: ../plugins/openbox/openbox.c:381
+msgid "AddDesktop"
+msgstr "Adicionar área de trabalho"
+
+#: ../plugins/openbox/openbox.c:382
+msgid "RemoveDesktop"
+msgstr "Remover área de trabalho"
+
+#: ../plugins/openbox/openbox.c:383
+msgid "ToggleDockAutohide"
+msgstr "Alternar ocultação da doca"
+
+#: ../plugins/openbox/openbox.c:384
+msgid "Reconfigure"
+msgstr "Reconfigurar"
+
+#: ../plugins/openbox/openbox.c:385
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: ../plugins/openbox/openbox.c:386
+msgid "Exit"
+msgstr "Sair"
+
+#. windows actions
+#: ../plugins/openbox/openbox.c:388
+msgid "Focus"
+msgstr "Focar"
+
+#: ../plugins/openbox/openbox.c:389
+msgid "Raise"
+msgstr "Mostrar"
+
+#: ../plugins/openbox/openbox.c:390
+msgid "Lower"
+msgstr "Ocultar"
+
+#: ../plugins/openbox/openbox.c:391
+msgid "RaiseLower"
+msgstr "Mostrar/ocultar"
+
+#: ../plugins/openbox/openbox.c:392
+msgid "Unfocus"
+msgstr "Desfocar"
+
+#: ../plugins/openbox/openbox.c:393
+msgid "FocusToBottom"
+msgstr "Focar em baixo"
+
+#: ../plugins/openbox/openbox.c:394
+msgid "Iconify"
+msgstr "Minimizar"
+
+#: ../plugins/openbox/openbox.c:395
+msgid "Close"
+msgstr "Fechar"
+
+#: ../plugins/openbox/openbox.c:396
+msgid "ToggleShade"
+msgstr "Alternar enrolar"
+
+#: ../plugins/openbox/openbox.c:397
+msgid "Shade"
+msgstr "Enrolar"
+
+#: ../plugins/openbox/openbox.c:398
+msgid "Unshade"
+msgstr "Desenrolar"
+
+#: ../plugins/openbox/openbox.c:399
+msgid "ToggleOmnipresent"
+msgstr "Alternar omnipresente"
+
+#: ../plugins/openbox/openbox.c:400
+msgid "ToggleMaximize"
+msgstr "Alternar maximização"
+
+#: ../plugins/openbox/openbox.c:401
+msgid "Maximize"
+msgstr "Maximizar"
+
+#: ../plugins/openbox/openbox.c:402
+msgid "Unmaximize"
+msgstr "Restaurar"
+
+#: ../plugins/openbox/openbox.c:403
+msgid "ToggleFullscreen"
+msgstr "Alternar ecrã completo"
+
+#: ../plugins/openbox/openbox.c:404
+msgid "ToggleDecorations"
+msgstr "Alternar decorações"
+
+#: ../plugins/openbox/openbox.c:405
+msgid "Decorate"
+msgstr "Decorar"
+
+#: ../plugins/openbox/openbox.c:406
+msgid "Undecorate"
+msgstr "Desdecorar"
+
+#: ../plugins/openbox/openbox.c:407
+msgid "SendToDesktop"
+msgstr "Enviar para área de trabalho"
+
+#: ../plugins/openbox/openbox.c:408
+msgid "Move"
+msgstr "Mover"
+
+#: ../plugins/openbox/openbox.c:409
+msgid "Resize"
+msgstr "Redimensionar"
+
+#: ../plugins/openbox/openbox.c:410
+msgid "MoveResizeTo"
+msgstr "Mover/redimensionar para"
+
+#: ../plugins/openbox/openbox.c:411
+msgid "MoveRelative"
+msgstr "Mover relativamente"
+
+#: ../plugins/openbox/openbox.c:412
+msgid "ResizeRelative"
+msgstr "Redimensionar relativamente"
+
+#: ../plugins/openbox/openbox.c:413
+msgid "MoveToEdge"
+msgstr "Mover para a margem"
+
+#: ../plugins/openbox/openbox.c:414
+msgid "GrowToEdge"
+msgstr "Ampliar para a margem"
+
+#: ../plugins/openbox/openbox.c:415
+msgid "ShrinkToEdge"
+msgstr "Reduzir para a margem"
+
+#: ../plugins/openbox/openbox.c:416
+msgid "GrowToFill"
+msgstr "Ajustar para preencher"
+
+#: ../plugins/openbox/openbox.c:417
+msgid "ToggleAlwaysOnTop"
+msgstr "Alternar sempre na frente"
+
+#: ../plugins/openbox/openbox.c:418
+msgid "ToggleAlwaysOnBottom"
+msgstr "Alternar sempre por trás"
+
+#: ../plugins/openbox/openbox.c:419
+msgid "SendToLayer"
+msgstr "Enviar p/camada"
+
+#: ../plugins/openbox/openbox.c:510
+msgid "Duplicate <keyboard> section in the rc.xml file."
+msgstr "Seção <keyboard> está duplicada no ficheiro rc.xml."
+
+#: ../plugins/openbox/openbox.c:541 ../plugins/openbox/openbox.c:783
+msgid "Internal error."
+msgstr "Erro interno."
+
+#: ../plugins/openbox/openbox.c:585
+msgid "rc.xml error: no key is set for a keybind."
+msgstr "Erro de rc.xml: não definiu a tecla para associar."
+
+#: ../plugins/openbox/openbox.c:656
+msgid "Invalid rc.xml: action with a sub-action."
+msgstr "Ficheiro rc.xml inválido: ação com sub-ação."
+
+#: ../plugins/openbox/openbox.c:772
+msgid "rc.xml error: no name is set for action."
+msgstr "Erro de rc.xml: não definiu o nome para a ação."
+
+#: ../plugins/openbox/openbox.c:802
+#, c-format
+msgid "rc.xml error: empty tag <%s> is prohibited."
+msgstr "Erro de rc.xml: <%s> não é permitido."
+
+#: ../plugins/openbox/openbox.c:891
+msgid "Could not find the rc.xml file anywhere."
+msgstr "Não foi possível encontrar o ficheiro rc.xml."
+
+#: ../plugins/openbox/openbox.c:939 ../plugins/openbox/openbox.c:1064
+#: ../plugins/openbox/openbox.c:1223 ../plugins/openbox/openbox.c:1241
+msgid "No WM configuration is available."
+msgstr "Não existe qualquer configuração do gestor de janelas."
+
+#: ../plugins/openbox/openbox.c:1068
+msgid "Keybinding should activate at least one action."
+msgstr "A associação de teclas deve ativar, pelo menos, uma ação."
+
+#: ../plugins/openbox/openbox.c:1090 ../plugins/openbox/openbox.c:1100
+#: ../plugins/openbox/openbox.c:1267 ../plugins/openbox/openbox.c:1277
+#, c-format
+msgid "Hotkey '%s' is already bound to an action."
+msgstr "O atalho '%s' já está associado a uma ação."
+
+#: ../plugins/openbox/openbox.c:1245
+msgid "The exec line cannot be empty."
+msgstr "A linha exec não pode estar vazia."
+
+#: ../plugins/gtk/gtk.c:133 ../plugins/gtk/gtk.c:156
+msgid "Cannot delete keybinding: "
+msgstr "Associação de teclas não apagada:"
+
+#. TRANSLATORS: Replace this string with your names, one name per line.
+#: ../plugins/gtk/gtk.c:176
+msgid "translator-credits"
+msgstr "Sérgio Marques <smarquespt@gmail.com>"
+
+#: ../plugins/gtk/gtk.c:184
+msgid "Copyright (C) 2016"
+msgstr "Copyright (C) 2016"
+
+#: ../plugins/gtk/gtk.c:185
+msgid "Keyboard shortcuts configurator"
+msgstr "Configuração dos atalhos de teclado"
+
+#: ../plugins/gtk/gtk.c:208
+msgid "_File"
+msgstr "_Ficheiro"
+
+#: ../plugins/gtk/gtk.c:209
+msgid "_Reload"
+msgstr "_Recarregar"
+
+#: ../plugins/gtk/gtk.c:210
+msgid ""
+"Drop all unsaved changes and reload all keys from Window Manager "
+"configuration"
+msgstr ""
+"Rejeitar todas as alterações e recarregar as teclas de atalho definidas no "
+"gestor de janelas"
+
+#: ../plugins/gtk/gtk.c:213
+msgid "Save all changes and apply them to Window Manager configuration"
+msgstr ""
+"Guardar todas as alterações e aplicar à configuração do gestor de janelas"
+
+#: ../plugins/gtk/gtk.c:216
+msgid "Exit the application without saving"
+msgstr "Sair da aplicação sem guardar"
+
+#: ../plugins/gtk/gtk.c:217
+msgid "_Edit"
+msgstr "_Editar"
+
+#: ../plugins/gtk/gtk.c:218
+msgid "Create new action"
+msgstr "Criar nova ação"
+
+#: ../plugins/gtk/gtk.c:220
+msgid "Remove selected action"
+msgstr "Remover a ação selecionada"
+
+#: ../plugins/gtk/gtk.c:222
+msgid "Change selected action"
+msgstr "Alterar a ação selecionada"
+
+#: ../plugins/gtk/gtk.c:224
+msgid "_Help"
+msgstr "Aj_uda"
+
+#: ../plugins/gtk/gtk.c:426
+msgid "Action"
+msgstr "Ação"
+
+#: ../plugins/gtk/gtk.c:429
+msgid "Option"
+msgstr "Opção"
+
+#: ../plugins/gtk/gtk.c:432 ../plugins/gtk/gtk.c:452 ../plugins/gtk/edit.c:1044
+msgid "Hotkey 1"
+msgstr "Tecla de atalho 1"
+
+#: ../plugins/gtk/gtk.c:435 ../plugins/gtk/gtk.c:455 ../plugins/gtk/edit.c:1048
+msgid "Hotkey 2"
+msgstr "Tecla de atalho 2"
+
+#: ../plugins/gtk/gtk.c:443
+msgid "Actions"
+msgstr "Ações"
+
+#: ../plugins/gtk/gtk.c:449
+msgid "Command"
+msgstr "Comando"
+
+#: ../plugins/gtk/gtk.c:463
+msgid "Programs"
+msgstr "Programas"
+
+#: ../plugins/gtk/gtk.c:482 ../plugins/gtk/edit.c:480
+msgid "Error"
+msgstr "Erro"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:1
+msgid "Setup Hot Keys"
+msgstr "Configurar teclas de atalho"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:2
+msgid "View and change Window Manager global shortcuts"
+msgstr "Ver e alterar as teclas de atalho globais do gestor de janelas"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:3
+msgid "hotkey;shortcut;system;settings;"
+msgstr "teclas;atalhos;sistema;definições"
+
+#: ../plugins/gtk/edit.c:260
+msgid "Apply error: "
+msgstr "Erro ao aplicar:"
+
+#: ../plugins/gtk/edit.c:275 ../plugins/gtk/edit.c:388
+msgid "Add action"
+msgstr "Adicionar ação"
+
+#: ../plugins/gtk/edit.c:287 ../plugins/gtk/edit.c:390
+msgid "Add option"
+msgstr "Adicionar opção"
+
+#: ../plugins/gtk/edit.c:348
+msgid "Change option"
+msgstr "Alterar opção"
+
+#: ../plugins/gtk/edit.c:413
+msgid "Discard changes"
+msgstr "Rejeitar alterações"
+
+#: ../plugins/gtk/edit.c:414
+msgid "Accept changes"
+msgstr "Aceitar alterações"
+
+#: ../plugins/gtk/edit.c:415
+msgid "Add an action"
+msgstr "Adicionar ação"
+
+#: ../plugins/gtk/edit.c:416
+msgid "Add an option to this command"
+msgstr "Adicionar uma opção a este comando"
+
+#: ../plugins/gtk/edit.c:418
+msgid "Remove selection"
+msgstr "Remover seleção"
+
+#: ../plugins/gtk/edit.c:419
+msgid "Change selected option"
+msgstr "Alterar a opção selecionada"
+
+#: ../plugins/gtk/edit.c:420
+msgid "Add an option to selection"
+msgstr "Adicionar uma opção à seleção"
+
+#: ../plugins/gtk/edit.c:477
+#, c-format
+msgid "Key combination '%s' cannot be used as a global hotkey, sorry."
+msgstr "Não pode utilizar a combinação '%s' como tecla de atalho global."
+
+#: ../plugins/gtk/edit.c:1061
+msgid "Actions:"
+msgstr "Ações:"
+
+#: ../plugins/gtk/edit.c:1069
+msgid "Command line:"
+msgstr "Linha de comandos:"
+
+#: ../plugins/gtk/edit.c:1080
+msgid "Options:"
+msgstr "Opções:"
+
+#: ../plugins/gtk/edit.c:1102
+msgid "<b>Name:</b>"
+msgstr "<b>Nome:</b>"
+
+#: ../plugins/gtk/edit.c:1123
+msgid "<b>Value:</b>"
+msgstr "<b>Valor:</b>"
