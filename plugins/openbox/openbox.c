@@ -95,7 +95,12 @@ static gchar *obkey_to_key(const gchar *obkey)
                 g_string_append(str, "<Shift>");
                 break;
             case 'C':
-                g_string_append(str, "<Control>");
+                /* To make it compatible with GTK+ >= 3.2.0 https://mail.gnome.org/archives/commits-list/2011-September/msg06655.html */
+                #if GTK_CHECK_VERSION >= (3, 2, 0) 
+                    g_string_append(str, "<Primary>");
+                #else
+                    g_string_append(str, "<Control>");
+                #endif
                 break;
             case 'A':
                 g_string_append(str, "<Alt>");
@@ -138,7 +143,8 @@ static gchar *key_to_obkey(const gchar *key)
                 g_string_append(str, "S-");
                 key += 5;
             } else if (strncmp(key, "Contr", 5) == 0 ||
-                       strncmp(key, "Ctr", 3) == 0) {
+                       strncmp(key, "Ctr", 3) == 0 || 
+                       strncmp(key, "Prima", 5) == 0) {
                 g_string_append(str, "C-");
                 key += 3;
             } else if (strncmp(key, "Alt", 3) == 0) {
