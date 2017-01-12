@@ -96,7 +96,7 @@ static gchar *obkey_to_key(const gchar *obkey)
                 break;
             case 'C':
                 /* To make it compatible with GTK+ >= 3.2.0 https://mail.gnome.org/archives/commits-list/2011-September/msg06655.html */
-                #if GTK_CHECK_VERSION >= (3, 2, 0) 
+                #if GTK_CHECK_VERSION >= (3, 2, 0) || GTK_CHECK_VERSION >= (2, 24, 0)
                     g_string_append(str, "<Primary>");
                 #else
                     g_string_append(str, "<Control>");
