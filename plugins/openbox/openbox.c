@@ -874,6 +874,9 @@ static gpointer obcfg_load(gpointer config, GError **error)
         else if (g_strcmp0(session, "LXDE") == 0)
             cfg->path = g_build_filename(g_get_user_config_dir(), "openbox",
                                          "lxde-rc.xml", NULL);
+        else if (g_strcmp0(session, "LXDE-pi") == 0)
+            cfg->path = g_build_filename(g_get_user_config_dir(), "openbox",
+                                         "lxde-pi-rc.xml", NULL);
         else
             cfg->path = g_build_filename(g_get_user_config_dir(), "openbox",
                                          "rc.xml", NULL);
