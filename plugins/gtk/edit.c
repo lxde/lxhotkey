@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Andriy Grytsenko <andrej@rep.kiev.ua>
+ * Copyright (C) 2016-2021 Andriy Grytsenko <andrej@rep.kiev.ua>
  *
  * This file is a part of LXHotkey project.
  *
@@ -520,6 +520,13 @@ _done:
     /* save new value now */
     g_object_set_data_full(G_OBJECT(test), "original_label", text, g_free);
     text = gtk_accelerator_name(event->keyval, state);
+    if (data->use_primary)
+    {
+        /* convert <Primary> to <Control> now */
+        char *subtext = strstr(text, "<Primary>");
+        if (subtext != NULL)
+            strncpy(subtext, "<Control", 8);
+    }
     g_object_set_data_full(G_OBJECT(test), "accelerator_name", text, g_free);
     gtk_action_set_sensitive(data->edit_apply_button, TRUE);
     /* change focus onto exec line or actions tree now */
@@ -538,7 +545,20 @@ static GtkWidget *key_button_new(PluginData *data, const char *hotkey)
     GdkModifierType state = 0;
 
     if (hotkey)
-        gtk_accelerator_parse(hotkey, &keyval, &state);
+    {
+        if (data->use_primary)
+        {
+            /* convert <Control> to <Primary> now */
+            char *newkey = g_strdup(hotkey);
+            char *subkey = strstr(newkey, "<Control>");
+            if (subkey != NULL)
+                strncpy(subkey, "<Primary", 8);
+            gtk_accelerator_parse(newkey, &keyval, &state);
+            g_free(newkey);
+        }
+        else
+            gtk_accelerator_parse(hotkey, &keyval, &state);
+    }
     label = gtk_accelerator_get_label(keyval, state);
     w = gtk_button_new_with_label(label);
     g_object_set_data_full(G_OBJECT(w), "accelerator_name", g_strdup(hotkey), g_free);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Andriy Grytsenko <andrej@rep.kiev.ua>
+ * Copyright (C) 2016-2021 Andriy Grytsenko <andrej@rep.kiev.ua>
  *
  * This file is a part of LXHotkey project.
  *
@@ -370,6 +370,14 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
     data.wm = wm;
     data.cb = cb;
     data.config = config;
+
+#if GTK_CHECK_VERSION(3, 0, 0)
+    if (gtk_get_major_version() > 3 || gtk_get_minor_version() >= 2)
+        data.use_primary = TRUE;
+#else
+    if (gtk_check_version(2, 24, 0) == NULL)
+        data.use_primary = TRUE;
+#endif
 
     win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(win), 400, 300);

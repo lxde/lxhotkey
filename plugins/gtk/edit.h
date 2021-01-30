@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Andriy Grytsenko <andrej@rep.kiev.ua>
+ * Copyright (C) 2016-2021 Andriy Grytsenko <andrej@rep.kiev.ua>
  *
  * This file is a part of LXHotkey project.
  *
@@ -59,6 +59,7 @@ typedef struct {
     GtkWidget *edit_value_num; //GtkSpinButton
     GtkWidget *edit_value_num_label; //GtkLabel
     gint edit_mode;
+    gboolean use_primary;
 } PluginData;
 
 #define LXHOTKEY_ICON "preferences-desktop-keyboard"

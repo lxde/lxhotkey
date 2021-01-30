@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2016 Andriy Grytsenko <andrej@rep.kiev.ua>
+ * Copyright (C) 2020 durapensa <durapensa@gmail.com>
  *
  * This file is a part of LXHotkey project.
  *

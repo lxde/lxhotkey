@@ -1,0 +1,4 @@
+0.1.1
+-------------------------------------------------------------------------
+* Added detection for LXDE-pi session.
+* Fixed using '<Primary>' keyword by recent GTK+.
