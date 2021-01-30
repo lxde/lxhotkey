@@ -341,6 +341,7 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
     GtkWidget *win, *menubar;
     GtkToolbar *toolbar;
     GtkBox *vbox;
+    GtkScrolledWindow *scrwin;
     PluginData data;
 
     if (!inited)
@@ -380,7 +381,7 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
 #endif
 
     win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size(GTK_WINDOW(win), 400, 300);
+    gtk_window_set_default_size(GTK_WINDOW(win), 800, 480);
     gtk_window_set_icon_name(GTK_WINDOW(win), LXHOTKEY_ICON);
     g_signal_connect(win, "unmap", G_CALLBACK(gtk_main_quit), NULL);
 
@@ -425,7 +426,13 @@ static void module_gtk_run(const gchar *wm, const LXHotkeyPluginInit *cb,
     g_signal_connect_after(data.notebook, "switch-page",
                            G_CALLBACK(on_notebook_switch_page), &data);
 
-    gtk_box_pack_start(vbox, GTK_WIDGET(data.notebook), TRUE, TRUE, 0);
+    /* notebook should be in a scrolled window if there is no enough space */
+    scrwin = (GtkScrolledWindow *)gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_add_with_viewport(scrwin, GTK_WIDGET(data.notebook));
+    gtk_scrolled_window_set_policy(scrwin, GTK_POLICY_AUTOMATIC,
+                                   GTK_POLICY_AUTOMATIC);
+
+    gtk_box_pack_start(vbox, GTK_WIDGET(scrwin), TRUE, TRUE, 0);
 
     /* setup notebook */
     if (cb->get_wm_keys)
