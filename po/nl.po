@@ -672,8 +672,8 @@ msgid "translator-credits"
 msgstr "Pjotr <pjotrvertaalt@gmail.com>"
 
 #: ../plugins/gtk/gtk.c:184
-msgid "Copyright (C) 2016"
-msgstr "Auteursrecht (C) 2016"
+msgid "Copyright (C) 2016-2021"
+msgstr "Auteursrecht (C) 2016-2021"
 
 #: ../plugins/gtk/gtk.c:185
 msgid "Keyboard shortcuts configurator"

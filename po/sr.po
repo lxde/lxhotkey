@@ -688,8 +688,8 @@ msgid "translator-credits"
 msgstr "Српски — Jay A. Fleming <tito.nehru.naser@gmail.com>"
 
 #: ../plugins/gtk/gtk.c:184
-msgid "Copyright (C) 2016"
-msgstr "Ауторска права — 2016."
+msgid "Copyright (C) 2016-2021"
+msgstr "Ауторска права — 2016-2021."
 
 #: ../plugins/gtk/gtk.c:185
 msgid "Keyboard shortcuts configurator"

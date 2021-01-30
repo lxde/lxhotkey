@@ -675,8 +675,8 @@ msgstr ""
 "Proxecto Trasno <proxecto@trasno.net>"
 
 #: ../plugins/gtk/gtk.c:184
-msgid "Copyright (C) 2016"
-msgstr "Copyright (C) 2016"
+msgid "Copyright (C) 2016-2021"
+msgstr "Copyright (C) 2016-2021"
 
 #: ../plugins/gtk/gtk.c:185
 msgid "Keyboard shortcuts configurator"

@@ -679,7 +679,7 @@ msgid "translator-credits"
 msgstr ""
 
 #: ../plugins/gtk/gtk.c:184
-msgid "Copyright (C) 2016"
+msgid "Copyright (C) 2016-2021"
 msgstr ""
 
 #: ../plugins/gtk/gtk.c:185
