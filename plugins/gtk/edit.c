@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2016-2021 Andriy Grytsenko <andrej@rep.kiev.ua>
+ *               2023 Ingo Brückl
  *
  * This file is a part of LXHotkey project.
  *
@@ -567,6 +568,7 @@ static GtkWidget *key_button_new(PluginData *data, const char *hotkey)
     g_signal_connect(w, "focus-out-event", G_CALLBACK(on_focus_out_event), data);
     g_signal_connect(w, "key-press-event", G_CALLBACK(on_key_event), data);
     g_signal_connect(w, "key-release-event", G_CALLBACK(on_key_event), data);
+    gtk_widget_set_tooltip_text(w, _("Click to select, then press a key"));
     return w;
 }
 
