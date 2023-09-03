@@ -509,7 +509,7 @@ int main(int argc, char *argv[])
             break;
     if (!plugin) {
         g_set_error(&error, LXKEYS_ERROR, LXKEYS_NOT_SUPPORTED,
-                    _("Window manager %s isn't supported now, sorry."), wm_name);
+                    _("Could not find a plugin for window manager %s."), wm_name);
         goto _exit;
     }
 
