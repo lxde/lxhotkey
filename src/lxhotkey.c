@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2016 Andriy Grytsenko <andrej@rep.kiev.ua>
+ *               2023 Ingo Brückl
  *
  * This file is a part of LXHotkey project.
  *
@@ -172,7 +173,7 @@ static gboolean test_X_is_local(void)
 {
     const char *display = g_getenv("DISPLAY");
     int Xnum;
-    char lockfile[32];
+    char lockfile[32], socket[32];
 
     if (display)
         display = strchr(display, ':');
@@ -181,7 +182,10 @@ static gboolean test_X_is_local(void)
         return FALSE;
     Xnum = atoi(&display[1]);
     snprintf(lockfile, sizeof(lockfile), "/tmp/.X%d-lock", Xnum);
-    return g_file_test(lockfile, G_FILE_TEST_IS_REGULAR);
+    snprintf(socket, sizeof(socket), "/tmp/.X11-unix/X%d", Xnum);
+    return g_file_test(lockfile, G_FILE_TEST_IS_REGULAR) ||
+           (g_file_test(socket, G_FILE_TEST_EXISTS) &&
+           !g_file_test(socket, G_FILE_TEST_IS_REGULAR));
 }
 
 
