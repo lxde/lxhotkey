@@ -241,9 +241,9 @@ static gboolean fm_module_callback_lxhotkey_gui(const char *name, gpointer init,
 
 static int _print_help(const char *cmd)
 {
-    printf(_("Usage: %s global [<action>]      - show keys bound to action(s)\n"), cmd);
+    printf(_("Usage: %s global [<key>]         - show keys bound to action(s)\n"), cmd);
     printf(_("       %s global <action> <key>  - bind a key to the action\n"), cmd);
-    printf(_("       %s app [<exec>]           - show keys bound to exec line\n"), cmd);
+    printf(_("       %s app [<key>]            - show keys bound to exec line\n"), cmd);
     printf(_("       %s app <exec> <key>       - bind a key to some exec line\n"), cmd);
     printf(_("       %s app <exec> --          - unbind all keys from exec line\n"), cmd);
     printf(_("       %s show <key>             - show the action bound to a key\n"), cmd);
