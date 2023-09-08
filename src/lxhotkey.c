@@ -246,7 +246,7 @@ static int _print_help(const char *cmd)
     printf(_("       %s app [<key>]            - show keys bound to exec line\n"), cmd);
     printf(_("       %s app <exec> <key>       - bind a key to some exec line\n"), cmd);
     printf(_("       %s app <exec> --          - unbind all keys from exec line\n"), cmd);
-    printf(_("       %s show <key>             - show the action bound to a key\n"), cmd);
+//  printf(_("       %s show <action>          - show the action bound to a key\n"), cmd);
     printf(_("       %s --gui=<type>           - start with GUI\n"), cmd);
     return 0;
 }
@@ -665,6 +665,7 @@ int main(int argc, char *argv[])
         }
     } else if (strcmp(argv[1], "show") == 0) { /* lxhotkey show ... */
         // FIXME: TODO!
+        // then: uncomment line in _print_help()
     } else
         goto _exit;
     ret = 0; /* success */
