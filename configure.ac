@@ -88,6 +88,9 @@ if test x"$ac_with_gtk" != xno; then
       ;;
   esac
   PKG_CHECK_MODULES(GTK, [$pkg_modules], [with_gtk=yes], [with_gtk=no])
+  if test "$with_gtk" = "yes" -a "$pkg_modules" = "gtk+-3.0"; then
+    CFLAGS="$CFLAGS -Wno-deprecated-declarations"
+  fi
 fi
 AM_CONDITIONAL(WITH_GTK, [test x$with_gtk = xyes])
 AC_SUBST(GTK_CFLAGS)
