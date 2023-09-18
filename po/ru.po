@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LXHotkey\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-07 23:14+0200\n"
+"POT-Creation-Date: 2023-09-18 15:23+0200\n"
 "PO-Revision-Date: 2016-11-06 14:58+0300\n"
 "Last-Translator: AlexL <alexl@mageia.org>\n"
 "Language-Team: Russian\n"
@@ -19,666 +19,653 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.6.9\n"
 
-#: ../src/lxhotkey.c:241
-#, c-format
-msgid "Usage: %s global [<action>]      - show keys bound to action(s)\n"
+#: ../src/lxhotkey.c:244
+msgid "Usage: %s global [<key>]         - show keys bound to action(s)\n"
 msgstr ""
-"Использование: %s global [<действие>]          - показать клавиши, "
+"Использование: %s global [<клавиша>]            - показать клавиши, "
 "привязанные к действию(ям)\n"
 
-#: ../src/lxhotkey.c:242
+#: ../src/lxhotkey.c:245
 #, c-format
 msgid "       %s global <action> <key>  - bind a key to the action\n"
 msgstr ""
 "              %s global <действие> <клавиша>  - привязать клавишу к "
 "действию\n"
 
-#: ../src/lxhotkey.c:243
-#, c-format
-msgid "       %s app [<exec>]           - show keys bound to exec line\n"
+#: ../src/lxhotkey.c:246
+msgid "       %s app [<key>]            - show keys bound to exec line\n"
 msgstr ""
-"              %s app <команда>           - показать клавиши, привязанные к "
+"              %s app [<клавиша>]         - показать клавиши, привязанные к "
 "команде\n"
 
-#: ../src/lxhotkey.c:244
+#: ../src/lxhotkey.c:247
 #, c-format
 msgid "       %s app <exec> <key>       - bind a key to some exec line\n"
 msgstr ""
 "              %s app <команда> <клавиша> - привязать клавишу к команде\n"
 
-#: ../src/lxhotkey.c:245
+#: ../src/lxhotkey.c:248
 #, c-format
 msgid "       %s app <exec> --          - unbind all keys from exec line\n"
 msgstr ""
 "              %s app <команда> --        - отвязать все клавиши от команды\n"
 
-#: ../src/lxhotkey.c:246
-#, c-format
-msgid "       %s show <key>             - show the action bound to a key\n"
-msgstr ""
-"              %s <клавиша>               - показать действие, привязанное к "
-"клавише\n"
-
-#: ../src/lxhotkey.c:247
+#: ../src/lxhotkey.c:250
 #, c-format
 msgid "       %s --gui=<type>           - start with GUI\n"
 msgstr ""
 "              %s --gui=<тип>             - запустить графический интерфейс\n"
 
-#: ../src/lxhotkey.c:342
+#: ../src/lxhotkey.c:345
 msgid "empty option name."
 msgstr "пустое название параметра."
 
-#: ../src/lxhotkey.c:345
+#: ../src/lxhotkey.c:348
 msgid "empty action name."
 msgstr "пустое название действия."
 
-#: ../src/lxhotkey.c:377
+#: ../src/lxhotkey.c:380
 #, c-format
 msgid "no matching option '%s' found for action '%s'."
 msgstr "не найдено подходящего параметра '%s' для действия '%s'."
 
-#: ../src/lxhotkey.c:381
+#: ../src/lxhotkey.c:384
 #, c-format
 msgid "action '%s' isn't supported by WM %s."
 msgstr "действие '%s' не поддерживается менеджером окон %s."
 
-#: ../src/lxhotkey.c:398
+#: ../src/lxhotkey.c:401
 #, c-format
 msgid "value '%s' is not supported for option '%s'."
 msgstr "значение '%s' не поддерживается для параметра '%s'."
 
-#: ../src/lxhotkey.c:402
+#: ../src/lxhotkey.c:405
 #, c-format
 msgid "value '%s' is not supported for action '%s'."
 msgstr "значение '%s' не поддерживается для действия '%s'."
 
-#: ../src/lxhotkey.c:415
+#: ../src/lxhotkey.c:418
 #, c-format
 msgid "action '%s' does not support options."
 msgstr "действие '%s' не поддерживает параметры."
 
-#: ../src/lxhotkey.c:497
+#: ../src/lxhotkey.c:500
 msgid "Sorry, cannot configure keys remotely."
 msgstr "Извините, но менять привязки клавиш можно только локально."
 
-#: ../src/lxhotkey.c:505
+#: ../src/lxhotkey.c:508
 msgid "Could not determine window manager running."
 msgstr "Не получилось определить запущенный менеджер окон."
 
-#: ../src/lxhotkey.c:513
-#, c-format
-msgid "Window manager %s isn't supported now, sorry."
-msgstr "Извините, но менеджер окон %s не поддерживается."
+#: ../src/lxhotkey.c:516
+#, fuzzy, c-format
+#| msgid "Could not determine window manager running."
+msgid "Could not find a plugin for window manager %s."
+msgstr "Не получилось определить запущенный менеджер окон."
 
-#: ../src/lxhotkey.c:520 ../plugins/gtk/gtk.c:75
+#: ../src/lxhotkey.c:523 ../plugins/gtk/gtk.c:75
 msgid "Problems loading configuration: "
 msgstr "Проблемы загрузки конфигурации: "
 
-#: ../src/lxhotkey.c:529
+#: ../src/lxhotkey.c:532
 #, c-format
 msgid "GUI type %s currently isn't supported."
 msgstr "Графический интерфейс %s не поддерживается."
 
-#. invalid request
-#: ../src/lxhotkey.c:546 ../src/lxhotkey.c:622
+#: ../src/lxhotkey.c:549 ../src/lxhotkey.c:625
 msgid "Invalid request: "
 msgstr "Плохой запрос: "
 
-#: ../src/lxhotkey.c:556 ../src/lxhotkey.c:634 ../plugins/gtk/gtk.c:90
+#: ../src/lxhotkey.c:559 ../src/lxhotkey.c:637 ../plugins/gtk/gtk.c:90
 msgid "Problems saving configuration: "
 msgstr "Проблемы сохранения конфигурации: "
 
-#: ../src/lxhotkey.c:573
+#: ../src/lxhotkey.c:576
 msgid "ACTION(s)"
 msgstr "ДЕЙСТВИЕ(Я)"
 
-#: ../src/lxhotkey.c:573 ../src/lxhotkey.c:651
+#: ../src/lxhotkey.c:576 ../src/lxhotkey.c:654
 msgid "KEY(s)"
 msgstr "КЛАВИША(И)"
 
-#: ../src/lxhotkey.c:651
+#: ../src/lxhotkey.c:654
 msgid "EXEC"
 msgstr "КОМАНДА"
 
-#: ../src/lxhotkey.c:672
+#: ../src/lxhotkey.c:676
 msgid "Requested operation isn't supported."
 msgstr "Запрошенная операция не поддерживается."
 
-#: ../plugins/openbox/openbox.c:184
+#: ../plugins/openbox/openbox.c:185
 msgid "Failed to reconfigure Openbox."
 msgstr "Не удалось переконфигурировать Openbox."
 
-#. reuse GList
-#. reuse GList
-#: ../plugins/openbox/openbox.c:203
+#: ../plugins/openbox/openbox.c:204
 msgid "yes"
 msgstr "да"
 
-#: ../plugins/openbox/openbox.c:203
+#: ../plugins/openbox/openbox.c:204
 msgid "no"
 msgstr "нет"
 
-#: ../plugins/openbox/openbox.c:206
+#: ../plugins/openbox/openbox.c:207
 msgid "enabled"
 msgstr "включен"
 
-#: ../plugins/openbox/openbox.c:207
+#: ../plugins/openbox/openbox.c:208
 msgid "wmclass"
 msgstr "класс менеджера окон"
 
-#: ../plugins/openbox/openbox.c:208
+#: ../plugins/openbox/openbox.c:209
 msgid "name"
 msgstr "название"
 
-#: ../plugins/openbox/openbox.c:209
+#: ../plugins/openbox/openbox.c:210
 msgid "icon"
 msgstr "значок"
 
-#: ../plugins/openbox/openbox.c:214 ../plugins/openbox/openbox.c:293
+#: ../plugins/openbox/openbox.c:215 ../plugins/openbox/openbox.c:294
 msgid "command"
 msgstr "команда"
 
-#: ../plugins/openbox/openbox.c:215 ../plugins/openbox/openbox.c:298
+#: ../plugins/openbox/openbox.c:216 ../plugins/openbox/openbox.c:299
 msgid "prompt"
 msgstr "приглашение"
 
-#: ../plugins/openbox/openbox.c:216
+#: ../plugins/openbox/openbox.c:217
 msgid "startupnotify"
 msgstr "сообщение запуска"
 
-#: ../plugins/openbox/openbox.c:220 ../plugins/openbox/openbox.c:330
+#: ../plugins/openbox/openbox.c:221 ../plugins/openbox/openbox.c:331
 msgid "center"
 msgstr "центр"
 
-#: ../plugins/openbox/openbox.c:221
+#: ../plugins/openbox/openbox.c:222
 msgid "default"
 msgstr "по умолчанию"
 
-#: ../plugins/openbox/openbox.c:221
+#: ../plugins/openbox/openbox.c:222
 msgid "primary"
 msgstr "первичный"
 
-#: ../plugins/openbox/openbox.c:221
+#: ../plugins/openbox/openbox.c:222
 msgid "mouse"
 msgstr "мышь"
 
-#: ../plugins/openbox/openbox.c:222
+#: ../plugins/openbox/openbox.c:223
 msgid "active"
 msgstr "активный"
 
-#: ../plugins/openbox/openbox.c:222 ../plugins/openbox/openbox.c:333
+#: ../plugins/openbox/openbox.c:223 ../plugins/openbox/openbox.c:334
 msgid "all"
 msgstr "все"
 
-#: ../plugins/openbox/openbox.c:227 ../plugins/openbox/openbox.c:340
+#: ../plugins/openbox/openbox.c:228 ../plugins/openbox/openbox.c:341
 msgid "monitor"
 msgstr "монитор"
 
-#: ../plugins/openbox/openbox.c:232
+#: ../plugins/openbox/openbox.c:233
 msgid "menu"
 msgstr "меню"
 
-#: ../plugins/openbox/openbox.c:233
+#: ../plugins/openbox/openbox.c:234
 msgid "position"
 msgstr "позиция"
 
-#: ../plugins/openbox/openbox.c:237
+#: ../plugins/openbox/openbox.c:238
 msgid "list"
 msgstr "список"
 
-#: ../plugins/openbox/openbox.c:237
+#: ../plugins/openbox/openbox.c:238
 msgid "icons"
 msgstr "значки"
 
-#: ../plugins/openbox/openbox.c:237
+#: ../plugins/openbox/openbox.c:238
 msgid "none"
 msgstr "ни одного"
 
-#: ../plugins/openbox/openbox.c:240 ../plugins/openbox/openbox.c:259
+#: ../plugins/openbox/openbox.c:241 ../plugins/openbox/openbox.c:260
 msgid "dialog"
 msgstr "диалог"
 
-#: ../plugins/openbox/openbox.c:241 ../plugins/openbox/openbox.c:260
+#: ../plugins/openbox/openbox.c:242 ../plugins/openbox/openbox.c:261
 msgid "bar"
 msgstr "пенал"
 
-#: ../plugins/openbox/openbox.c:242 ../plugins/openbox/openbox.c:261
+#: ../plugins/openbox/openbox.c:243 ../plugins/openbox/openbox.c:262
 msgid "raise"
 msgstr "поднять"
 
-#: ../plugins/openbox/openbox.c:243
+#: ../plugins/openbox/openbox.c:244
 msgid "allDesktops"
 msgstr "все рабочие столы"
 
-#: ../plugins/openbox/openbox.c:244 ../plugins/openbox/openbox.c:262
+#: ../plugins/openbox/openbox.c:245 ../plugins/openbox/openbox.c:263
 msgid "panels"
 msgstr "панели"
 
-#: ../plugins/openbox/openbox.c:245
+#: ../plugins/openbox/openbox.c:246
 msgid "desktop"
 msgstr "рабочий стол"
 
-#: ../plugins/openbox/openbox.c:246
+#: ../plugins/openbox/openbox.c:247
 msgid "linear"
 msgstr "линейный"
 
-#: ../plugins/openbox/openbox.c:247
+#: ../plugins/openbox/openbox.c:248
 msgid "interactive"
 msgstr "интерактивний"
 
 #. TRANSLATORS: finalactions means actions when done
-#: ../plugins/openbox/openbox.c:249 ../plugins/openbox/openbox.c:264
+#: ../plugins/openbox/openbox.c:250 ../plugins/openbox/openbox.c:265
 msgid "finalactions"
 msgstr "действия по завершению"
 
-#: ../plugins/openbox/openbox.c:253 ../plugins/openbox/openbox.c:270
-#: ../plugins/openbox/openbox.c:310 ../plugins/openbox/openbox.c:363
+#: ../plugins/openbox/openbox.c:254 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:311 ../plugins/openbox/openbox.c:364
 msgid "north"
 msgstr "север"
 
-#: ../plugins/openbox/openbox.c:253
+#: ../plugins/openbox/openbox.c:254
 msgid "northeast"
 msgstr "северо-восток"
 
-#: ../plugins/openbox/openbox.c:253 ../plugins/openbox/openbox.c:271
-#: ../plugins/openbox/openbox.c:311 ../plugins/openbox/openbox.c:363
+#: ../plugins/openbox/openbox.c:254 ../plugins/openbox/openbox.c:272
+#: ../plugins/openbox/openbox.c:312 ../plugins/openbox/openbox.c:364
 msgid "east"
 msgstr "восток"
 
-#: ../plugins/openbox/openbox.c:254
+#: ../plugins/openbox/openbox.c:255
 msgid "southeast"
 msgstr "юго-восток"
 
-#: ../plugins/openbox/openbox.c:254 ../plugins/openbox/openbox.c:270
-#: ../plugins/openbox/openbox.c:310 ../plugins/openbox/openbox.c:363
+#: ../plugins/openbox/openbox.c:255 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:311 ../plugins/openbox/openbox.c:364
 msgid "south"
 msgstr "юг"
 
-#: ../plugins/openbox/openbox.c:254
+#: ../plugins/openbox/openbox.c:255
 msgid "southwest"
 msgstr "юго-запад"
 
-#: ../plugins/openbox/openbox.c:255 ../plugins/openbox/openbox.c:271
-#: ../plugins/openbox/openbox.c:311 ../plugins/openbox/openbox.c:363
+#: ../plugins/openbox/openbox.c:256 ../plugins/openbox/openbox.c:272
+#: ../plugins/openbox/openbox.c:312 ../plugins/openbox/openbox.c:364
 msgid "west"
 msgstr "запад"
 
-#: ../plugins/openbox/openbox.c:255
+#: ../plugins/openbox/openbox.c:256
 msgid "northwest"
 msgstr "северо-запад"
 
-#: ../plugins/openbox/openbox.c:258 ../plugins/openbox/openbox.c:305
-#: ../plugins/openbox/openbox.c:366
+#: ../plugins/openbox/openbox.c:259 ../plugins/openbox/openbox.c:306
+#: ../plugins/openbox/openbox.c:367
 msgid "direction"
 msgstr "направление"
 
-#: ../plugins/openbox/openbox.c:263
+#: ../plugins/openbox/openbox.c:264
 msgid "desktops"
 msgstr "рабочие столы"
 
 #. TRANSLATORS: these values are in regard to desktop
-#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:280
-#: ../plugins/openbox/openbox.c:309 ../plugins/openbox/openbox.c:330
-#: ../plugins/openbox/openbox.c:333
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:281
+#: ../plugins/openbox/openbox.c:310 ../plugins/openbox/openbox.c:331
+#: ../plugins/openbox/openbox.c:334
 msgid "current"
 msgstr "текущий"
 
-#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:309
-#: ../plugins/openbox/openbox.c:333
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:310
+#: ../plugins/openbox/openbox.c:334
 msgid "next"
 msgstr "следующий"
 
-#: ../plugins/openbox/openbox.c:269 ../plugins/openbox/openbox.c:309
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:310
 msgid "previous"
 msgstr "предыдущий"
 
-#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:280
-#: ../plugins/openbox/openbox.c:310
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:281
+#: ../plugins/openbox/openbox.c:311
 msgid "last"
 msgstr "последний"
 
-#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:310
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:311
 msgid "up"
 msgstr "вверх"
 
-#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:311
+#: ../plugins/openbox/openbox.c:272 ../plugins/openbox/openbox.c:312
 msgid "down"
 msgstr "вниз"
 
-#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:311
-#: ../plugins/openbox/openbox.c:321 ../plugins/openbox/openbox.c:356
+#: ../plugins/openbox/openbox.c:272 ../plugins/openbox/openbox.c:312
+#: ../plugins/openbox/openbox.c:322 ../plugins/openbox/openbox.c:357
 msgid "left"
 msgstr "влево"
 
-#: ../plugins/openbox/openbox.c:272 ../plugins/openbox/openbox.c:312
-#: ../plugins/openbox/openbox.c:321 ../plugins/openbox/openbox.c:357
+#: ../plugins/openbox/openbox.c:273 ../plugins/openbox/openbox.c:313
+#: ../plugins/openbox/openbox.c:322 ../plugins/openbox/openbox.c:358
 msgid "right"
 msgstr "вправо"
 
-#: ../plugins/openbox/openbox.c:275 ../plugins/openbox/openbox.c:315
+#: ../plugins/openbox/openbox.c:276 ../plugins/openbox/openbox.c:316
 msgid "to"
 msgstr "к"
 
-#: ../plugins/openbox/openbox.c:276 ../plugins/openbox/openbox.c:316
+#: ../plugins/openbox/openbox.c:277 ../plugins/openbox/openbox.c:317
 msgid "wrap"
 msgstr "свернуть"
 
-#: ../plugins/openbox/openbox.c:283
+#: ../plugins/openbox/openbox.c:284
 msgid "where"
 msgstr "где"
 
-#: ../plugins/openbox/openbox.c:288
+#: ../plugins/openbox/openbox.c:289
 msgid "strict"
 msgstr "строго"
 
-#: ../plugins/openbox/openbox.c:302
+#: ../plugins/openbox/openbox.c:303
 msgid "both"
 msgstr "оба"
 
-#: ../plugins/openbox/openbox.c:302
+#: ../plugins/openbox/openbox.c:303
 msgid "horizontal"
 msgstr "горизонтально"
 
-#: ../plugins/openbox/openbox.c:302
+#: ../plugins/openbox/openbox.c:303
 msgid "vertical"
 msgstr "вертикально"
 
-#: ../plugins/openbox/openbox.c:317
+#: ../plugins/openbox/openbox.c:318
 msgid "follow"
 msgstr "следить"
 
-#: ../plugins/openbox/openbox.c:321 ../plugins/openbox/openbox.c:358
-#: ../plugins/openbox/openbox.c:370
+#: ../plugins/openbox/openbox.c:322 ../plugins/openbox/openbox.c:359
+#: ../plugins/openbox/openbox.c:371
 msgid "top"
 msgstr "верхний"
 
-#: ../plugins/openbox/openbox.c:321 ../plugins/openbox/openbox.c:359
-#: ../plugins/openbox/openbox.c:370
+#: ../plugins/openbox/openbox.c:322 ../plugins/openbox/openbox.c:360
+#: ../plugins/openbox/openbox.c:371
 msgid "bottom"
 msgstr "нижний"
 
-#: ../plugins/openbox/openbox.c:322
+#: ../plugins/openbox/openbox.c:323
 msgid "topleft"
 msgstr "верхний левый"
 
-#: ../plugins/openbox/openbox.c:322
+#: ../plugins/openbox/openbox.c:323
 msgid "topright"
 msgstr "верхний правый"
 
-#: ../plugins/openbox/openbox.c:322
+#: ../plugins/openbox/openbox.c:323
 msgid "bottomleft"
 msgstr "нижний левый"
 
-#: ../plugins/openbox/openbox.c:323
+#: ../plugins/openbox/openbox.c:324
 msgid "bottomright"
 msgstr "нижний правый"
 
-#: ../plugins/openbox/openbox.c:326
+#: ../plugins/openbox/openbox.c:327
 msgid "edge"
 msgstr "край"
 
 #. TRANSLATORS: # in config means either pixels, or monitor number
-#: ../plugins/openbox/openbox.c:330 ../plugins/openbox/openbox.c:345
+#: ../plugins/openbox/openbox.c:331 ../plugins/openbox/openbox.c:346
 msgid "#"
 msgstr "число"
 
 #. TRANSLATORS: % in config means some fraction value, usually measured in percents
-#: ../plugins/openbox/openbox.c:332
+#: ../plugins/openbox/openbox.c:333
 msgid "%"
 msgstr "доля"
 
-#: ../plugins/openbox/openbox.c:333
+#: ../plugins/openbox/openbox.c:334
 msgid "prev"
 msgstr "предыдущий"
 
-#: ../plugins/openbox/openbox.c:338
+#: ../plugins/openbox/openbox.c:339
 msgid "width"
 msgstr "ширина"
 
-#: ../plugins/openbox/openbox.c:339
+#: ../plugins/openbox/openbox.c:340
 msgid "height"
 msgstr "высота"
 
-#: ../plugins/openbox/openbox.c:370
+#: ../plugins/openbox/openbox.c:371
 msgid "normal"
 msgstr "нормальный"
 
-#: ../plugins/openbox/openbox.c:373
+#: ../plugins/openbox/openbox.c:374
 msgid "layer"
 msgstr "слой"
 
-#. global actions
-#: ../plugins/openbox/openbox.c:379
+#: ../plugins/openbox/openbox.c:380
 msgid "Execute"
 msgstr "выполнить"
 
-#: ../plugins/openbox/openbox.c:380
+#: ../plugins/openbox/openbox.c:381
 msgid "ShowMenu"
 msgstr "показать меню"
 
-#: ../plugins/openbox/openbox.c:381
+#: ../plugins/openbox/openbox.c:382
 msgid "NextWindow"
 msgstr "следующее окно"
 
-#: ../plugins/openbox/openbox.c:382
+#: ../plugins/openbox/openbox.c:383
 msgid "PreviousWindow"
 msgstr "предыдущее окно"
 
-#: ../plugins/openbox/openbox.c:383
+#: ../plugins/openbox/openbox.c:384
 msgid "DirectionalCycleWindows"
 msgstr "перейти к окну в направлении"
 
-#: ../plugins/openbox/openbox.c:384
+#: ../plugins/openbox/openbox.c:385
 msgid "DirectionalTargetWindow"
 msgstr "выбрать окно в направлении"
 
-#: ../plugins/openbox/openbox.c:385
+#: ../plugins/openbox/openbox.c:386
 msgid "GoToDesktop"
 msgstr "перейти к рабочему столу"
 
-#: ../plugins/openbox/openbox.c:386
+#: ../plugins/openbox/openbox.c:387
 msgid "AddDesktop"
 msgstr "добавить рабочий стол"
 
-#: ../plugins/openbox/openbox.c:387
+#: ../plugins/openbox/openbox.c:388
 msgid "RemoveDesktop"
 msgstr "удалить рабочий стол"
 
-#: ../plugins/openbox/openbox.c:388
+#: ../plugins/openbox/openbox.c:389
 msgid "ToggleShowDesktop"
 msgstr "показать рабочий стол/окна"
 
-#: ../plugins/openbox/openbox.c:389
+#: ../plugins/openbox/openbox.c:390
 msgid "ToggleDockAutohide"
 msgstr "включить/выключить автоскрытие дока"
 
-#: ../plugins/openbox/openbox.c:390
+#: ../plugins/openbox/openbox.c:391
 msgid "Reconfigure"
 msgstr "переконфигурировать"
 
-#: ../plugins/openbox/openbox.c:391
+#: ../plugins/openbox/openbox.c:392
 msgid "Restart"
 msgstr "перезапустить"
 
-#: ../plugins/openbox/openbox.c:392
+#: ../plugins/openbox/openbox.c:393
 msgid "Exit"
 msgstr "выйти"
 
-#. windows actions
-#: ../plugins/openbox/openbox.c:394
+#: ../plugins/openbox/openbox.c:395
 msgid "Focus"
 msgstr "получить фокус"
 
-#: ../plugins/openbox/openbox.c:395
+#: ../plugins/openbox/openbox.c:396
 msgid "Raise"
 msgstr "поднять"
 
-#: ../plugins/openbox/openbox.c:396
+#: ../plugins/openbox/openbox.c:397
 msgid "Lower"
 msgstr "опустить"
 
-#: ../plugins/openbox/openbox.c:397
+#: ../plugins/openbox/openbox.c:398
 msgid "RaiseLower"
 msgstr "поднять и опустить"
 
-#: ../plugins/openbox/openbox.c:398
+#: ../plugins/openbox/openbox.c:399
 msgid "Unfocus"
 msgstr "оставить фокус"
 
-#: ../plugins/openbox/openbox.c:399
+#: ../plugins/openbox/openbox.c:400
 msgid "FocusToBottom"
 msgstr "фокус на нижнем"
 
-#: ../plugins/openbox/openbox.c:400
+#: ../plugins/openbox/openbox.c:401
 msgid "Iconify"
 msgstr "свернуть"
 
-#: ../plugins/openbox/openbox.c:401
+#: ../plugins/openbox/openbox.c:402
 msgid "Close"
 msgstr "закрыть"
 
-#: ../plugins/openbox/openbox.c:402
+#: ../plugins/openbox/openbox.c:403
 msgid "ToggleShade"
 msgstr "включить/выключить тень"
 
-#: ../plugins/openbox/openbox.c:403
+#: ../plugins/openbox/openbox.c:404
 msgid "Shade"
 msgstr "затенить"
 
-#: ../plugins/openbox/openbox.c:404
+#: ../plugins/openbox/openbox.c:405
 msgid "Unshade"
 msgstr "снять затенения"
 
-#: ../plugins/openbox/openbox.c:405
+#: ../plugins/openbox/openbox.c:406
 msgid "ToggleOmnipresent"
 msgstr "включить/выключить \"Показывать везде\""
 
-#: ../plugins/openbox/openbox.c:406
+#: ../plugins/openbox/openbox.c:407
 msgid "ToggleMaximize"
 msgstr "включить/выключить \"Максимизировать\""
 
-#: ../plugins/openbox/openbox.c:407
+#: ../plugins/openbox/openbox.c:408
 msgid "Maximize"
 msgstr "максимизировать"
 
-#: ../plugins/openbox/openbox.c:408
+#: ../plugins/openbox/openbox.c:409
 msgid "Unmaximize"
 msgstr "снять максимизацию"
 
-#: ../plugins/openbox/openbox.c:409
+#: ../plugins/openbox/openbox.c:410
 msgid "ToggleFullscreen"
 msgstr "включить/выключить \"Во весь экран\""
 
-#: ../plugins/openbox/openbox.c:410
+#: ../plugins/openbox/openbox.c:411
 msgid "ToggleDecorations"
 msgstr "включить/выключить рамку"
 
-#: ../plugins/openbox/openbox.c:411
+#: ../plugins/openbox/openbox.c:412
 msgid "Decorate"
 msgstr "обрамить"
 
-#: ../plugins/openbox/openbox.c:412
+#: ../plugins/openbox/openbox.c:413
 msgid "Undecorate"
 msgstr "снять обрамление"
 
-#: ../plugins/openbox/openbox.c:413
+#: ../plugins/openbox/openbox.c:414
 msgid "SendToDesktop"
 msgstr "отправить на рабочий стол"
 
-#: ../plugins/openbox/openbox.c:414
+#: ../plugins/openbox/openbox.c:415
 msgid "Move"
 msgstr "переместить"
 
-#: ../plugins/openbox/openbox.c:415
+#: ../plugins/openbox/openbox.c:416
 msgid "Resize"
 msgstr "изменить размер"
 
-#: ../plugins/openbox/openbox.c:416
+#: ../plugins/openbox/openbox.c:417
 msgid "MoveResizeTo"
 msgstr "изменить размер и переместить"
 
-#: ../plugins/openbox/openbox.c:417
+#: ../plugins/openbox/openbox.c:418
 msgid "MoveRelative"
 msgstr "относительное перемещение"
 
-#: ../plugins/openbox/openbox.c:418
+#: ../plugins/openbox/openbox.c:419
 msgid "ResizeRelative"
 msgstr "относительное изменение размера"
 
-#: ../plugins/openbox/openbox.c:419
+#: ../plugins/openbox/openbox.c:420
 msgid "MoveToEdge"
 msgstr "переместить к краю"
 
-#: ../plugins/openbox/openbox.c:420
+#: ../plugins/openbox/openbox.c:421
 msgid "GrowToEdge"
 msgstr "расширить до края"
 
-#: ../plugins/openbox/openbox.c:421
+#: ../plugins/openbox/openbox.c:422
 msgid "ShrinkToEdge"
 msgstr "подрезать по краю"
 
-#: ../plugins/openbox/openbox.c:422
+#: ../plugins/openbox/openbox.c:423
 msgid "GrowToFill"
 msgstr "расширить до заполнения"
 
-#: ../plugins/openbox/openbox.c:423
+#: ../plugins/openbox/openbox.c:424
 msgid "ToggleAlwaysOnTop"
 msgstr "включить/выключить \"Всегда вверху\""
 
-#: ../plugins/openbox/openbox.c:424
+#: ../plugins/openbox/openbox.c:425
 msgid "ToggleAlwaysOnBottom"
 msgstr "включить/выключить \"Всегда внизу\""
 
-#: ../plugins/openbox/openbox.c:425
+#: ../plugins/openbox/openbox.c:426
 msgid "SendToLayer"
 msgstr "направить в слой"
 
-#: ../plugins/openbox/openbox.c:516
+#: ../plugins/openbox/openbox.c:517
 msgid "Duplicate <keyboard> section in the rc.xml file."
 msgstr "Двойная секция <keyboard> в файле rc.xml."
 
-#: ../plugins/openbox/openbox.c:547 ../plugins/openbox/openbox.c:789
+#: ../plugins/openbox/openbox.c:548 ../plugins/openbox/openbox.c:790
 msgid "Internal error."
 msgstr "Внутренняя ошибка."
 
-#: ../plugins/openbox/openbox.c:591
+#: ../plugins/openbox/openbox.c:592
 msgid "rc.xml error: no key is set for a keybind."
 msgstr "Ошибка в rc.xml: клавиша привязки не назначена."
 
-#: ../plugins/openbox/openbox.c:662
+#: ../plugins/openbox/openbox.c:663
 msgid "Invalid rc.xml: action with a sub-action."
 msgstr "Ошибка в rc.xml: действие внутри другого действия."
 
-#: ../plugins/openbox/openbox.c:778
+#: ../plugins/openbox/openbox.c:779
 msgid "rc.xml error: no name is set for action."
 msgstr "Ошибка в rc.xml: не назначено название для действия."
 
-#: ../plugins/openbox/openbox.c:808
+#: ../plugins/openbox/openbox.c:809
 #, c-format
 msgid "rc.xml error: empty tag <%s> is prohibited."
 msgstr "Ошибка в rc.xml: использование пустого тега <%s> запрещено."
 
-#: ../plugins/openbox/openbox.c:897
+#: ../plugins/openbox/openbox.c:901
 msgid "Could not find the rc.xml file anywhere."
 msgstr "Нигде не удалось найти файл rc.xml."
 
-#: ../plugins/openbox/openbox.c:945 ../plugins/openbox/openbox.c:1059
-#: ../plugins/openbox/openbox.c:1206 ../plugins/openbox/openbox.c:1224
+#: ../plugins/openbox/openbox.c:949 ../plugins/openbox/openbox.c:1063
+#: ../plugins/openbox/openbox.c:1210 ../plugins/openbox/openbox.c:1228
 msgid "No WM configuration is available."
 msgstr "Не удалось получить конфигурацию менеджера окон."
 
-#: ../plugins/openbox/openbox.c:1063
+#: ../plugins/openbox/openbox.c:1067
 msgid "Keybinding should activate at least one action."
 msgstr "Привязка должна активировать как минимум одно действие."
 
-#: ../plugins/openbox/openbox.c:1092 ../plugins/openbox/openbox.c:1102
-#: ../plugins/openbox/openbox.c:1258 ../plugins/openbox/openbox.c:1268
+#: ../plugins/openbox/openbox.c:1096 ../plugins/openbox/openbox.c:1106
+#: ../plugins/openbox/openbox.c:1262 ../plugins/openbox/openbox.c:1272
 #, c-format
 msgid "Hotkey '%s' is already bound to an action."
 msgstr "Клавиша '%s' уже привязана к другому действию."
 
-#: ../plugins/openbox/openbox.c:1228
+#: ../plugins/openbox/openbox.c:1232
 msgid "The exec line cannot be empty."
 msgstr "Командная строка не может быть пустой."
 
@@ -743,37 +730,35 @@ msgstr "Изменить параметры выбранного действи�
 msgid "_Help"
 msgstr "_Помощь"
 
-#: ../plugins/gtk/gtk.c:426
+#: ../plugins/gtk/gtk.c:441
 msgid "Action"
 msgstr "Действие"
 
-#: ../plugins/gtk/gtk.c:429
+#: ../plugins/gtk/gtk.c:444
 msgid "Option"
 msgstr "Параметр"
 
-#: ../plugins/gtk/gtk.c:432 ../plugins/gtk/gtk.c:452
-#: ../plugins/gtk/edit.c:1090
+#: ../plugins/gtk/gtk.c:447 ../plugins/gtk/gtk.c:467 ../plugins/gtk/edit.c:1111
 msgid "Hotkey 1"
 msgstr "Привязка 1"
 
-#: ../plugins/gtk/gtk.c:435 ../plugins/gtk/gtk.c:455
-#: ../plugins/gtk/edit.c:1094
+#: ../plugins/gtk/gtk.c:450 ../plugins/gtk/gtk.c:470 ../plugins/gtk/edit.c:1115
 msgid "Hotkey 2"
 msgstr "Привязка 2"
 
-#: ../plugins/gtk/gtk.c:443
+#: ../plugins/gtk/gtk.c:458
 msgid "Actions"
 msgstr "Действия"
 
-#: ../plugins/gtk/gtk.c:449
+#: ../plugins/gtk/gtk.c:464
 msgid "Command"
 msgstr "Команда"
 
-#: ../plugins/gtk/gtk.c:463
+#: ../plugins/gtk/gtk.c:478
 msgid "Programs"
 msgstr "Программы"
 
-#: ../plugins/gtk/gtk.c:482 ../plugins/gtk/edit.c:510
+#: ../plugins/gtk/gtk.c:497 ../plugins/gtk/edit.c:511
 msgid "Error"
 msgstr "Ошибка"
 
@@ -789,73 +774,87 @@ msgstr "Посмотреть или изменить глобальные при
 msgid "hotkey;shortcut;system;settings;"
 msgstr "привязка;горячая клавиша;рабочий стол;настройки;"
 
-#: ../plugins/gtk/edit.c:265
+#: ../plugins/gtk/edit.c:266
 msgid "Apply error: "
 msgstr "Ошибка применения: "
 
-#: ../plugins/gtk/edit.c:280 ../plugins/gtk/edit.c:394
+#: ../plugins/gtk/edit.c:281 ../plugins/gtk/edit.c:395
 msgid "Add action"
 msgstr "Добавить действие"
 
-#: ../plugins/gtk/edit.c:292 ../plugins/gtk/edit.c:396
+#: ../plugins/gtk/edit.c:293 ../plugins/gtk/edit.c:397
 msgid "Add option"
 msgstr "Добавить параметр"
 
-#: ../plugins/gtk/edit.c:354
+#: ../plugins/gtk/edit.c:355
 msgid "Change option"
 msgstr "Изменить параметр"
 
-#: ../plugins/gtk/edit.c:419
+#: ../plugins/gtk/edit.c:420
 msgid "Discard changes"
 msgstr "Отбросить изменения"
 
-#: ../plugins/gtk/edit.c:420
+#: ../plugins/gtk/edit.c:421
 msgid "Accept changes"
 msgstr "Принять изменения"
 
-#: ../plugins/gtk/edit.c:421
+#: ../plugins/gtk/edit.c:422
 msgid "Add an action"
 msgstr "Добавить действие"
 
-#: ../plugins/gtk/edit.c:422
+#: ../plugins/gtk/edit.c:423
 msgid "Add an option to this command"
 msgstr "Добавить параметр к этой команде"
 
-#: ../plugins/gtk/edit.c:424
+#: ../plugins/gtk/edit.c:425
 msgid "Remove selection"
 msgstr "Удалить выбранное действие или параметр"
 
-#: ../plugins/gtk/edit.c:425
+#: ../plugins/gtk/edit.c:426
 msgid "Change selected option"
 msgstr "Изменить выбранный параметр"
 
-#: ../plugins/gtk/edit.c:426
+#: ../plugins/gtk/edit.c:427
 msgid "Add an option to selection"
 msgstr "Добавить параметр к выбранному действию или параметру"
 
-#: ../plugins/gtk/edit.c:507
+#: ../plugins/gtk/edit.c:508
 #, c-format
 msgid "Key combination '%s' cannot be used as a global hotkey, sorry."
 msgstr ""
 "Извините, но комбинация клавиш '%s' не может быть использована в качестве "
 "глобальной."
 
-#: ../plugins/gtk/edit.c:1107
+#: ../plugins/gtk/edit.c:571
+msgid "Click to select, then press a key"
+msgstr ""
+
+#: ../plugins/gtk/edit.c:1128
 msgid "Actions:"
 msgstr "Действия:"
 
-#: ../plugins/gtk/edit.c:1115
+#: ../plugins/gtk/edit.c:1136
 msgid "Command line:"
 msgstr "Командная строка:"
 
-#: ../plugins/gtk/edit.c:1126
+#: ../plugins/gtk/edit.c:1147
 msgid "Options:"
 msgstr "Параметры:"
 
-#: ../plugins/gtk/edit.c:1148
+#: ../plugins/gtk/edit.c:1169
 msgid "<b>Name:</b>"
 msgstr "<b>Название:</b>"
 
-#: ../plugins/gtk/edit.c:1169
+#: ../plugins/gtk/edit.c:1190
 msgid "<b>Value:</b>"
 msgstr "<b>Значение:</b>"
+
+#, c-format
+#~ msgid "       %s show <key>             - show the action bound to a key\n"
+#~ msgstr ""
+#~ "              %s <клавиша>               - показать действие, привязанное "
+#~ "к клавише\n"
+
+#, c-format
+#~ msgid "Window manager %s isn't supported now, sorry."
+#~ msgstr "Извините, но менеджер окон %s не поддерживается."
