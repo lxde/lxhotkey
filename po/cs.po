@@ -679,8 +679,8 @@ msgid "translator-credits"
 msgstr "www.fripohled.blogspot.com"
 
 #: ../plugins/gtk/gtk.c:184
-msgid "Copyright (C) 2016-2021"
-msgstr "Autorské právo (C) 2016-2021"
+msgid "Copyright (C) 2016-2023"
+msgstr "Autorské právo (C) 2016-2023"
 
 #: ../plugins/gtk/gtk.c:185
 msgid "Keyboard shortcuts configurator"

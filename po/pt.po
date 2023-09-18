@@ -677,8 +677,8 @@ msgid "translator-credits"
 msgstr "Sérgio Marques <smarquespt@gmail.com>"
 
 #: ../plugins/gtk/gtk.c:184
-msgid "Copyright (C) 2016-2021"
-msgstr "Copyright (C) 2016-2021"
+msgid "Copyright (C) 2016-2023"
+msgstr "Copyright (C) 2016-2023"
 
 #: ../plugins/gtk/gtk.c:185
 msgid "Keyboard shortcuts configurator"
