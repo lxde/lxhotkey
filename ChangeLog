@@ -1,3 +1,10 @@
+0.1.2
+-------------------------------------------------------------------------
+* Improved error and help messages.
+* Added a tooltip to explain how to define a hotkey.
+* Added a check for the X server's socket.
+* Updated translations.
+
 0.1.1
 -------------------------------------------------------------------------
 * Added detection for LXDE-pi session.
