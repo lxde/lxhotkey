@@ -679,8 +679,8 @@ msgid "translator-credits"
 msgstr "Алексей Логинов <alexl@mageia.org>"
 
 #: ../plugins/gtk/gtk.c:184
-msgid "Copyright (C) 2016-2023"
-msgstr "Права защищены (C) 2016-2023"
+msgid "Copyright (C) 2016-2025"
+msgstr "Права защищены (C) 2016-2025"
 
 #: ../plugins/gtk/gtk.c:185
 msgid "Keyboard shortcuts configurator"

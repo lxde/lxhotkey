@@ -181,7 +181,7 @@ static void on_about(GtkAction *act, PluginData *data)
     gtk_about_dialog_set_program_name(about, "LXHotkey"); //FIXME: translated?
     gtk_about_dialog_set_logo_icon_name(about, LXHOTKEY_ICON);
 
-    gtk_about_dialog_set_copyright(about, _("Copyright (C) 2016-2023"));
+    gtk_about_dialog_set_copyright(about, _("Copyright (C) 2016-2025"));
     gtk_about_dialog_set_comments(about, _( "Keyboard shortcuts configurator"));
     gtk_about_dialog_set_license(about, "This program is free software; you can redistribute it and/or\n"
                                         "modify it under the terms of the GNU General Public License\n"

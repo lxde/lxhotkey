@@ -674,8 +674,8 @@ msgid "translator-credits"
 msgstr "Андрій Гриценко <andrej@rep.kiev.ua>"
 
 #: ../plugins/gtk/gtk.c:184
-msgid "Copyright (C) 2016-2023"
-msgstr "Права застережено (C) 2016-2023"
+msgid "Copyright (C) 2016-2025"
+msgstr "Права застережено (C) 2016-2025"
 
 #: ../plugins/gtk/gtk.c:185
 msgid "Keyboard shortcuts configurator"
