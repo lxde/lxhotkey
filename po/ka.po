@@ -1,0 +1,845 @@
+# Georgian translation for lxhotkey.
+# Copyright (C) 2026 lxhotkey authors.
+# This file is distributed under the same license as the lxhotkey package.
+# Ekaterine Papava <papava.e@gtu.ge>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lxhotkey\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-18 15:23+0200\n"
+"PO-Revision-Date: 2026-02-02 13:43+0100\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: ../src/lxhotkey.c:244
+#, c-format
+msgid "Usage: %s global [<key>]         - show keys bound to action(s)\n"
+msgstr ""
+"Usage: %s global [<key>]         - ქმედებაზე მიბმული ღილაკების ჩვენება\n"
+
+#: ../src/lxhotkey.c:245
+#, c-format
+msgid "       %s global <action> <key>  - bind a key to the action\n"
+msgstr "       %s global <action> <key>  - ღილაკის მიბმა ქმედებაზე\n"
+
+#: ../src/lxhotkey.c:246
+#, c-format
+msgid "       %s app [<key>]            - show keys bound to exec line\n"
+msgstr ""
+"       %s app [<key>]            - ბრძანებაზე მიბმული ღილაკების ჩვენება\n"
+
+#: ../src/lxhotkey.c:247
+#, c-format
+msgid "       %s app <exec> <key>       - bind a key to some exec line\n"
+msgstr "       %s app <exec> <key>       - ბრძანებისთვის ღილაკის მინიჭება\n"
+
+#: ../src/lxhotkey.c:248
+#, c-format
+msgid "       %s app <exec> --          - unbind all keys from exec line\n"
+msgstr ""
+"       %s app <exec> --          - ბრძანებისთვის ყველა ღილაკის მხოსნა\n"
+
+#: ../src/lxhotkey.c:250
+#, c-format
+msgid "       %s --gui=<type>           - start with GUI\n"
+msgstr "       %s --gui=<type>           - გაშვება გრაფიკული ინტერფეისით\n"
+
+#: ../src/lxhotkey.c:345
+msgid "empty option name."
+msgstr "ცარიელი პარამეტრის სახელი."
+
+#: ../src/lxhotkey.c:348
+msgid "empty action name."
+msgstr "ცარიელი ქმედების სახელი."
+
+#: ../src/lxhotkey.c:380
+#, c-format
+msgid "no matching option '%s' found for action '%s'."
+msgstr "შესაბამისი პარამეტრი '%s' ქმედებისთვის '%s' აღმოჩენილი არაა."
+
+#: ../src/lxhotkey.c:384
+#, c-format
+msgid "action '%s' isn't supported by WM %s."
+msgstr "ქმედება '%s' მხარდაჭერილი არაა ფანჯრების მმართველის %s მიერ."
+
+#: ../src/lxhotkey.c:401
+#, c-format
+msgid "value '%s' is not supported for option '%s'."
+msgstr "მნიშვნელობა '%s' მხარდაუჭერელია პარამეტრისთვის '%s'."
+
+#: ../src/lxhotkey.c:405
+#, c-format
+msgid "value '%s' is not supported for action '%s'."
+msgstr "მნიშვნელობა '%s' მხარდაუჭერელია ქმედებისთვის '%s'."
+
+#: ../src/lxhotkey.c:418
+#, c-format
+msgid "action '%s' does not support options."
+msgstr "ქმედებას '%s' პარამეტრების მხარდაჭერა არ აქვს."
+
+#: ../src/lxhotkey.c:500
+msgid "Sorry, cannot configure keys remotely."
+msgstr "ღილაკებს დაშორებულად ვერ მოირგებთ."
+
+#: ../src/lxhotkey.c:508
+msgid "Could not determine window manager running."
+msgstr "დადგენა, გაშვებულია, თუ არა ფანჯრების მმართველი, შეუძლებელია."
+
+#: ../src/lxhotkey.c:516
+#, c-format
+msgid "Could not find a plugin for window manager %s."
+msgstr "ფანჯრების მმართველისთვის %s დამატების პოვნა შეუძლებელია."
+
+#: ../src/lxhotkey.c:523 ../plugins/gtk/gtk.c:75
+msgid "Problems loading configuration: "
+msgstr "კონფიგურაციის ჩატვირთვის პრობლემა: "
+
+#: ../src/lxhotkey.c:532
+#, c-format
+msgid "GUI type %s currently isn't supported."
+msgstr "გრაფიკული ინტერფეისის ტიპი %s ამჟამად მხარდაჭერილი არაა."
+
+#: ../src/lxhotkey.c:549 ../src/lxhotkey.c:625
+msgid "Invalid request: "
+msgstr "არასწორი მოთხოვნა: "
+
+#: ../src/lxhotkey.c:559 ../src/lxhotkey.c:637 ../plugins/gtk/gtk.c:90
+msgid "Problems saving configuration: "
+msgstr "კონფიგურაციის შენახვის პრობლემა: "
+
+#: ../src/lxhotkey.c:576
+msgid "ACTION(s)"
+msgstr "ქმედებ(ებ)-ი"
+
+#: ../src/lxhotkey.c:576 ../src/lxhotkey.c:654
+msgid "KEY(s)"
+msgstr "ღილაკ(ებ)-ი"
+
+#: ../src/lxhotkey.c:654
+msgid "EXEC"
+msgstr "გაშვ"
+
+#: ../src/lxhotkey.c:676
+msgid "Requested operation isn't supported."
+msgstr "მოთხოვნილი ოპერაცია მხარდაჭერილი არაა."
+
+#: ../plugins/openbox/openbox.c:185
+msgid "Failed to reconfigure Openbox."
+msgstr "Openbox-ის თავიდან მორგება ჩავარდა."
+
+#: ../plugins/openbox/openbox.c:204
+msgid "yes"
+msgstr "დიახ"
+
+#: ../plugins/openbox/openbox.c:204
+msgid "no"
+msgstr "არა"
+
+#: ../plugins/openbox/openbox.c:207
+msgid "enabled"
+msgstr "ჩართულია"
+
+#: ../plugins/openbox/openbox.c:208
+msgid "wmclass"
+msgstr "wmclass"
+
+#: ../plugins/openbox/openbox.c:209
+msgid "name"
+msgstr "სახელი"
+
+#: ../plugins/openbox/openbox.c:210
+msgid "icon"
+msgstr "ხატულა"
+
+#: ../plugins/openbox/openbox.c:215 ../plugins/openbox/openbox.c:294
+msgid "command"
+msgstr "ბრძანება"
+
+#: ../plugins/openbox/openbox.c:216 ../plugins/openbox/openbox.c:299
+msgid "prompt"
+msgstr "prompt"
+
+#: ../plugins/openbox/openbox.c:217
+msgid "startupnotify"
+msgstr "გაშვებისშეტყობინება"
+
+#: ../plugins/openbox/openbox.c:221 ../plugins/openbox/openbox.c:331
+msgid "center"
+msgstr "ცენტრი"
+
+#: ../plugins/openbox/openbox.c:222
+msgid "default"
+msgstr "ნაგულისხმევი"
+
+#: ../plugins/openbox/openbox.c:222
+msgid "primary"
+msgstr "ძირითადი"
+
+#: ../plugins/openbox/openbox.c:222
+msgid "mouse"
+msgstr "თაგუნა"
+
+#: ../plugins/openbox/openbox.c:223
+msgid "active"
+msgstr "აქტიური"
+
+#: ../plugins/openbox/openbox.c:223 ../plugins/openbox/openbox.c:334
+msgid "all"
+msgstr "ყველა"
+
+#: ../plugins/openbox/openbox.c:228 ../plugins/openbox/openbox.c:341
+msgid "monitor"
+msgstr "ეკრანი"
+
+#: ../plugins/openbox/openbox.c:233
+msgid "menu"
+msgstr "მენიუ"
+
+#: ../plugins/openbox/openbox.c:234
+msgid "position"
+msgstr "მდებარეობა"
+
+#: ../plugins/openbox/openbox.c:238
+msgid "list"
+msgstr "სია"
+
+#: ../plugins/openbox/openbox.c:238
+msgid "icons"
+msgstr "ხატულები"
+
+#: ../plugins/openbox/openbox.c:238
+msgid "none"
+msgstr "არცერთი"
+
+#: ../plugins/openbox/openbox.c:241 ../plugins/openbox/openbox.c:260
+msgid "dialog"
+msgstr "დიალოგი"
+
+#: ../plugins/openbox/openbox.c:242 ../plugins/openbox/openbox.c:261
+msgid "bar"
+msgstr "ტაქტი"
+
+#: ../plugins/openbox/openbox.c:243 ../plugins/openbox/openbox.c:262
+msgid "raise"
+msgstr "აწევა"
+
+#: ../plugins/openbox/openbox.c:244
+msgid "allDesktops"
+msgstr "ყველასამუშაომაგიდა"
+
+#: ../plugins/openbox/openbox.c:245 ../plugins/openbox/openbox.c:263
+msgid "panels"
+msgstr "პანელები"
+
+#: ../plugins/openbox/openbox.c:246
+msgid "desktop"
+msgstr "სამუშაო მაგიდა"
+
+#: ../plugins/openbox/openbox.c:247
+msgid "linear"
+msgstr "წრფივი"
+
+#: ../plugins/openbox/openbox.c:248
+msgid "interactive"
+msgstr "ინტერაქტიური"
+
+#. TRANSLATORS: finalactions means actions when done
+#: ../plugins/openbox/openbox.c:250 ../plugins/openbox/openbox.c:265
+msgid "finalactions"
+msgstr "საბოლოოქმედებები"
+
+#: ../plugins/openbox/openbox.c:254 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:311 ../plugins/openbox/openbox.c:364
+msgid "north"
+msgstr "ჩრდილოეთი"
+
+#: ../plugins/openbox/openbox.c:254
+msgid "northeast"
+msgstr "ჩრდილოაღმოსავლეთი"
+
+#: ../plugins/openbox/openbox.c:254 ../plugins/openbox/openbox.c:272
+#: ../plugins/openbox/openbox.c:312 ../plugins/openbox/openbox.c:364
+msgid "east"
+msgstr "აღმოსავლეთი"
+
+#: ../plugins/openbox/openbox.c:255
+msgid "southeast"
+msgstr "სამხრეთაღმოსავლეთი"
+
+#: ../plugins/openbox/openbox.c:255 ../plugins/openbox/openbox.c:271
+#: ../plugins/openbox/openbox.c:311 ../plugins/openbox/openbox.c:364
+msgid "south"
+msgstr "სამხრეთი"
+
+#: ../plugins/openbox/openbox.c:255
+msgid "southwest"
+msgstr "სამხრეთდასავლეთი"
+
+#: ../plugins/openbox/openbox.c:256 ../plugins/openbox/openbox.c:272
+#: ../plugins/openbox/openbox.c:312 ../plugins/openbox/openbox.c:364
+msgid "west"
+msgstr "დასავლეთი"
+
+#: ../plugins/openbox/openbox.c:256
+msgid "northwest"
+msgstr "ჩრდილოდასავლეთი"
+
+#: ../plugins/openbox/openbox.c:259 ../plugins/openbox/openbox.c:306
+#: ../plugins/openbox/openbox.c:367
+msgid "direction"
+msgstr "მიმართულება"
+
+#: ../plugins/openbox/openbox.c:264
+msgid "desktops"
+msgstr "სამუშაომაგიდები"
+
+#. TRANSLATORS: these values are in regard to desktop
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:281
+#: ../plugins/openbox/openbox.c:310 ../plugins/openbox/openbox.c:331
+#: ../plugins/openbox/openbox.c:334
+msgid "current"
+msgstr "მიმდინარე"
+
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:310
+#: ../plugins/openbox/openbox.c:334
+msgid "next"
+msgstr "შემდეგი"
+
+#: ../plugins/openbox/openbox.c:270 ../plugins/openbox/openbox.c:310
+msgid "previous"
+msgstr "წინა"
+
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:281
+#: ../plugins/openbox/openbox.c:311
+msgid "last"
+msgstr "ბოლო"
+
+#: ../plugins/openbox/openbox.c:271 ../plugins/openbox/openbox.c:311
+msgid "up"
+msgstr "მაღლა"
+
+#: ../plugins/openbox/openbox.c:272 ../plugins/openbox/openbox.c:312
+msgid "down"
+msgstr "დაბლა"
+
+#: ../plugins/openbox/openbox.c:272 ../plugins/openbox/openbox.c:312
+#: ../plugins/openbox/openbox.c:322 ../plugins/openbox/openbox.c:357
+msgid "left"
+msgstr "მარცხნივ"
+
+#: ../plugins/openbox/openbox.c:273 ../plugins/openbox/openbox.c:313
+#: ../plugins/openbox/openbox.c:322 ../plugins/openbox/openbox.c:358
+msgid "right"
+msgstr "მარჯვენა"
+
+#: ../plugins/openbox/openbox.c:276 ../plugins/openbox/openbox.c:316
+msgid "to"
+msgstr "სადამდე"
+
+#: ../plugins/openbox/openbox.c:277 ../plugins/openbox/openbox.c:317
+msgid "wrap"
+msgstr "შემოხვევა"
+
+#: ../plugins/openbox/openbox.c:284
+msgid "where"
+msgstr "სად"
+
+#: ../plugins/openbox/openbox.c:289
+msgid "strict"
+msgstr "მკაცრი"
+
+#: ../plugins/openbox/openbox.c:303
+msgid "both"
+msgstr "ორივე"
+
+#: ../plugins/openbox/openbox.c:303
+msgid "horizontal"
+msgstr "ჰორიზონტალური"
+
+#: ../plugins/openbox/openbox.c:303
+msgid "vertical"
+msgstr "ვერტიკალური"
+
+#: ../plugins/openbox/openbox.c:318
+msgid "follow"
+msgstr "მიყოლა"
+
+#: ../plugins/openbox/openbox.c:322 ../plugins/openbox/openbox.c:359
+#: ../plugins/openbox/openbox.c:371
+msgid "top"
+msgstr "მწვერვალი"
+
+#: ../plugins/openbox/openbox.c:322 ../plugins/openbox/openbox.c:360
+#: ../plugins/openbox/openbox.c:371
+msgid "bottom"
+msgstr "ბოლოში"
+
+#: ../plugins/openbox/openbox.c:323
+msgid "topleft"
+msgstr "ზედამარცხენა"
+
+#: ../plugins/openbox/openbox.c:323
+msgid "topright"
+msgstr "ზედამარჯვენა"
+
+#: ../plugins/openbox/openbox.c:323
+msgid "bottomleft"
+msgstr "ქვედამარცხენა"
+
+#: ../plugins/openbox/openbox.c:324
+msgid "bottomright"
+msgstr "ქვედამარჯვენა"
+
+#: ../plugins/openbox/openbox.c:327
+msgid "edge"
+msgstr "კიდე"
+
+#. TRANSLATORS: # in config means either pixels, or monitor number
+#: ../plugins/openbox/openbox.c:331 ../plugins/openbox/openbox.c:346
+msgid "#"
+msgstr "#"
+
+#. TRANSLATORS: % in config means some fraction value, usually measured in percents
+#: ../plugins/openbox/openbox.c:333
+msgid "%"
+msgstr "%"
+
+#: ../plugins/openbox/openbox.c:334
+msgid "prev"
+msgstr "წინა"
+
+#: ../plugins/openbox/openbox.c:339
+msgid "width"
+msgstr "სიგანე"
+
+#: ../plugins/openbox/openbox.c:340
+msgid "height"
+msgstr "სიმაღლე"
+
+#: ../plugins/openbox/openbox.c:371
+msgid "normal"
+msgstr "ნორმალური"
+
+#: ../plugins/openbox/openbox.c:374
+msgid "layer"
+msgstr "ფენა"
+
+#: ../plugins/openbox/openbox.c:380
+msgid "Execute"
+msgstr "შესრულება"
+
+#: ../plugins/openbox/openbox.c:381
+msgid "ShowMenu"
+msgstr "მენიუს ჩვენება"
+
+#: ../plugins/openbox/openbox.c:382
+msgid "NextWindow"
+msgstr "შემდეგი ფანჯარა"
+
+#: ../plugins/openbox/openbox.c:383
+msgid "PreviousWindow"
+msgstr "წინა ფანჯარა"
+
+#: ../plugins/openbox/openbox.c:384
+msgid "DirectionalCycleWindows"
+msgstr "ფანჯრების ციკლური გადართვა მიმართულებით"
+
+#: ../plugins/openbox/openbox.c:385
+msgid "DirectionalTargetWindow"
+msgstr "სამიზნე ფანჯარა მიმართულებით"
+
+#: ../plugins/openbox/openbox.c:386
+msgid "GoToDesktop"
+msgstr "სამუშაო მაგიდაზე გადართვა"
+
+#: ../plugins/openbox/openbox.c:387
+msgid "AddDesktop"
+msgstr "სამუშაო მაგიდის დამატება"
+
+#: ../plugins/openbox/openbox.c:388
+msgid "RemoveDesktop"
+msgstr "სამუშაო მაგიდის წაშლა"
+
+#: ../plugins/openbox/openbox.c:389
+msgid "ToggleShowDesktop"
+msgstr "სამუშაო მაგიდის ჩვენების გადართვა"
+
+#: ../plugins/openbox/openbox.c:390
+msgid "ToggleDockAutohide"
+msgstr "დოკის ავტოდამალვის გადართვა"
+
+#: ../plugins/openbox/openbox.c:391
+msgid "Reconfigure"
+msgstr "თავიდან მორგება"
+
+#: ../plugins/openbox/openbox.c:392
+msgid "Restart"
+msgstr "გადატვირთვა"
+
+#: ../plugins/openbox/openbox.c:393
+msgid "Exit"
+msgstr "გასვლა"
+
+#: ../plugins/openbox/openbox.c:395
+msgid "Focus"
+msgstr "ფოკუსი"
+
+#: ../plugins/openbox/openbox.c:396
+msgid "Raise"
+msgstr "აწევა"
+
+#: ../plugins/openbox/openbox.c:397
+msgid "Lower"
+msgstr "დაწევა"
+
+#: ../plugins/openbox/openbox.c:398
+msgid "RaiseLower"
+msgstr "ქვედას ამოწევ"
+
+#: ../plugins/openbox/openbox.c:399
+msgid "Unfocus"
+msgstr "ფოკუსის მოხსნა"
+
+#: ../plugins/openbox/openbox.c:400
+msgid "FocusToBottom"
+msgstr "ფოკუსი ყველაზე ქვედაზე"
+
+#: ../plugins/openbox/openbox.c:401
+msgid "Iconify"
+msgstr "დაპატარავება"
+
+#: ../plugins/openbox/openbox.c:402
+msgid "Close"
+msgstr "დახურვა"
+
+#: ../plugins/openbox/openbox.c:403
+msgid "ToggleShade"
+msgstr "დაჩრდილვის გადართვა"
+
+#: ../plugins/openbox/openbox.c:404
+msgid "Shade"
+msgstr "დაჩრდილვა"
+
+#: ../plugins/openbox/openbox.c:405
+msgid "Unshade"
+msgstr "განჩრდილვა"
+
+#: ../plugins/openbox/openbox.c:406
+msgid "ToggleOmnipresent"
+msgstr "ყველაზე ჩვენების გადართვა"
+
+#: ../plugins/openbox/openbox.c:407
+msgid "ToggleMaximize"
+msgstr "მთელ ეკრანზე გაშლის გადართვა"
+
+#: ../plugins/openbox/openbox.c:408
+msgid "Maximize"
+msgstr "გადიდება"
+
+#: ../plugins/openbox/openbox.c:409
+msgid "Unmaximize"
+msgstr "საწყის ზომაზე დაბრუნება"
+
+#: ../plugins/openbox/openbox.c:410
+msgid "ToggleFullscreen"
+msgstr "სრულ ეკრანზე გაშლის გადართვა"
+
+#: ../plugins/openbox/openbox.c:411
+msgid "ToggleDecorations"
+msgstr "დეკორაციების გადართვა"
+
+#: ../plugins/openbox/openbox.c:412
+msgid "Decorate"
+msgstr "დეკორაცია"
+
+#: ../plugins/openbox/openbox.c:413
+msgid "Undecorate"
+msgstr "დეკორაციების მოხსნა"
+
+#: ../plugins/openbox/openbox.c:414
+msgid "SendToDesktop"
+msgstr "გაგზავნა სამუშაო მაგიდაზე"
+
+#: ../plugins/openbox/openbox.c:415
+msgid "Move"
+msgstr "გადატანა"
+
+#: ../plugins/openbox/openbox.c:416
+msgid "Resize"
+msgstr "ზომის შეცვლა"
+
+#: ../plugins/openbox/openbox.c:417
+msgid "MoveResizeTo"
+msgstr "ზომის შეცვლა და გადატანა"
+
+#: ../plugins/openbox/openbox.c:418
+msgid "MoveRelative"
+msgstr "ფარდობითი გადატანა"
+
+#: ../plugins/openbox/openbox.c:419
+msgid "ResizeRelative"
+msgstr "ზომის ფარდობითი სეცვლა"
+
+#: ../plugins/openbox/openbox.c:420
+msgid "MoveToEdge"
+msgstr "წიბოსკენ გადატანა"
+
+#: ../plugins/openbox/openbox.c:421
+msgid "GrowToEdge"
+msgstr "წიბოსკენ გაზრდა"
+
+#: ../plugins/openbox/openbox.c:422
+msgid "ShrinkToEdge"
+msgstr "წიბოსკენ შემცირება"
+
+#: ../plugins/openbox/openbox.c:423
+msgid "GrowToFill"
+msgstr "გადიდება შევსებამდე"
+
+#: ../plugins/openbox/openbox.c:424
+msgid "ToggleAlwaysOnTop"
+msgstr "ყოველთვის ზემოთობის გადართვა"
+
+#: ../plugins/openbox/openbox.c:425
+msgid "ToggleAlwaysOnBottom"
+msgstr "ყოველთვის ქვემოთობის გადართვა"
+
+#: ../plugins/openbox/openbox.c:426
+msgid "SendToLayer"
+msgstr "გაგზავნა ფენაზე"
+
+#: ../plugins/openbox/openbox.c:517
+msgid "Duplicate <keyboard> section in the rc.xml file."
+msgstr "გამეორებული <keyboard> სექცია ფაილში rc.xml."
+
+#: ../plugins/openbox/openbox.c:548 ../plugins/openbox/openbox.c:790
+msgid "Internal error."
+msgstr "შიდა შეცდომა."
+
+#: ../plugins/openbox/openbox.c:592
+msgid "rc.xml error: no key is set for a keybind."
+msgstr "rc.xml-ის შეცდომა: ღილაკის მიბმაზე ღილაკი დაყენებული არაა."
+
+#: ../plugins/openbox/openbox.c:663
+msgid "Invalid rc.xml: action with a sub-action."
+msgstr "არასწორი rc.xml: ქმედება ქვექმედებით."
+
+#: ../plugins/openbox/openbox.c:779
+msgid "rc.xml error: no name is set for action."
+msgstr "rc.xml-ის შეცდომა: ქმედებას სახელი არ აქვს."
+
+#: ../plugins/openbox/openbox.c:809
+#, c-format
+msgid "rc.xml error: empty tag <%s> is prohibited."
+msgstr "rc.xml-ის შეცდომა: ცარიელი ჭდე <%s> აკრძალულია."
+
+#: ../plugins/openbox/openbox.c:901
+msgid "Could not find the rc.xml file anywhere."
+msgstr "ფაილი rc.xml ვერსად ვიპოვე."
+
+#: ../plugins/openbox/openbox.c:949 ../plugins/openbox/openbox.c:1063
+#: ../plugins/openbox/openbox.c:1210 ../plugins/openbox/openbox.c:1228
+msgid "No WM configuration is available."
+msgstr "ფანჯრების მმართველის კონფიგურაცია ხელმისაწვდომი არაა."
+
+#: ../plugins/openbox/openbox.c:1067
+msgid "Keybinding should activate at least one action."
+msgstr "ღილაკების მიბმამ, სულ ცოტა, ერთი ქმედება უნდა გაააქტიუროს."
+
+#: ../plugins/openbox/openbox.c:1096 ../plugins/openbox/openbox.c:1106
+#: ../plugins/openbox/openbox.c:1262 ../plugins/openbox/openbox.c:1272
+#, c-format
+msgid "Hotkey '%s' is already bound to an action."
+msgstr "მალსახმობი '%s' უკვე მიბმულია ქმედებაზე."
+
+#: ../plugins/openbox/openbox.c:1232
+msgid "The exec line cannot be empty."
+msgstr "შესასრულებელი ხაზი ცარიელი ვერ იქნება."
+
+#: ../plugins/gtk/gtk.c:133 ../plugins/gtk/gtk.c:156
+msgid "Cannot delete keybinding: "
+msgstr "ღილაკების მიბმის წაშლა შეუძლებელია: "
+
+#. TRANSLATORS: Replace this string with your names, one name per line.
+#: ../plugins/gtk/gtk.c:176
+msgid "translator-credits"
+msgstr "ეკატერინე პაპავა"
+
+#: ../plugins/gtk/gtk.c:184
+msgid "Copyright (C) 2016-2023"
+msgstr "(C) 2016-2023 საავტორო უფლებები დაცულია"
+
+#: ../plugins/gtk/gtk.c:185
+msgid "Keyboard shortcuts configurator"
+msgstr "კლავიატურის მალსახმობების მორგება"
+
+#: ../plugins/gtk/gtk.c:208
+msgid "_File"
+msgstr "_ფაილი"
+
+#: ../plugins/gtk/gtk.c:209
+msgid "_Reload"
+msgstr "თავიდან ჩატვი_რთვა"
+
+#: ../plugins/gtk/gtk.c:210
+msgid ""
+"Drop all unsaved changes and reload all keys from Window Manager "
+"configuration"
+msgstr ""
+"ყველა შეუნახავი ცვლილების მოცილება და ყველა ღილაკის თავიდან ჩატვირთვა "
+"ფანჯრების მმართველის კონფიგურაციიდან"
+
+#: ../plugins/gtk/gtk.c:213
+msgid "Save all changes and apply them to Window Manager configuration"
+msgstr ""
+"ყველა ცვლილების შენახვა და მისი გადატარება ფანჯრების მმართველის "
+"კონფიგურაციაზე"
+
+#: ../plugins/gtk/gtk.c:216
+msgid "Exit the application without saving"
+msgstr "აპლიკაციიდან გასვლა შენახვის გარეშე"
+
+#: ../plugins/gtk/gtk.c:217
+msgid "_Edit"
+msgstr "_ჩასწორება"
+
+#: ../plugins/gtk/gtk.c:218
+msgid "Create new action"
+msgstr "ახალი ქმედების შექმნა"
+
+#: ../plugins/gtk/gtk.c:220
+msgid "Remove selected action"
+msgstr "მონიშნული ქმედების წაშლა"
+
+#: ../plugins/gtk/gtk.c:222
+msgid "Change selected action"
+msgstr "მონიშნული ქმედების შეცვლა"
+
+#: ../plugins/gtk/gtk.c:224
+msgid "_Help"
+msgstr "_დახმარება"
+
+#: ../plugins/gtk/gtk.c:441
+msgid "Action"
+msgstr "ქმედება"
+
+#: ../plugins/gtk/gtk.c:444
+msgid "Option"
+msgstr "პარამეტრი"
+
+#: ../plugins/gtk/gtk.c:447 ../plugins/gtk/gtk.c:467 ../plugins/gtk/edit.c:1111
+msgid "Hotkey 1"
+msgstr "მალსახმობი 1"
+
+#: ../plugins/gtk/gtk.c:450 ../plugins/gtk/gtk.c:470 ../plugins/gtk/edit.c:1115
+msgid "Hotkey 2"
+msgstr "მალსახმობი 2"
+
+#: ../plugins/gtk/gtk.c:458
+msgid "Actions"
+msgstr "ქმედებები"
+
+#: ../plugins/gtk/gtk.c:464
+msgid "Command"
+msgstr "ბრძანება"
+
+#: ../plugins/gtk/gtk.c:478
+msgid "Programs"
+msgstr "პროგრამები"
+
+#: ../plugins/gtk/gtk.c:497 ../plugins/gtk/edit.c:511
+msgid "Error"
+msgstr "შეცდომა"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:1
+msgid "Setup Hot Keys"
+msgstr "მალსახმობების მორგება"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:2
+msgid "View and change Window Manager global shortcuts"
+msgstr "ფანჯრების მმართველის გლობალური მალსახმობების ნახვა და შეცვლა"
+
+#: ../plugins/gtk/lxhotkey-gtk.desktop.in.h:3
+msgid "hotkey;shortcut;system;settings;"
+msgstr "hotkey;shortcut;system;settings;მალსახმობი;სისტემა;მორგება;"
+
+#: ../plugins/gtk/edit.c:266
+msgid "Apply error: "
+msgstr "გადატარების შეცდომა: "
+
+#: ../plugins/gtk/edit.c:281 ../plugins/gtk/edit.c:395
+msgid "Add action"
+msgstr "ქმედების დამატება"
+
+#: ../plugins/gtk/edit.c:293 ../plugins/gtk/edit.c:397
+msgid "Add option"
+msgstr "არჩევნის დამატება"
+
+#: ../plugins/gtk/edit.c:355
+msgid "Change option"
+msgstr "პარამეტრის შეცვლა"
+
+#: ../plugins/gtk/edit.c:420
+msgid "Discard changes"
+msgstr "ცვლილებების გაუქმება"
+
+#: ../plugins/gtk/edit.c:421
+msgid "Accept changes"
+msgstr "ცვლილებების დადასტურება"
+
+#: ../plugins/gtk/edit.c:422
+msgid "Add an action"
+msgstr "ქმედების დამატება"
+
+#: ../plugins/gtk/edit.c:423
+msgid "Add an option to this command"
+msgstr "პარამეტრის დამატება ამ ბრძანებისთვის"
+
+#: ../plugins/gtk/edit.c:425
+msgid "Remove selection"
+msgstr "მონიშნულის წაშლა"
+
+#: ../plugins/gtk/edit.c:426
+msgid "Change selected option"
+msgstr "მონიშნული პარამეტრის შეცვლა"
+
+#: ../plugins/gtk/edit.c:427
+msgid "Add an option to selection"
+msgstr "პარამეტრის დამატება მონიშნულისთვის"
+
+#: ../plugins/gtk/edit.c:508
+#, c-format
+msgid "Key combination '%s' cannot be used as a global hotkey, sorry."
+msgstr ""
+"უკაცრავად, მაგრამ ღილაკების კომბინაციას '%s' გლობალურ კლავიატურის "
+"მალსახმობად ვერ დააყენებთ."
+
+#: ../plugins/gtk/edit.c:571
+msgid "Click to select, then press a key"
+msgstr "დააწკაპუნეთ მოსანიშნად, შემდეგ კი დააჭირეთ ღილაკს"
+
+#: ../plugins/gtk/edit.c:1128
+msgid "Actions:"
+msgstr "ქმედებები:"
+
+#: ../plugins/gtk/edit.c:1136
+msgid "Command line:"
+msgstr "ბრძანების სტრიქონი:"
+
+#: ../plugins/gtk/edit.c:1147
+msgid "Options:"
+msgstr "მორგება:"
+
+#: ../plugins/gtk/edit.c:1169
+msgid "<b>Name:</b>"
+msgstr "<b>სახელი:</b> %1<br/>"
+
+#: ../plugins/gtk/edit.c:1190
+msgid "<b>Value:</b>"
+msgstr "<b>მნიშვნელობა:</b>"
