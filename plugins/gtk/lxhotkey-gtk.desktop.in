@@ -5,7 +5,7 @@ _Name=Setup Hot Keys
 _Comment=View and change Window Manager global shortcuts
 _Keywords=hotkey;shortcut;system;settings;
 Categories=DesktopSettings;Settings;Core;GTK;
-NotShowIn=GNOME;KDE;XFCE;MATE;
+NotShowIn=GNOME;KDE;XFCE;MATE;Budgie;COSMIC;Enlightenment;LXQt;X-Cinnamon;
 Exec=lxhotkey --gui=gtk
 StartupNotify=true
 Terminal=false
